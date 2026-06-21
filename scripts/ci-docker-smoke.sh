@@ -25,13 +25,13 @@ echo "[ci-docker-smoke] Attente healthchecks..."
 deadline=$((SECONDS + 120))
 while (( SECONDS < deadline )); do
   if $COMPOSE ps --status running 2>/dev/null | grep -q backend && \
-     curl -kfsS https://127.0.0.1/api/health >/dev/null 2>&1; then
+     curl -kfsS https://localhost/api/health >/dev/null 2>&1; then
     break
   fi
   sleep 3
 done
 
-HEALTH=$(curl -kfsS https://127.0.0.1/api/health || true)
+HEALTH=$(curl -kfsS https://localhost/api/health || true)
 echo "$HEALTH" | grep -q '"status":"ok"' || {
   echo "FAIL: health check — $HEALTH"
   $COMPOSE ps
