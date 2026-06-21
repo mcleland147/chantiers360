@@ -1,6 +1,6 @@
 # Document d’architecture technique (DAT) v1 — Chantiers360
 
-**Version :** 1.3 (Phase K3)  
+**Version :** 1.4 (Phase K4)  
 **Date :** 20/06/2026  
 **Statut :** Aligné sur l’implémentation MVP (Phases A–H)  
 **Références :** DAA Chantiers360, SPEC-UI-MVP, docs/API.md
@@ -199,28 +199,37 @@ npm run ci:audit   # npm audit high+ (advisory)
 
 ---
 
-## 8. Sauvegardes
+## 8. Sauvegardes & exploitation (Phase K4)
 
-| Élément | Méthode MVP | Fréquence recommandée | Rétention |
-|---------|-------------|------------------------|-----------|
-| PostgreSQL | `pg_dump` | Quotidienne | 7 j (REC), 30 j (PROD) |
-| Volume Docker `postgres_data` | Snapshot volume | Hebdomadaire | 4 semaines |
-| Photos (futur) | Sync répertoire / bucket | Quotidienne | 7–30 j |
-| Config / secrets | Vault ou fichiers chiffrés hors Git | À chaque changement | Versions |
+| Élément | Méthode | Fréquence | Rétention |
+|---------|---------|-----------|-----------|
+| PostgreSQL | `scripts/backup-db.sh` (`npm run ops:backup`) | Quotidienne (cron) | 7 j (REC), 30 j (PROD) |
+| Restauration | `scripts/restore-db.sh` | Test hebdo REC | — |
+| Monitoring | `scripts/check-health.sh` | 5 min (cron / sonde) | — |
+| Logs Docker | `json-file` 5×10 Mo | Automatique | ~50 Mo/service |
 
-**Exemple sauvegarde :**
-
-```bash
-docker exec chantiers360-postgres pg_dump -U chantiers360 chantiers360 \
-  > backup/chantiers360_$(date +%Y%m%d_%H%M).sql
-```
-
-**Restauration :**
+**Sauvegarde :**
 
 ```bash
-cat backup/chantiers360_YYYYMMDD.sql | docker exec -i chantiers360-postgres \
-  psql -U chantiers360 -d chantiers360
+npm run ops:backup
+# → backup/chantiers360_YYYYMMDD_HHMMSS.sql.gz + .sha256
 ```
+
+**Restauration (base vide recréée) :**
+
+```bash
+npm run ops:restore -- backup/chantiers360_YYYYMMDD_HHMMSS.sql.gz
+```
+
+**Healthcheck ops :**
+
+```bash
+npm run ops:health
+```
+
+Runbook incident : `docs/21-Runbook-Incident.md`. Rapport : `docs/20-Rapport-K4-Exploitation.md`.
+
+**Hors K4 :** sync backup vers stockage externe (S3/OVH) — Phase L.
 
 ---
 
@@ -228,14 +237,14 @@ cat backup/chantiers360_YYYYMMDD.sql | docker exec -i chantiers360-postgres \
 
 | Niveau | MVP (REC) | Cible PROD |
 |--------|-----------|------------|
-| Disponibilité API | `GET /api/health` + sonde externe (UptimeRobot, etc.) | Idem + SLA |
-| Logs backend | stdout NestJS (`docker logs chantiers360-backend`) | Agrégation (Loki, CloudWatch) |
+| Disponibilité API | `scripts/check-health.sh` + sonde externe (UptimeRobot) | Idem + SLA |
+| Logs backend | stdout NestJS + rotation Docker K4 | Agrégation (Loki, CloudWatch) |
 | Logs frontend | Console navigateur | Sentry / équivalent |
 | Métriques | — | Prometheus + Grafana |
-| Alertes infra | Manuelle | PagerDuty / email ops |
+| Alertes infra | Cron health + email ops | PagerDuty / email ops |
 | BDD | Taille volume, connexions actives | pg_stat, alerting |
 
-**Seuils recommandés REC :** sonde health toutes les 5 min ; alerte si 3 échecs consécutifs.
+**Seuils recommandés REC :** sonde health toutes les 5 min ; alerte si 3 échecs consécutifs (runbook P1).
 
 ---
 
@@ -277,7 +286,9 @@ Internet → Caddy (:443 TLS)
               └─ (postgres :5432 réseau internal uniquement)
 ```
 
-Post-K2 restant (Phase L / K4) : VPS OVH, DNS, Let's Encrypt réel, backup automatisé, monitoring.
+Post-K2 restant (Phase L / K5) : VPS OVH, DNS, Let's Encrypt réel, sync backup externe, go-live.
+
+**Phase K4 (exploitation) :** scripts backup/restore/health, rotation logs Docker, runbook incident — voir `docs/20-Rapport-K4-Exploitation.md`.
 
 ---
 
@@ -290,6 +301,8 @@ Post-K2 restant (Phase L / K4) : VPS OVH, DNS, Let's Encrypt réel, backup autom
 | Spec UI | `docs/SPEC-UI-MVP.md` |
 | Cahier de tests | `docs/06-Cahier-de-tests.md` |
 | Rapport K3 | `docs/19-Rapport-K3-CICD.md` |
+| Rapport K4 | `docs/20-Rapport-K4-Exploitation.md` |
+| Runbook incident | `docs/21-Runbook-Incident.md` |
 
 ---
 

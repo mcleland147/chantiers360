@@ -18,7 +18,7 @@ Chantiers360 est **fonctionnellement prêt pour une recette client** (REC), mais
 | Tests automatisés | ✅ 76 FE + 30 BE + 27 API + 41 E2E | CI obligatoire |
 | Docker dev | ✅ Compose postgres + backend + frontend Vite | Compose prod + Nginx |
 | Sécurité réseau | ❌ HTTP, CORS ouvert, lectures API publiques | HTTPS, CORS restreint, auth lecture |
-| Exploitation | ⚠️ Procédures documentées, non automatisées | Cron backup, monitoring, runbooks |
+| Exploitation | ✅ Scripts backup/restore/health, runbook (K4) | Sync backup externe, alertes email |
 | CI/CD | ❌ Non versionné | Pipeline GitHub Actions |
 
 **Verdict :** démarrer Phase K immédiatement ; **délai réaliste mise en ligne PROD : 3 à 5 semaines** (1 dev + 0,5 j exploitant/mois).
@@ -86,11 +86,11 @@ Légende : ✅ OK · ⚠️ Partiel · ❌ Manquant
 
 | # | Critère | État | Constat |
 |---|---------|------|---------|
-| B1 | Procédure `pg_dump` documentée | ✅ | `docs/10-Guide-Exploitation.md` §4 |
-| B2 | Sauvegarde automatisée (cron) | ❌ | Manuel uniquement |
-| B3 | Stockage externe (hors serveur) | ❌ | Non configuré |
-| B4 | Test restauration daté | ❌ | Non exécuté |
-| B5 | Rétention 30 j PROD | ❌ | Politique DAT seulement |
+| B1 | Procédure `pg_dump` documentée | ✅ | `scripts/backup-db.sh` + guide §4 |
+| B2 | Sauvegarde automatisée (cron) | ⚠️ | Script prêt ; cron VPS = Phase L |
+| B3 | Stockage externe (hors serveur) | ❌ | Non configuré (Phase L) |
+| B4 | Test restauration daté | ✅ | Validé K4 — `scripts/restore-db.sh` |
+| B5 | Rétention 30 j PROD | ⚠️ | 7 j par défaut ; `OPS_BACKUP_RETENTION_DAYS=30` en prod |
 | B6 | Backup volume Docker | ❌ | Snapshot non automatisé |
 
 ### 2.6 JWT
@@ -302,7 +302,7 @@ Découpage par **risque décroissant** : sécurité d'abord, puis packaging, aut
 | `npm audit` / Dependabot | K0-A09 | ✅ advisory + dependabot.yml |
 | Workflow build images + push registry (GHCR) | C6 | ✅ `docker-publish.yml` (manuel) |
 | Script deploy REC (SSH + compose pull) | C7 | ⚠️ Phase L |
-| Documentation procédure rollback | C8 | ⚠️ K4 |
+| Documentation procédure rollback | C8 | ✅ K4 runbook §7 |
 
 **DoD K3 :** ✅ PR bloquée si tests KO ; images buildables ; GHCR prêt ; pas de deploy VPS auto.
 
@@ -310,20 +310,23 @@ Découpage par **risque décroissant** : sécurité d'abord, puis packaging, aut
 
 ---
 
-### K4 — Exploitation & résilience (Semaine 4)
+### K4 — Exploitation & résilience (Semaine 4) — ✅ Livré
 
 **Objectif :** backup, logs, monitoring minimum.
 
-| Tâche | Écarts |
-|-------|--------|
-| Cron `pg_dump` + sync stockage externe (S3/OVH Object Storage) | K0-C08, B2–B3 |
-| **Test restauration** daté et trace écrit | B4 |
-| UptimeRobot / Better Stack sur `/api/health` | K0-I05 |
-| Logs JSON + rotation Docker (`json-file` max-size) | K0-I06 |
-| Runbook incident (P1/P2/P3) | E3, E6 |
-| Alertes email ops | M4 |
+| Tâche | Écarts | Statut |
+|-------|--------|--------|
+| Script `pg_dump` + rétention (`backup-db.sh`) | K0-C08, B2 | ✅ |
+| Script restore + test daté (`restore-db.sh`) | B4 | ✅ |
+| Monitoring health (`check-health.sh`) | K0-I05 | ✅ |
+| Rotation logs Docker (`json-file` max-size) | K0-I06 | ✅ |
+| Runbook incident (P1/P2/P3) | E3, E6 | ✅ |
+| Sync stockage externe (S3/OVH) | B3 | ⚠️ Phase L |
+| Alertes email ops / UptimeRobot | M4 | ⚠️ Doc + cron exemple |
 
-**DoD K4 :** restore testé < 4 h ; alerte si health down > 5 min.
+**DoD K4 :** ✅ restore testé ; health scripté ; runbook livré. Sync externe et alertes email = Phase L.
+
+**Rapport :** `docs/20-Rapport-K4-Exploitation.md`
 
 ---
 

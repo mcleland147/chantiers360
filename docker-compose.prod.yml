@@ -5,6 +5,13 @@
 
 name: chantiers360-prod
 
+# Rotation logs Docker — Phase K4 (json-file, 5 × 10 Mo max par service)
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -28,6 +35,7 @@ services:
       retries: 5
       start_period: 20s
     restart: unless-stopped
+    logging: *default-logging
 
   backend:
     build:
@@ -48,6 +56,7 @@ services:
       - internal
       - web
     restart: unless-stopped
+    logging: *default-logging
 
   frontend:
     build:
@@ -62,6 +71,7 @@ services:
     networks:
       - web
     restart: unless-stopped
+    logging: *default-logging
 
   caddy:
     image: caddy:2-alpine
@@ -89,6 +99,7 @@ services:
       retries: 3
       start_period: 15s
     restart: unless-stopped
+    logging: *default-logging
 
   # Seed REC locale (profil optionnel) :
   # docker compose -f docker-compose.prod.yml --env-file .env.prod --profile seed run --rm seed

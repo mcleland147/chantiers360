@@ -34,5 +34,10 @@ e2e/blob-report/
 # Prisma
 backend/generated/
 
+# Backups PostgreSQL (K4 — hors dépôt)
+backup/
+*.sql.gz
+*.sql.gz.sha256
+
 # Vendored Python (local tooling)
 .pydeps/
