@@ -27,6 +27,15 @@ const ROUTE_RULES: RouteRule[] = [
     pattern: /^\/photos/,
     roles: ["DIRECTION", "CONDUCTEUR_TRAVAUX", "CHEF_CHANTIER"],
   },
+  {
+    pattern: /^\/planning/,
+    roles: [
+      "DIRECTION",
+      "ASSISTANTE_ADMINISTRATIVE",
+      "CONDUCTEUR_TRAVAUX",
+      "CHEF_CHANTIER",
+    ],
+  },
   { pattern: /^\/mobile/, roles: ["CHEF_CHANTIER"] },
   { pattern: /^\/reports/, roles: [] },
   { pattern: /^\/admin/, roles: [] },

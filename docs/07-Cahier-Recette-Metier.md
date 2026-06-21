@@ -125,6 +125,21 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 ---
 
+## REC-EVOL-002 — Planning ouvriers (Release 1.1-B)
+
+**Gate B :** ✅ validé le 21/06/2026
+
+| ID | Objectif | Statut |
+|----|----------|--------|
+| REC-EVOL-002-01 | Créer créneau ouvrier sur chantier conducteur | ✅ |
+| REC-EVOL-002-02 | Conflit affiché et bloquant (409) | ✅ |
+| REC-EVOL-002-03 | Filtres chantier + ouvrier | ✅ |
+| REC-EVOL-002-04 | Vue mois + navigation semaine | ✅ |
+| REC-EVOL-002-05 | KPI occupation cohérent (Direction / Conducteur) | ✅ |
+| REC-EVOL-002-06 | Désactiver ouvrier — absent des listes d'affectation | ✅ |
+
+---
+
 ## REC-010 — Consultation historique
 
 | Champ | Valeur |

@@ -18,15 +18,28 @@ describe("navigation MVP", () => {
     }
   });
 
-  it("expose 4 entrées pour le conducteur", () => {
+  it("expose 5 entrées pour le conducteur dont Planning", () => {
     const items = getNavItemsForRole("CONDUCTEUR_TRAVAUX");
-    expect(items).toHaveLength(4);
+    expect(items).toHaveLength(5);
     expect(items.map((i) => i.path)).toEqual([
       "/dashboard",
       "/chantiers",
       "/reserves",
       "/photos",
+      "/planning",
     ]);
+  });
+
+  it("expose Planning pour Direction, Assistante et Chef", () => {
+    for (const role of [
+      "DIRECTION",
+      "ASSISTANTE_ADMINISTRATIVE",
+      "CHEF_CHANTIER",
+    ] as const) {
+      expect(getNavItemsForRole(role).some((i) => i.path === "/planning")).toBe(
+        true,
+      );
+    }
   });
 
   it("expose la vue mobile uniquement pour le chef de chantier", () => {

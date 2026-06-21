@@ -130,3 +130,44 @@ export interface DashboardKpis {
   openReserves: number;
   criticalReserves: number;
 }
+
+export type ScheduleStatus = "Planifié" | "Confirmé" | "Annulé";
+
+export interface Worker {
+  id: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  trade?: string;
+  isActive: boolean;
+}
+
+export interface ScheduleSlot {
+  id: string;
+  workerId: string;
+  workerName: string;
+  projectId: string;
+  projectReference: string;
+  projectName: string;
+  startAt: string;
+  endAt: string;
+  status: ScheduleStatus;
+  notes?: string;
+  createdByName: string;
+}
+
+export interface OccupationKpi {
+  from: string;
+  to: string;
+  plannedHours: number;
+  referenceHoursPerWeek: number;
+  occupationPercent: number;
+  workers: Array<{
+    workerId: string;
+    workerName: string;
+    plannedHours: number;
+    occupationPercent: number;
+  }>;
+}
+
+export type PlanningViewMode = "week" | "month";

@@ -38,6 +38,7 @@ Redirection automatique selon le rôle :
 - **Chantiers** — liste et fiches
 - **Réserves** — vue transversale
 - **Photos** — galerie transversale
+- **Planning** — affectations ouvriers (semaine / mois)
 
 ### Dashboard conducteur
 
@@ -67,6 +68,15 @@ Redirection automatique selon le rôle :
 | Affecter équipe | ✅ |
 | Valider levée réserve | ✅ |
 | Dashboard direction | ❌ |
+
+### Planning ouvriers
+
+- Accéder à **Planning** dans le menu
+- **Vue semaine** (défaut) ou **mois** — navigation période précédente / suivante
+- **Filtrer** par chantier et par ouvrier
+- **Créer un créneau** : ouvrier, chantier, date, horaires — conflit bloqué avec message détaillé
+- **KPI occupation** : % heures planifiées / référentiel 35 h/semaine
+- **Gérer les ouvriers** : création et désactivation (ouvrier inactif absent des listes d'affectation)
 
 ---
 
@@ -132,6 +142,7 @@ Redirection automatique selon le rôle :
 
 - **Dashboard Direction** — vue consolidée
 - **Chantiers**, **Réserves**, **Photos** — consultation
+- **Planning** — consultation + KPI occupation
 
 ### Dashboard direction (consultation seule — RG-012)
 

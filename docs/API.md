@@ -363,6 +363,41 @@ Liste des utilisateurs affectables (hors Direction), pour le formulaire d'affect
 
 **Réponse 200** : `[{ id, firstName, lastName, fullName, role }]`
 
+## Planning ouvriers (Release 1.1-B — EVOL-002)
+
+Référence : `evolutions/EVOL-002-planning-ouvriers.md` · ADR-001 Worker ≠ User.
+
+### Workers
+
+| Méthode | Route | Rôles | Description |
+|---------|-------|-------|-------------|
+| GET | `/workers` | Direction, Assistante, Conducteur, Chef | Liste ouvriers actifs (`?includeInactive=true` optionnel) |
+| POST | `/workers` | Conducteur | Créer un ouvrier terrain |
+| PATCH | `/workers/:id` | Conducteur | Modifier / désactiver (`isActive: false`) |
+
+**Réponse Worker** : `{ id, firstName, lastName, fullName, trade?, isActive }`
+
+### Planning
+
+| Méthode | Route | Rôles | Description |
+|---------|-------|-------|-------------|
+| GET | `/planning` | Tous (périmètre rôle) | Query : `from`, `to`, `projectId?`, `workerId?` — inclut créneaux `Annulé` |
+| POST | `/planning/slots` | Conducteur (ses chantiers) | Créer créneau — historique « Affectation planning » |
+| PUT | `/planning/slots/:id` | Conducteur | Modifier — historique « Modification planning » |
+| DELETE | `/planning/slots/:id` | Conducteur | Annuler (statut `CANCELLED`) — historique « Annulation planning » |
+| GET | `/planning/conflicts` | Conducteur | Query : `workerId`, `startAt`, `endAt`, `excludeSlotId?` |
+| GET | `/planning/kpi/occupation` | Direction, Conducteur | Query : `from`, `to` — référentiel 35 h/semaine |
+
+**Règles métier :**
+
+| ID | Règle |
+|----|-------|
+| RG-PLA-01 | Pas de chevauchement pour un même Worker (sauf créneaux `CANCELLED`) → **409** avec chantier et horaire |
+| RG-PLA-02 | `endAt` strictement > `startAt` |
+| RG-PLA-03 | Ouvrier inactif non affectable (reste visible sur planning existant) |
+
+**Réponse créneau** : `{ id, workerId, workerName, projectId, projectReference, projectName, startAt, endAt, status, notes?, createdByName }`
+
 ## Formulaires onglets (T-G-TABS-FORMS)
 
 Les POST documentés ci-dessus alimentent les modales frontend :
@@ -375,6 +410,7 @@ Les POST documentés ci-dessus alimentent les modales frontend :
 | Photos | Upload fichier(s) | Conducteur, Chef | `POST …/photos/upload` |
 | Photos | Supprimer | Conducteur, Chef | `DELETE /photos/:id` |
 | Photos | Voir fichier | Tous (accès chantier) | `GET /photos/:id/file` |
+| Planning | Affecter ouvrier | Conducteur | `POST /planning/slots` |
 
 Après création, le frontend invalide le cache React Query de l'onglet et l'historique chantier.
 

@@ -34,6 +34,13 @@ describe("routeAccess", () => {
     expect(isRouteAllowed("DIRECTION", "/admin")).toBe(false);
   });
 
+  it("TST-EVOL-002-08 — /planning accessible aux rôles autorisés", () => {
+    expect(isRouteAllowed("DIRECTION", "/planning")).toBe(true);
+    expect(isRouteAllowed("ASSISTANTE_ADMINISTRATIVE", "/planning")).toBe(true);
+    expect(isRouteAllowed("CONDUCTEUR_TRAVAUX", "/planning")).toBe(true);
+    expect(isRouteAllowed("CHEF_CHANTIER", "/planning")).toBe(true);
+  });
+
   it("T-F-ROLE-001 — /dashboard/direction réservé à la Direction", () => {
     expect(isRouteAllowed("DIRECTION", "/dashboard/direction")).toBe(true);
     expect(isRouteAllowed("CONDUCTEUR_TRAVAUX", "/dashboard/direction")).toBe(

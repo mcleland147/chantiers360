@@ -19,8 +19,9 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 ## [1.1.0] - Prévue
 
 **Date cible :** T3 2026  
-**Statut :** Lot 1.1-A **Recette OK** (gate A validé) · lots B/C non démarrés  
-**Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md` — **Gate A ✅**
+**Statut :** Lot 1.1-A **Recette OK** (gate A validé) · lot 1.1-B **Recette OK** (gate B en validation) · lot 1.1-C non démarré  
+**Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md` — **Gate A ✅**  
+**Rapport lot B :** `docs/rapports/27-Rapport-Lot-1.1-B.md` — **Gate B ✅**
 
 ### Added — lot 1.1-A (EVOL-001) ✅
 
@@ -30,9 +31,17 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 - Volume Docker `uploads_data`, variables `UPLOAD_DIR` / `UPLOAD_MAX_SIZE`
 - Script `npm run ops:backup:uploads`
 
+### Added — lot 1.1-B (EVOL-002) ✅
+
+- Référentiel **Ouvriers** (`Worker`) distinct des utilisateurs (ADR-001)
+- Créneaux **WorkerSchedule** — détection conflits HTTP 409
+- Page `/planning` — vues semaine / mois, filtres, KPI occupation
+- Endpoints `/workers`, `/planning`, `/planning/kpi/occupation`
+- Migration `0004_worker_planning`
+- Historisation « Affectation / Modification / Annulation planning »
+
 ### Added — lots 1.1-B/C (prévu)
 
-- **EVOL-002** — Planning des ouvriers — lot 1.1-B
 - **EVOL-003** — Budget & ressources chantier — lot 1.1-C
 - **Conception R1.1-FINAL** — ADR-001, Worker rates, ExpenseStatus (conception)
 
