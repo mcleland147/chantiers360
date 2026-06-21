@@ -18,6 +18,7 @@ import {
 import type { CreateSlotPayload } from "../services/planningService";
 import type { PlanningViewMode, ScheduleSlot, Worker } from "../types/domain";
 import { extractPlanningApiError } from "../utils/planningErrors";
+import { isProjectInPlanningScope } from "../utils/planningChantiers";
 import {
   addDays,
   endOfMonth,
@@ -95,7 +96,7 @@ export function PlanningPage() {
   }, [workers, slots, workerId]);
 
   useEffect(() => {
-    if (projectId && !chantiers.some((c) => c.id === projectId)) {
+    if (!isProjectInPlanningScope(projectId, chantiers)) {
       setProjectId("");
     }
   }, [projectId, chantiers]);

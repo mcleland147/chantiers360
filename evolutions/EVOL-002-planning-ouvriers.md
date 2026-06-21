@@ -185,7 +185,7 @@ Release **1.1.0** — lot B (après validation lot A).
 | TST-EVOL-002-06 | API | `planning-kpi.api.spec.ts` | KPI occupation |
 | TST-EVOL-002-07 | RTL | `PlanningFilters.test.tsx` | Filtres |
 | TST-EVOL-002-08 | E2E | `planning-affectation.spec.ts` | Parcours affectation |
-| TST-EVOL-002-09 | Unit FE | `planningChantiers.test.ts` | RG-PLA-04 — périmètre chantiers par rôle |
+| TST-EVOL-002-09 | Unit FE + BE | `planningChantiers.test.ts`, `planning.service.spec.ts` | RG-PLA-04 — périmètre chantiers par rôle |
 
 ### 7.2 Exécution
 

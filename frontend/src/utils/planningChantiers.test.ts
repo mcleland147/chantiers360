@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Chantier, User } from "../types/domain";
-import { filterChantiersForPlanningScope } from "./planningChantiers";
+import { filterChantiersForPlanningScope, isProjectInPlanningScope } from "./planningChantiers";
 
 const conducteur: User = {
   id: "u-conducteur",
@@ -65,5 +65,20 @@ describe("filterChantiersForPlanningScope (TST-EVOL-002-09 / RG-PLA-04)", () => 
       new Set(["c-2"]),
     );
     expect(result.map((c) => c.reference)).toEqual(["CHT-002"]);
+  });
+
+  it("assistante — tous les chantiers", () => {
+    const result = filterChantiersForPlanningScope(chantiers, {
+      ...conducteur,
+      id: "u-assistante",
+      role: "ASSISTANTE_ADMINISTRATIVE",
+    });
+    expect(result).toHaveLength(2);
+  });
+
+  it("reset filtre — chantier hors périmètre détecté", () => {
+    expect(isProjectInPlanningScope("c-2", [chantiers[0]])).toBe(false);
+    expect(isProjectInPlanningScope("c-1", [chantiers[0]])).toBe(true);
+    expect(isProjectInPlanningScope("", chantiers)).toBe(true);
   });
 });

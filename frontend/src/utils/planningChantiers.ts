@@ -23,3 +23,12 @@ export function filterChantiersForPlanningScope(
       return [];
   }
 }
+
+/** Indique si un filtre chantier reste valide après changement de périmètre. */
+export function isProjectInPlanningScope(
+  projectId: string,
+  scopedChantiers: Chantier[],
+): boolean {
+  if (!projectId) return true;
+  return scopedChantiers.some((c) => c.id === projectId);
+}

@@ -56,7 +56,7 @@ test.describe("Planning ouvriers — TST-EVOL-002-08", () => {
     await expect(page.getByText("Occupation équipes")).toBeVisible();
   });
 
-  test("E2E-EVOL-002-05 — conducteur ne voit que ses chantiers dans le filtre", async ({
+  test("E2E-EVOL-002-05 — conducteur ne voit que ses chantiers et peut créer sur CHT-001", async ({
     page,
   }) => {
     await loginAs(page, "conducteur");
@@ -67,5 +67,16 @@ test.describe("Planning ouvriers — TST-EVOL-002-08", () => {
     await expect(filter.locator("option", { hasText: "CHT-001" })).toHaveCount(1);
     await expect(filter.locator("option", { hasText: "CHT-003" })).toHaveCount(1);
     await expect(filter.locator("option", { hasText: "CHT-002" })).toHaveCount(0);
+
+    await filter.selectOption("c-1");
+    await expect(filter).toHaveValue("c-1");
+
+    await page.getByTestId("planning-new-slot").click();
+    await expect(page.getByTestId("slot-modal")).toBeVisible();
+    await page.getByTestId("slot-modal").locator('input[type="date"]').fill("2025-06-18");
+    await page.getByTestId("slot-modal").locator('input[type="time"]').first().fill("08:00");
+    await page.getByTestId("slot-modal").locator('input[type="time"]').nth(1).fill("12:00");
+    await page.getByTestId("slot-modal").getByRole("button", { name: "Enregistrer" }).click();
+    await expect(page.getByTestId("slot-modal")).not.toBeVisible();
   });
 });
