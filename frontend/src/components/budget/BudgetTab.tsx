@@ -10,6 +10,7 @@ import {
   useResourcesQuery,
 } from "../../hooks/useBudget";
 import { canManageBudget } from "../../utils/chantierPermissions";
+import { resolveBudgetTabError } from "../../utils/budgetAccessError";
 import type { UserRole } from "../../types/domain";
 import { BudgetSummaryCard } from "./BudgetSummaryCard";
 import { ExpenseTable } from "./ExpenseTable";
@@ -22,8 +23,12 @@ interface BudgetTabProps {
 
 export function BudgetTab({ chantierId, userRole }: BudgetTabProps) {
   const canWrite = canManageBudget(userRole);
-  const { data: summary, isLoading: summaryLoading, isError: summaryError } =
-    useBudgetSummaryQuery(chantierId);
+  const {
+    data: summary,
+    isLoading: summaryLoading,
+    isError: summaryError,
+    error: summaryQueryError,
+  } = useBudgetSummaryQuery(chantierId);
   const { data: resources = [], isLoading: resourcesLoading } =
     useResourcesQuery(chantierId);
   const { data: expenses = [], isLoading: expensesLoading } =
@@ -39,11 +44,22 @@ export function BudgetTab({ chantierId, userRole }: BudgetTabProps) {
   }
 
   if (summaryError || !summary) {
+    const { title, description } = summaryQueryError
+      ? resolveBudgetTabError(summaryQueryError, userRole)
+      : {
+          title: "Budget indisponible",
+          description:
+            "Impossible de charger la synthèse budget pour ce chantier.",
+        };
+
     return (
-      <PagePlaceholder
-        title="Budget indisponible"
-        description="Impossible de charger la synthèse budget pour ce chantier."
-      />
+      <div data-testid="budget-access-denied">
+        <PagePlaceholder
+          title={title}
+          description={description}
+          showDevHint={false}
+        />
+      </div>
     );
   }
 

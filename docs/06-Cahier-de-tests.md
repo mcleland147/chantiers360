@@ -303,6 +303,7 @@ La synthèse de phase doit référencer les **4 IDs** du cahier. Exception docum
 | TST-EVOL-003-05 | Dashboard budget réel | Unitaire BE | budgetSpent = Σ VALIDATED | ✅ Passé | `backend/src/dashboard/dashboard.helpers.spec.ts` |
 | TST-EVOL-003-06 | BudgetSummaryCard | Composant FE | Enveloppe, consommé, badges | ✅ Passé | `frontend/src/components/budget/BudgetSummaryCard.test.tsx` |
 | TST-EVOL-003-07 | Parcours E2E alertes budget | E2E | Onglet, saisie, alerte 80 %, chef RO | ✅ Passé | `e2e/tests/budget-expense-alert.spec.ts` |
+| TST-EVOL-003-08 | Message accès budget 403 | Unitaire FE | Conducteur / chef — libellés métier | ✅ Passé | `frontend/src/utils/budgetAccessError.test.ts` |
 
 **Cas VALIDATED only (RG-BUD-05) :** DRAFT et CANCELLED exclus des agrégats — couvert par rules spec + seed recette CHT-001.
 

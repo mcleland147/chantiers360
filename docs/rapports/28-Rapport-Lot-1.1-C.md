@@ -44,6 +44,11 @@ Communication MOA requise avant PROD.
 | RG-BUD-03 | Alerte 100 % | Rules spec |
 | RG-BUD-04 | Restant = enveloppe − consommé | Rules spec |
 | RG-BUD-05 | VALIDATED only | Rules spec + seed mix DRAFT/CANCELLED |
+| UX accès 403 | Messages métier UI | `budgetAccessError.test.ts` + recette REC-EVOL-003-06 |
+
+### Post-recette (21/06/2026)
+
+- Message onglet Budget si accès refusé — remplace le placeholder générique « Budget indisponible »
 
 ---
 

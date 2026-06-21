@@ -83,9 +83,19 @@ Redirection automatique selon le rôle :
 - Onglet **Budget** sur la fiche chantier
 - **Synthèse** : enveloppe, consommé (dépenses validées), restant, % consommation
 - **Alertes** : badge orange à 80 %, rouge à 100 %
-- **Ressources prévues** et **dépenses** — saisie par conducteur ou assistante
-- **Chef de chantier** : consultation seule
+- **Ressources prévues** et **dépenses** — saisie par conducteur référent ou assistante
+- **Chef de chantier** : consultation seule sur les chantiers où il est affecté
 - **Important :** le budget consommé affiché au dashboard direction provient désormais des **dépenses validées**, plus du % d'avancement
+
+#### Périmètre d'accès (onglet Budget)
+
+| Situation | Message affiché |
+|-----------|-----------------|
+| Conducteur ouvre le budget d'un chantier **dont il n'est pas le référent** | *Accès réservé au conducteur référent de ce chantier.* |
+| Chef ouvre le budget d'un chantier **sans affectation active** | *Accès réservé aux équipes affectées à ce chantier.* |
+| Chantier autorisé | Synthèse, ressources et dépenses |
+
+**Recette conducteur :** tester sur **CHT-001** (Marc Dupont), pas sur les chantiers d'un autre conducteur (ex. CHT-020 / Luc Bernard).
 
 ---
 

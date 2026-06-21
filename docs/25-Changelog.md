@@ -70,6 +70,7 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 
 - **Breaking :** `budgetSpent` basé sur `SUM(ProjectExpense.amount) WHERE status = VALIDATED` (remplace `% avancement × budget` MVP)
 - Dashboard direction — `budget.totalSpent`, `chantiersOver80`, `chantiersOver100`
+- Onglet Budget — messages métier en cas d'accès refusé (403) : *Accès réservé au conducteur référent* / *équipes affectées*
 
 ### Fixed
 

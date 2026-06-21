@@ -88,6 +88,16 @@ Release **1.1.0** — lot C (dernier lot — tag v1.1.0).
 4. **Étant donné** une dépense DRAFT ou CANCELLED, **alors** elle n'impacte ni consommé, ni alertes, ni dashboard.
 5. **Étant donné** un chef sur chantier affecté, **alors** lecture seule onglet Budget.
 6. **Étant donné** enveloppe non définie, **alors** message informatif sans erreur technique.
+7. **Étant donné** un conducteur non référent sur un chantier, **alors** onglet Budget affiche *Accès réservé au conducteur référent de ce chantier* (HTTP 403 traduit en UI).
+
+### 2.4.1 Messages UI — accès refusé (Release 1.1-C)
+
+| Rôle | Condition | Message utilisateur |
+|------|-----------|---------------------|
+| Conducteur | `conductorId` ≠ utilisateur | Accès réservé au conducteur référent de ce chantier. |
+| Chef | Pas d'`Assignment` actif | Accès réservé aux équipes affectées à ce chantier. |
+
+Implémentation : `frontend/src/utils/budgetAccessError.ts` · composant `BudgetTab.tsx`.
 
 ### 2.5 Dépendances
 
@@ -105,7 +115,7 @@ Release **1.1.0** — lot C (dernier lot — tag v1.1.0).
 | Domaine | Impact | Détail |
 |---------|--------|--------|
 | Règles métier | Majeur | RG-BUD-01 à **05** — calculs VALIDATED only, alertes |
-| Rôles / permissions | Modéré | Écriture Conducteur/Assistante |
+| Rôles / permissions | Modéré | Écriture Conducteur/Assistante ; messages UI accès refusé (403) |
 | API REST | Majeur | ~9 endpoints BudgetModule |
 | Base de données | Migration | `0005_budget`, `0006_alert_types` |
 | Frontend | Majeur | Onglet Budget + refactor widgets |
@@ -116,11 +126,11 @@ Release **1.1.0** — lot C (dernier lot — tag v1.1.0).
 ### 3.1 Documents à mettre à jour
 
 - [x] Conception — impact analysis, data model
-- [ ] `docs/06-Cahier-de-tests.md` — TST-R11-C-*
-- [ ] `docs/07-Cahier-Recette-Metier.md` — REC-EVOL-003-*
-- [ ] `docs/25-Changelog.md` — **Changed** breaking budget
-- [ ] `docs/API.md`
-- [ ] `docs/09-Guide-Utilisateur.md`
+- [x] `docs/06-Cahier-de-tests.md` — TST-EVOL-003-*
+- [x] `docs/07-Cahier-Recette-Metier.md` — REC-EVOL-003-*
+- [x] `docs/25-Changelog.md` — **Changed** breaking budget
+- [x] `docs/API.md`
+- [x] `docs/09-Guide-Utilisateur.md`
 - [ ] Note release client — changement dashboard
 - [ ] `docs/08-DAT-v1.md`
 
@@ -203,6 +213,7 @@ _À compléter en développement._
 | REC-EVOL-003-04 | Alerte 100 % + badge | ☐ | Direction | |
 | REC-EVOL-003-05 | Dashboard direction cohérent | ☐ | Direction | |
 | REC-EVOL-003-06 | Chef lecture seule | ☐ | Chef | |
+| REC-EVOL-003-07 | Conducteur non référent — message accès explicite | ☐ | Conducteur | Voir aussi REC-003-06 dans `07-Cahier-Recette-Metier.md` |
 
 ### 8.2 Signature recette
 
