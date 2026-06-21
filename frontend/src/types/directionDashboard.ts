@@ -30,7 +30,11 @@ export interface MonthlyTrendPoint {
 export interface BudgetOverview {
   totalBudget: number;
   totalSpent: number;
+  totalRemaining: number;
+  consumptionPercent: number;
   chantierCount: number;
+  chantiersOver80: number;
+  chantiersOver100: number;
 }
 
 export type AtRiskReason = "RETARD" | "RESERVE_CRITIQUE";

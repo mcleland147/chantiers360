@@ -407,6 +407,42 @@ Référence : `evolutions/EVOL-002-planning-ouvriers.md` · ADR-001 Worker ≠ U
 
 **Réponse créneau** : `{ id, workerId, workerName, projectId, projectReference, projectName, startAt, endAt, status, notes?, createdByName }`
 
+## Budget chantier (Release 1.1-C — EVOL-003)
+
+Référence : `evolutions/EVOL-003-budget-ressources.md`
+
+| Méthode | Route | Rôles | Description |
+|---------|-------|-------|-------------|
+| GET | `/chantiers/:id/resources` | Direction, Assistante, Conducteur, Chef | Liste ressources budgétées |
+| POST | `/chantiers/:id/resources` | Conducteur (référent), Assistante | Créer ressource |
+| PATCH | `/chantiers/:id/resources/:rid` | Conducteur, Assistante | Modifier ressource |
+| DELETE | `/chantiers/:id/resources/:rid` | Conducteur, Assistante | Supprimer ressource |
+| GET | `/chantiers/:id/expenses` | Tous (périmètre chantier) | Liste dépenses |
+| POST | `/chantiers/:id/expenses` | Conducteur, Assistante | Créer dépense (défaut `VALIDATED`) |
+| PATCH | `/chantiers/:id/expenses/:eid` | Conducteur, Assistante | Modifier dépense |
+| DELETE | `/chantiers/:id/expenses/:eid` | Conducteur, Assistante | Supprimer dépense |
+| GET | `/chantiers/:id/budget/summary` | Tous (périmètre chantier) | Synthèse budget |
+
+**Règles métier :**
+
+| ID | Règle |
+|----|-------|
+| RG-BUD-01 | Montant dépense > 0 |
+| RG-BUD-02 | Alerte `BUDGET_80` si consommation ≥ 80 % (une fois par seuil) |
+| RG-BUD-03 | Alerte `BUDGET_100` si consommation ≥ 100 % (une fois par seuil) |
+| RG-BUD-04 | Budget restant = enveloppe − consommé |
+| RG-BUD-05 | Agrégats **VALIDATED only** — DRAFT et CANCELLED exclus |
+
+**Breaking change — `budgetSpent` (chantiers + dashboard direction) :**
+
+| Avant (MVP) | Après (1.1-C) |
+|-------------|---------------|
+| `% avancement × budget` | `SUM(ProjectExpense.amount) WHERE status = VALIDATED` |
+
+**Réponse summary** : `{ projectId, projectReference, budgetEnvelope, budgetConsumed, budgetRemaining, consumptionPercent, hasEnvelope, alert80Active, alert100Active, resourceCount, expenseCount }`
+
+**Dashboard direction — champ `budget` étendu** : `{ totalBudget, totalSpent, totalRemaining, consumptionPercent, chantierCount, chantiersOver80, chantiersOver100 }`
+
 ## Formulaires onglets (T-G-TABS-FORMS)
 
 Les POST documentés ci-dessus alimentent les modales frontend :
@@ -417,6 +453,7 @@ Les POST documentés ci-dessus alimentent les modales frontend :
 | Avancement | Ajouter une mise à jour | Conducteur, Chef | `POST …/progress` |
 | Réserves | Nouvelle réserve | Conducteur, Chef | `POST …/reserves` |
 | Photos | Upload fichier(s) | Conducteur, Chef | `POST …/photos/upload` |
+| Budget | Ressource / dépense | Conducteur, Assistante | `POST …/resources`, `POST …/expenses` |
 | Photos | Supprimer | Conducteur, Chef | `DELETE /photos/:id` |
 | Photos | Voir fichier | Tous (accès chantier) | `GET /photos/:id/file` |
 | Planning | Affecter ouvrier | Conducteur | `POST /planning/slots` |

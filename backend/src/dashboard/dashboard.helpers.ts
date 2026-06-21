@@ -13,6 +13,7 @@ import {
   isProjectLate,
 } from '../common/rules/chantier-late.rules';
 import { formatDateFr, statusToFrench } from '../common/mappers/chantier.mapper';
+import { roundPercent } from '../budget/rules/budget-summary.rules';
 import { Issue, Project, ProjectStatus, User } from '@prisma/client';
 import { ProjectWithRelations } from '../projects/repositories/projects.repository';
 
@@ -56,7 +57,11 @@ export interface DirectionDashboardResponse {
   budget: {
     totalBudget: number;
     totalSpent: number;
+    totalRemaining: number;
+    consumptionPercent: number;
     chantierCount: number;
+    chantiersOver80: number;
+    chantiersOver100: number;
   };
 }
 
@@ -73,8 +78,14 @@ const STATUS_ORDER: ProjectStatus[] = [
 
 export function mapProjectsToChantiers(
   projects: ProjectWithRelations[],
+  expenseTotalsByProjectId: Map<string, number> = new Map(),
 ): ChantierResponse[] {
-  return projects.map(buildChantierResponse);
+  return projects.map((project) =>
+    buildChantierResponse(
+      project,
+      expenseTotalsByProjectId.get(project.id) ?? 0,
+    ),
+  );
 }
 
 export function computeConducteurKpis(
@@ -240,11 +251,33 @@ export function groupByConductor(
 export function computeBudgetOverview(
   chantiers: ChantierResponse[],
 ): DirectionDashboardResponse['budget'] {
-  const withBudget = chantiers.filter((c) => c.budget !== undefined);
+  const withBudget = chantiers.filter(
+    (c) => c.budget !== undefined && (c.budget ?? 0) > 0,
+  );
+  const totalBudget = withBudget.reduce((sum, c) => sum + (c.budget ?? 0), 0);
+  const totalSpent = withBudget.reduce((sum, c) => sum + c.budgetSpent, 0);
+  const totalRemaining = Math.max(0, totalBudget - totalSpent);
+  const consumptionPercent =
+    totalBudget > 0 ? roundPercent((totalSpent / totalBudget) * 100) : 0;
+
+  let chantiersOver80 = 0;
+  let chantiersOver100 = 0;
+  for (const chantier of withBudget) {
+    const envelope = chantier.budget ?? 0;
+    if (envelope <= 0) continue;
+    const percent = (chantier.budgetSpent / envelope) * 100;
+    if (percent >= 80) chantiersOver80 += 1;
+    if (percent >= 100) chantiersOver100 += 1;
+  }
+
   return {
-    totalBudget: withBudget.reduce((sum, c) => sum + (c.budget ?? 0), 0),
-    totalSpent: withBudget.reduce((sum, c) => sum + c.budgetSpent, 0),
+    totalBudget,
+    totalSpent,
+    totalRemaining,
+    consumptionPercent,
     chantierCount: withBudget.length,
+    chantiersOver80,
+    chantiersOver100,
   };
 }
 

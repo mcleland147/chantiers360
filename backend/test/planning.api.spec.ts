@@ -132,8 +132,12 @@ describe('Planning API (TST-EVOL-002-03..04, 06)', () => {
       })
       .expect(409);
 
-    expect(res.body.message.message).toMatch(/Conflit de planning/);
-    expect(res.body.message.message).toMatch(/CHT-001/);
+    const conflictMessage =
+      typeof res.body.message === 'string'
+        ? res.body.message
+        : res.body.message?.message;
+    expect(conflictMessage).toMatch(/Conflit de planning/);
+    expect(conflictMessage).toMatch(/CHT-001/);
   });
 
   it('TST-EVOL-002-06 — GET /planning/kpi/occupation', async () => {

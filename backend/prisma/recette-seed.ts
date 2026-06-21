@@ -370,6 +370,8 @@ export async function seedRecetteData(
 
   await prisma.historyEvent.deleteMany();
   await prisma.alert.deleteMany();
+  await prisma.projectExpense.deleteMany();
+  await prisma.projectResource.deleteMany();
   await prisma.photo.deleteMany();
   await prisma.issue.deleteMany();
   await prisma.progressUpdate.deleteMany();
@@ -566,6 +568,84 @@ export async function seedRecetteData(
         endAt: new Date(seed.endAt),
         status: seed.status,
         createdById: 'u-conducteur',
+      },
+    });
+  }
+
+  if (cht001Id) {
+    const resources = [
+      {
+        type: 'MAIN_OEUVRE' as const,
+        label: 'Équipe maçonnerie',
+        unitCost: 45_000,
+        quantity: 12,
+      },
+      {
+        type: 'MATERIEL' as const,
+        label: 'Grue mobile',
+        unitCost: 8_500,
+        quantity: 4,
+      },
+      {
+        type: 'SOUS_TRAITANT' as const,
+        label: 'Lot électricité',
+        unitCost: 120_000,
+        quantity: 1,
+      },
+    ];
+
+    for (const res of resources) {
+      await prisma.projectResource.create({
+        data: {
+          projectId: cht001Id,
+          type: res.type,
+          label: res.label,
+          unitCost: res.unitCost,
+          quantity: res.quantity,
+          totalPlanned: res.unitCost * res.quantity,
+          createdById: 'u-conducteur',
+        },
+      });
+    }
+
+    const expenseSeeds: Array<{
+      category: 'ACHAT_MATERIAUX' | 'SOUS_TRAITANCE' | 'LOCATION' | 'FRAIS_GENERAUX';
+      label: string;
+      amount: number;
+      status: 'VALIDATED' | 'DRAFT' | 'CANCELLED';
+      date: string;
+    }> = [
+      { category: 'ACHAT_MATERIAUX', label: 'Béton C25/30', amount: 800_000, status: 'VALIDATED', date: '2025-01-15' },
+      { category: 'SOUS_TRAITANCE', label: 'Lot électricité phase 1', amount: 600_000, status: 'VALIDATED', date: '2025-02-20' },
+      { category: 'ACHAT_MATERIAUX', label: 'Acier HA', amount: 400_000, status: 'VALIDATED', date: '2025-03-10' },
+      { category: 'FRAIS_GENERAUX', label: 'Assurances chantier', amount: 200_000, status: 'VALIDATED', date: '2025-04-01' },
+      { category: 'LOCATION', label: 'Grue — brouillon', amount: 500_000, status: 'DRAFT', date: '2025-05-01' },
+      { category: 'ACHAT_MATERIAUX', label: 'Commande annulée', amount: 300_000, status: 'CANCELLED', date: '2025-05-05' },
+      { category: 'SOUS_TRAITANCE', label: 'Plomberie', amount: 75_000, status: 'VALIDATED', date: '2025-05-20' },
+      { category: 'ACHAT_MATERIAUX', label: 'Isolants', amount: 25_000, status: 'VALIDATED', date: '2025-06-01' },
+    ];
+
+    for (const exp of expenseSeeds) {
+      await prisma.projectExpense.create({
+        data: {
+          projectId: cht001Id,
+          category: exp.category,
+          label: exp.label,
+          amount: exp.amount,
+          expenseDate: new Date(exp.date),
+          status: exp.status,
+          createdById: 'u-conducteur',
+        },
+      });
+    }
+
+    await prisma.alert.create({
+      data: {
+        projectId: cht001Id,
+        type: 'BUDGET_80',
+        message: 'Budget consommé à 85.7 % (seuil 80 %)',
+        status: 'ACTIVE',
+        createdAt: new Date('2025-06-01'),
       },
     });
   }

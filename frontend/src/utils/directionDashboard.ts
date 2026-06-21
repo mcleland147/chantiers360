@@ -121,11 +121,34 @@ export function computeBudgetOverview(
   chantiers: Array<Chantier & { budget?: number; budgetSpent?: number }>,
 ): BudgetOverview {
   const withBudget = chantiers.filter(
-    (c) => c.budget !== undefined && c.budgetSpent !== undefined,
+    (c) => c.budget !== undefined && (c.budget ?? 0) > 0,
   );
+  const totalBudget = withBudget.reduce((sum, c) => sum + (c.budget ?? 0), 0);
+  const totalSpent = withBudget.reduce(
+    (sum, c) => sum + (c.budgetSpent ?? 0),
+    0,
+  );
+  const totalRemaining = Math.max(0, totalBudget - totalSpent);
+  const consumptionPercent =
+    totalBudget > 0 ? Math.round((totalSpent / totalBudget) * 1000) / 10 : 0;
+
+  let chantiersOver80 = 0;
+  let chantiersOver100 = 0;
+  for (const chantier of withBudget) {
+    const envelope = chantier.budget ?? 0;
+    if (envelope <= 0) continue;
+    const percent = ((chantier.budgetSpent ?? 0) / envelope) * 100;
+    if (percent >= 80) chantiersOver80 += 1;
+    if (percent >= 100) chantiersOver100 += 1;
+  }
+
   return {
-    totalBudget: withBudget.reduce((sum, c) => sum + (c.budget ?? 0), 0),
-    totalSpent: withBudget.reduce((sum, c) => sum + (c.budgetSpent ?? 0), 0),
+    totalBudget,
+    totalSpent,
+    totalRemaining,
+    consumptionPercent,
     chantierCount: withBudget.length,
+    chantiersOver80,
+    chantiersOver100,
   };
 }

@@ -6,12 +6,21 @@ describe("BudgetOverviewChart — Phase F", () => {
   it("T-F-COMP-004 — affiche la vue budget consolidée", () => {
     render(
       <BudgetOverviewChart
-        data={{ totalBudget: 10_000_000, totalSpent: 6_000_000, chantierCount: 8 }}
+        data={{
+          totalBudget: 10_000_000,
+          totalSpent: 6_000_000,
+          totalRemaining: 4_000_000,
+          consumptionPercent: 60,
+          chantierCount: 8,
+          chantiersOver80: 2,
+          chantiersOver100: 0,
+        }}
       />,
     );
 
     expect(screen.getByText("Vue budget")).toBeInTheDocument();
-    expect(screen.getByText("Consolidé sur 8 chantiers")).toBeInTheDocument();
+    expect(screen.getByText(/Consolidé sur 8 chantiers/)).toBeInTheDocument();
+    expect(screen.getByTestId("kpi-over-80")).toHaveTextContent("2");
     expect(screen.getByText("Budget total")).toBeInTheDocument();
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
