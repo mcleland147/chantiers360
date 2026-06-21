@@ -292,6 +292,23 @@ La synthèse de phase doit référencer les **4 IDs** du cahier. Exception docum
 
 **Note E2E planning :** mock `e2e/helpers/mockPlanningApi.ts` (fixture Playwright).
 
+### 3.11 Release 1.1-C — Budget & ressources (EVOL-003)
+
+| ID | Fonctionnalité | Type | Résultat attendu | Statut | Fichier test |
+|---|---|---|---|---|---|
+| TST-EVOL-003-01 | Calcul budget restant (RG-BUD-04) | Unitaire BE | restant = enveloppe − VALIDATED | ✅ Passé | `backend/src/budget/rules/budget-summary.rules.spec.ts` |
+| TST-EVOL-003-02 | Alertes 80 % / 100 % (RG-BUD-02/03) | Unitaire BE | Idempotence par seuil | ✅ Passé | idem |
+| TST-EVOL-003-03 | CRUD dépenses API | Supertest | POST/GET + RG-BUD-01 | ✅ Passé | `backend/test/budget.api.spec.ts` |
+| TST-EVOL-003-04 | GET budget/summary | Supertest | Synthèse + alertes | ✅ Passé | idem |
+| TST-EVOL-003-05 | Dashboard budget réel | Unitaire BE | budgetSpent = Σ VALIDATED | ✅ Passé | `backend/src/dashboard/dashboard.helpers.spec.ts` |
+| TST-EVOL-003-06 | BudgetSummaryCard | Composant FE | Enveloppe, consommé, badges | ✅ Passé | `frontend/src/components/budget/BudgetSummaryCard.test.tsx` |
+| TST-EVOL-003-07 | Parcours E2E alertes budget | E2E | Onglet, saisie, alerte 80 %, chef RO | ✅ Passé | `e2e/tests/budget-expense-alert.spec.ts` |
+| TST-EVOL-003-08 | Message accès budget 403 | Unitaire FE | Conducteur / chef — libellés métier | ✅ Passé | `frontend/src/utils/budgetAccessError.test.ts` |
+
+**Cas VALIDATED only (RG-BUD-05) :** DRAFT et CANCELLED exclus des agrégats — couvert par rules spec + seed recette CHT-001.
+
+**Note E2E budget :** mock `e2e/helpers/mockBudgetApi.ts` (fixture Playwright).
+
 ---
 
 ## 4. Comptes de test

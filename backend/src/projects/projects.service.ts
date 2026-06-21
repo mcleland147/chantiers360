@@ -20,6 +20,7 @@ import {
 } from '../common/rules/chantier-data.rules';
 import { HistoryService } from '../history/history.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { BudgetService } from '../budget/budget.service';
 import { ChangeChantierStatusDto } from './dto/change-chantier-status.dto';
 import { CreateChantierDto } from './dto/create-chantier.dto';
 import { UpdateChantierDto } from './dto/update-chantier.dto';
@@ -63,11 +64,18 @@ export class ProjectsService {
     private readonly projectsRepository: ProjectsRepository,
     private readonly historyService: HistoryService,
     private readonly prisma: PrismaService,
+    private readonly budgetService: BudgetService,
   ) {}
 
   async findAll(): Promise<ChantierResponse[]> {
     const projects = await this.projectsRepository.findAll();
-    return projects.map((p) => this.toResponse(p));
+    const totals =
+      await this.budgetService.getValidatedExpenseTotalsByProjectIds(
+        projects.map((p) => p.id),
+      );
+    return projects.map((p) =>
+      this.toResponse(p, totals.get(p.id) ?? 0),
+    );
   }
 
   async findAssigned(userId: string): Promise<ChantierResponse[]> {
@@ -77,7 +85,13 @@ export class ProjectsService {
     });
     const projectIds = [...new Set(assignments.map((a) => a.projectId))];
     const projects = await this.projectsRepository.findByIds(projectIds);
-    return projects.map((p) => this.toResponse(p));
+    const totals =
+      await this.budgetService.getValidatedExpenseTotalsByProjectIds(
+        projects.map((p) => p.id),
+      );
+    return projects.map((p) =>
+      this.toResponse(p, totals.get(p.id) ?? 0),
+    );
   }
 
   async findOne(id: string): Promise<ChantierResponse> {
@@ -85,7 +99,8 @@ export class ProjectsService {
     if (!project) {
       throw new NotFoundException('Chantier introuvable.');
     }
-    return this.toResponse(project);
+    const total = await this.budgetService.getValidatedExpenseTotal(id);
+    return this.toResponse(project, total);
   }
 
   async create(
@@ -134,7 +149,7 @@ export class ProjectsService {
       newValue: `${project.reference} — ${project.name}`,
     });
 
-    return this.toResponse(project);
+    return this.toResponse(project, 0);
   }
 
   async update(
@@ -187,7 +202,8 @@ export class ProjectsService {
       newValue: project.name,
     });
 
-    return this.toResponse(project);
+    const total = await this.budgetService.getValidatedExpenseTotal(id);
+    return this.toResponse(project, total);
   }
 
   async changeStatus(
@@ -251,7 +267,8 @@ export class ProjectsService {
       reason: dto.reason?.trim(),
     });
 
-    return this.toResponse(project);
+    const total = await this.budgetService.getValidatedExpenseTotal(id);
+    return this.toResponse(project, total);
   }
 
   async getHistory(id: string): Promise<HistoryEventResponse[]> {
@@ -280,8 +297,11 @@ export class ProjectsService {
     }));
   }
 
-  private toResponse(project: ProjectWithRelations): ChantierResponse {
-    return buildChantierResponse(project);
+  private toResponse(
+    project: ProjectWithRelations,
+    validatedExpenseTotal = 0,
+  ): ChantierResponse {
+    return buildChantierResponse(project, validatedExpenseTotal);
   }
 }
 

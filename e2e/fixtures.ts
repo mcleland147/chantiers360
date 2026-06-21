@@ -3,6 +3,7 @@ import { installAuthApiMock } from "./helpers/mockAuthApi";
 import { installChantiersApiMock } from "./helpers/mockChantiersApi";
 import { installDashboardApiMock } from "./helpers/mockDashboardApi";
 import { installPlanningApiMock } from "./helpers/mockPlanningApi";
+import { installBudgetApiMock } from "./helpers/mockBudgetApi";
 import { installUsersApiMock } from "./helpers/mockUsersApi";
 
 export const test = base.extend({
@@ -11,6 +12,7 @@ export const test = base.extend({
     await installDashboardApiMock(page);
     await installChantiersApiMock(page);
     await installPlanningApiMock(page);
+    await installBudgetApiMock(page);
     await installUsersApiMock(page);
     await use(page);
   },

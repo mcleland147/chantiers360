@@ -1,6 +1,7 @@
 import {
   Camera,
   ClipboardList,
+  Euro,
   History,
   Info,
   TrendingUp,
@@ -14,6 +15,7 @@ export type ChantierTabId =
   | "avancement"
   | "reserves"
   | "photos"
+  | "budget"
   | "historique";
 
 interface TabDef {
@@ -28,6 +30,7 @@ const TABS: TabDef[] = [
   { id: "avancement", label: "Avancement", icon: TrendingUp },
   { id: "reserves", label: "Réserves", icon: ClipboardList },
   { id: "photos", label: "Photos", icon: Camera },
+  { id: "budget", label: "Budget", icon: Euro },
   { id: "historique", label: "Historique", icon: History },
 ];
 

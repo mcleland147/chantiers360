@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { BudgetModule } from '../budget/budget.module';
 import { HistoryModule } from '../history/history.module';
 import { PhotosModule } from '../photos/photos.module';
 import { ChantierTabsService } from './chantier-tabs.service';
@@ -8,7 +9,7 @@ import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
 
 @Module({
-  imports: [AuthModule, HistoryModule, PhotosModule],
+  imports: [AuthModule, HistoryModule, PhotosModule, BudgetModule],
   providers: [ProjectsService, ChantierTabsService, ProjectsRepository],
   controllers: [ProjectsController],
   exports: [ProjectsService, ChantierTabsService],

@@ -6,6 +6,7 @@
     "test:frontend": "npm run test --prefix frontend",
     "test:backend": "npm run test --prefix backend",
     "test:e2e": "npm run test:e2e --prefix e2e",
+    "test:recette": "bash scripts/run-recette.sh",
     "test:all": "npm run test && npm run test:e2e",
     "build": "npm run build --prefix frontend && npm run build --prefix backend",
     "dev:db": "docker compose up -d postgres",

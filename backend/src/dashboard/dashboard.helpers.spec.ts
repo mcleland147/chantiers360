@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { computeConducteurKpis, buildAlertsFromData } from './dashboard.helpers';
+import { computeConducteurKpis, buildAlertsFromData, computeBudgetOverview } from './dashboard.helpers';
 import { buildChantierResponse } from '../common/builders/chantier-response.builder';
 import { ProjectWithRelations } from '../projects/repositories/projects.repository';
 
@@ -35,7 +35,7 @@ describe('dashboard.helpers — Phase H', () => {
     _count: { issues: 2 },
   } satisfies ProjectWithRelations;
 
-  const chantier = buildChantierResponse(mockProject);
+  const chantier = buildChantierResponse(mockProject, 1_640_000);
 
   it('T-H-RG-005 — calcule KPI conducteur depuis données réelles', () => {
     const issues = [
@@ -91,5 +91,20 @@ describe('dashboard.helpers — Phase H', () => {
 
     expect(alerts.some((a) => a.type === 'RETARD_CHANTIER')).toBe(true);
     expect(alerts.some((a) => a.type === 'RESERVE_CRITIQUE')).toBe(true);
+  });
+
+  it('TST-EVOL-003-05 — dashboard budget réel (VALIDATED via budgetSpent)', () => {
+    const chantiers = [
+      buildChantierResponse(mockProject, 4_700_000),
+      buildChantierResponse(
+        { ...mockProject, id: 'p-2', budget: 200_000 },
+        50_000,
+      ),
+    ];
+    const overview = computeBudgetOverview(chantiers);
+    expect(overview.totalSpent).toBe(4_750_000);
+    expect(overview.totalRemaining).toBeGreaterThan(0);
+    expect(overview.chantiersOver80).toBe(1);
+    expect(overview.consumptionPercent).toBeGreaterThan(0);
   });
 });

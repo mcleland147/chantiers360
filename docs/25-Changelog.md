@@ -19,9 +19,10 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 ## [1.1.0] - Prévue
 
 **Date cible :** T3 2026  
-**Statut :** Lot 1.1-A **Recette OK** (gate A validé) · lot 1.1-B **Recette OK** (gate B en validation) · lot 1.1-C non démarré  
+**Statut :** Lot 1.1-A **Recette OK** (gate A validé) · lot 1.1-B **Recette OK** (gate B validé) · lot 1.1-C **Gate C prêt PR**  
 **Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md` — **Gate A ✅**  
-**Rapport lot B :** `docs/rapports/27-Rapport-Lot-1.1-B.md` — **Gate B ✅**
+**Rapport lot B :** `docs/rapports/27-Rapport-Lot-1.1-B.md` — **Gate B ✅**  
+**Rapport lot C :** `docs/rapports/28-Rapport-Lot-1.1-C.md` — **Gate C ✅**
 
 ### Added — lot 1.1-A (EVOL-001) ✅
 
@@ -45,9 +46,19 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 - Migration `0004_worker_planning`
 - Historisation « Affectation / Modification / Annulation planning »
 
+### Added — lot 1.1-C (EVOL-003) ✅
+
+- **ProjectResource** / **ProjectExpense** — CRUD ressources et dépenses chantier
+- **ExpenseStatus** — agrégats sur `VALIDATED` uniquement (RG-BUD-05)
+- Onglet **Budget** fiche chantier — synthèse, ressources, dépenses
+- Alertes automatiques `BUDGET_80` / `BUDGET_100`
+- Dashboard direction — KPI budget réel + chantiers > 80 % / > 100 %
+- Migrations `0005_budget_resources_expenses`, `0006_alert_budget_types`
+- Endpoints `/chantiers/:id/resources`, `/expenses`, `/budget/summary`
+
 ### Added — lots 1.1-B/C (prévu)
 
-- **EVOL-003** — Budget & ressources chantier — lot 1.1-C
+- ~~**EVOL-003** — Budget & ressources chantier — lot 1.1-C~~ → livré lot 1.1-C ✅
 - **Conception R1.1-FINAL** — ADR-001, Worker rates, ExpenseStatus (conception)
 
 ### Changed — lot 1.1-A
@@ -55,9 +66,11 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 - `AddPhotoModal` — upload natif (remplace saisie URL MVP)
 - Galeries chantier et globale — aperçu API + suppression
 
-### Changed — lot 1.1-C (prévu)
+### Changed — lot 1.1-C
 
-- **Breaking (lot 1.1-C) :** `budgetSpent` base sur somme des depenses **VALIDATED** (remplace calcul % avancement MVP)
+- **Breaking :** `budgetSpent` basé sur `SUM(ProjectExpense.amount) WHERE status = VALIDATED` (remplace `% avancement × budget` MVP)
+- Dashboard direction — `budget.totalSpent`, `chantiersOver80`, `chantiersOver100`
+- Onglet Budget — messages métier en cas d'accès refusé (403) : *Accès réservé au conducteur référent* / *équipes affectées*
 
 ### Fixed
 

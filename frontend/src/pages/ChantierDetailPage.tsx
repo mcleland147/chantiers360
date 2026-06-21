@@ -15,6 +15,7 @@ import { ProgressTimeline } from "../components/chantiers/ProgressTimeline";
 import { ReservesList } from "../components/chantiers/ReservesList";
 import type { ChantierTabId } from "../components/chantiers/ChantierTabs";
 import { ChantierTabs } from "../components/chantiers/ChantierTabs";
+import { BudgetTab } from "../components/budget/BudgetTab";
 import { LoadingState } from "../components/common/LoadingState";
 import { PagePlaceholder } from "../components/common/PagePlaceholder";
 import { useAuth } from "../contexts/AuthContext";
@@ -54,6 +55,7 @@ const VALID_TABS: ChantierTabId[] = [
   "avancement",
   "reserves",
   "photos",
+  "budget",
   "historique",
 ];
 
@@ -209,6 +211,9 @@ export function ChantierDetailPage() {
                 onAdd={() => setPhotoModalOpen(true)}
                 onDelete={(photo) => deletePhotoMutation.mutate(photo.id)}
               />
+            )}
+            {activeTab === "budget" && (
+              <BudgetTab chantierId={id} userRole={role} />
             )}
             {activeTab === "historique" && (
               <HistoryTimeline entries={history} />
