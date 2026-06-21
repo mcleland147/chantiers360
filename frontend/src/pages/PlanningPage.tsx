@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { LoadingState } from "../components/common/LoadingState";
 import { OccupationKpiCard } from "../components/planning/OccupationKpi";
@@ -6,11 +6,11 @@ import { PlanningCalendar } from "../components/planning/PlanningCalendar";
 import { PlanningFilters } from "../components/planning/PlanningFilters";
 import { SlotModal } from "../components/planning/SlotModal";
 import { useAuth } from "../contexts/AuthContext";
-import { useChantiersQuery } from "../hooks/useChantiers";
 import {
   useCancelSlotMutation,
   useCreateSlotMutation,
   useOccupationKpiQuery,
+  usePlanningChantiersQuery,
   usePlanningSlotsQuery,
   useUpdateSlotMutation,
   useWorkersQuery,
@@ -79,7 +79,7 @@ export function PlanningPage() {
 
   const { data: slots = [], isLoading: slotsLoading } = usePlanningSlotsQuery(filters);
   const { data: workers = [], isLoading: workersLoading } = useWorkersQuery();
-  const { data: chantiers = [] } = useChantiersQuery();
+  const { data: chantiers = [] } = usePlanningChantiersQuery();
   const { data: kpi, isLoading: kpiLoading } = useOccupationKpiQuery(
     range.from,
     range.to,
@@ -93,6 +93,12 @@ export function PlanningPage() {
     const merged = mergeWorkersForDisplay(workers, slots);
     return workerId ? merged.filter((worker) => worker.id === workerId) : merged;
   }, [workers, slots, workerId]);
+
+  useEffect(() => {
+    if (projectId && !chantiers.some((c) => c.id === projectId)) {
+      setProjectId("");
+    }
+  }, [projectId, chantiers]);
 
   const weekLabel = useMemo(() => {
     if (viewMode === "month") {
@@ -158,7 +164,7 @@ export function PlanningPage() {
           <button
             type="button"
             onClick={() => openCreate()}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white"
             data-testid="planning-new-slot"
           >
             <Plus className="h-4 w-4" />
@@ -208,14 +214,14 @@ export function PlanningPage() {
           <button
             type="button"
             onClick={() => setViewMode("week")}
-            className={`rounded-md px-3 py-1 ${viewMode === "week" ? "bg-primary text-white" : ""}`}
+            className={`rounded-md px-3 py-1 ${viewMode === "week" ? "bg-brand text-white" : ""}`}
           >
             Semaine
           </button>
           <button
             type="button"
             onClick={() => setViewMode("month")}
-            className={`rounded-md px-3 py-1 ${viewMode === "month" ? "bg-primary text-white" : ""}`}
+            className={`rounded-md px-3 py-1 ${viewMode === "month" ? "bg-brand text-white" : ""}`}
           >
             Mois
           </button>

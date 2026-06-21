@@ -31,6 +31,11 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 - Volume Docker `uploads_data`, variables `UPLOAD_DIR` / `UPLOAD_MAX_SIZE`
 - Script `npm run ops:backup:uploads`
 
+### Changed — lot 1.1-B (EVOL-002)
+
+- **RG-PLA-04** — filtre et modale planning limités au périmètre chantier autorisé (aligné API)
+- Boutons planning : classes `brand` (correction affichage « Enregistrer »)
+
 ### Added — lot 1.1-B (EVOL-002) ✅
 
 - Référentiel **Ouvriers** (`Worker`) distinct des utilisateurs (ADR-001)

@@ -288,6 +288,7 @@ La synthèse de phase doit référencer les **4 IDs** du cahier. Exception docum
 | TST-EVOL-002-06 | KPI occupation | Unitaire + API | % / 35 h semaine | ✅ Passé | rules spec + `planning.api.spec.ts` |
 | TST-EVOL-002-07 | Filtres + calendrier | Composant FE | Semaine + filtres | ✅ Passé | `PlanningFilters.test.tsx`, `PlanningCalendar.test.tsx` |
 | TST-EVOL-002-08 | Parcours E2E planning | E2E | Création, conflit, filtres, rôles | ✅ Passé | `e2e/tests/planning-affectation.spec.ts` |
+| TST-EVOL-002-09 | RG-PLA-04 — périmètre chantiers planning | Unitaire FE + E2E | Conducteur : ses chantiers ; chef : affectés ; direction : tous | ✅ Passé | `planningChantiers.test.ts`, E2E-EVOL-002-05 |
 
 **Note E2E planning :** mock `e2e/helpers/mockPlanningApi.ts` (fixture Playwright).
 

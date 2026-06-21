@@ -395,6 +395,15 @@ Référence : `evolutions/EVOL-002-planning-ouvriers.md` · ADR-001 Worker ≠ U
 | RG-PLA-01 | Pas de chevauchement pour un même Worker (sauf créneaux `CANCELLED`) → **409** avec chantier et horaire |
 | RG-PLA-02 | `endAt` strictement > `startAt` |
 | RG-PLA-03 | Ouvrier inactif non affectable (reste visible sur planning existant) |
+| RG-PLA-04 | **Périmètre planning par rôle** — voir ci-dessous |
+
+**RG-PLA-04 — périmètre chantiers (API + UI) :**
+
+| Rôle | Lecture (`GET /planning`) | Écriture (`POST/PUT/DELETE`) | Liste chantiers UI (filtre + modale) |
+|------|---------------------------|------------------------------|--------------------------------------|
+| Conducteur | Créneaux de **ses** chantiers (`conductorId`) | Uniquement **ses** chantiers — sinon **403** « Accès chantier refusé » | Même périmètre (pas de chantiers d'autres conducteurs) |
+| Chef de chantier | Créneaux des chantiers **affectés** (`Assignment` actif) | Interdit | Chantiers affectés uniquement |
+| Direction, Assistante | Tous les chantiers | Interdit | Tous les chantiers (consultation) |
 
 **Réponse créneau** : `{ id, workerId, workerName, projectId, projectReference, projectName, startAt, endAt, status, notes?, createdByName }`
 

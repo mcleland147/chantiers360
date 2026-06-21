@@ -1,4 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import type { CreateSlotPayload, PlanningFilters } from "../services/planningService";
 import {
   cancelPlanningSlot,
@@ -10,6 +12,9 @@ import {
   updatePlanningSlot,
   updateWorker,
 } from "../services/planningService";
+import { filterChantiersForPlanningScope } from "../utils/planningChantiers";
+import { useAssignedChantiersQuery } from "./useGlobalTabs";
+import { useChantiersQuery } from "./useChantiers";
 
 export const planningKeys = {
   slots: (filters: PlanningFilters) => ["planning", "slots", filters] as const,
@@ -99,4 +104,24 @@ export function useUpdateWorkerMutation() {
       qc.invalidateQueries({ queryKey: planningKeys.workers });
     },
   });
+}
+
+/** Chantiers visibles dans le planning — périmètre aligné sur l'API. */
+export function usePlanningChantiersQuery() {
+  const { user } = useAuth();
+  const isChef = user?.role === "CHEF_CHANTIER";
+  const { data: allChantiers = [], isLoading: loadingAll } = useChantiersQuery();
+  const { data: assignedChantiers = [], isLoading: loadingAssigned } =
+    useAssignedChantiersQuery(Boolean(isChef));
+
+  const chantiers = useMemo(() => {
+    if (!user) return [];
+    if (isChef) return assignedChantiers;
+    return filterChantiersForPlanningScope(allChantiers, user);
+  }, [user, isChef, allChantiers, assignedChantiers]);
+
+  return {
+    data: chantiers,
+    isLoading: isChef ? loadingAssigned : loadingAll,
+  };
 }

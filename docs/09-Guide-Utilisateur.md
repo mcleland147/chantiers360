@@ -73,7 +73,7 @@ Redirection automatique selon le rôle :
 
 - Accéder à **Planning** dans le menu
 - **Vue semaine** (défaut) ou **mois** — navigation période précédente / suivante
-- **Filtrer** par chantier et par ouvrier
+- **Filtrer** par chantier et par ouvrier — **RG-PLA-04** : seuls les chantiers de votre périmètre apparaissent (conducteur = ses chantiers ; chef = chantiers affectés ; direction = tous)
 - **Créer un créneau** : ouvrier, chantier, date, horaires — conflit bloqué avec message détaillé
 - **KPI occupation** : % heures planifiées / référentiel 35 h/semaine
 - **Gérer les ouvriers** : création et désactivation (ouvrier inactif absent des listes d'affectation)
@@ -142,7 +142,7 @@ Redirection automatique selon le rôle :
 
 - **Dashboard Direction** — vue consolidée
 - **Chantiers**, **Réserves**, **Photos** — consultation
-- **Planning** — consultation + KPI occupation
+- **Planning** — consultation + KPI occupation (tous les chantiers)
 
 ### Dashboard direction (consultation seule — RG-012)
 

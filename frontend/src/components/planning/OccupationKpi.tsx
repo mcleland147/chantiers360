@@ -18,7 +18,7 @@ export function OccupationKpiCard({ kpi, isLoading }: OccupationKpiProps) {
   return (
     <div className="rounded-xl border border-border bg-white p-4 shadow-sm">
       <h3 className="text-sm font-semibold text-foreground">Occupation équipes</h3>
-      <p className="mt-1 text-2xl font-bold text-primary">
+      <p className="mt-1 text-2xl font-bold text-brand">
         {kpi.occupationPercent} %
       </p>
       <p className="text-xs text-muted">

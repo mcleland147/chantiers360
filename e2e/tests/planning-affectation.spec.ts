@@ -55,4 +55,17 @@ test.describe("Planning ouvriers — TST-EVOL-002-08", () => {
     await expect(page.getByTestId("planning-new-slot")).toHaveCount(0);
     await expect(page.getByText("Occupation équipes")).toBeVisible();
   });
+
+  test("E2E-EVOL-002-05 — conducteur ne voit que ses chantiers dans le filtre", async ({
+    page,
+  }) => {
+    await loginAs(page, "conducteur");
+    await page.goto("/planning");
+
+    const filter = page.getByTestId("planning-filter-chantier");
+    await expect(filter.locator("option")).toHaveCount(5);
+    await expect(filter.locator("option", { hasText: "CHT-001" })).toHaveCount(1);
+    await expect(filter.locator("option", { hasText: "CHT-003" })).toHaveCount(1);
+    await expect(filter.locator("option", { hasText: "CHT-002" })).toHaveCount(0);
+  });
 });

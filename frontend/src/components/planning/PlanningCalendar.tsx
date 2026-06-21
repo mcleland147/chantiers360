@@ -33,14 +33,14 @@ function slotButtonClass(slot: ScheduleSlot): string {
   if (slot.status === "Annulé") {
     return "rounded-lg border border-dashed border-muted bg-muted/20 px-2 py-1 text-left text-xs opacity-70 line-through";
   }
-  return "rounded-lg border border-primary/20 bg-primary/5 px-2 py-1 text-left text-xs hover:bg-primary/10";
+  return "rounded-lg border border-brand/20 bg-brand/5 px-2 py-1 text-left text-xs hover:bg-brand/10";
 }
 
 function monthSlotClass(slot: ScheduleSlot): string {
   if (slot.status === "Annulé") {
     return "block w-full truncate rounded border border-dashed border-muted bg-muted/20 px-1 py-0.5 text-left text-[10px] text-muted line-through";
   }
-  return "block w-full truncate rounded bg-primary/10 px-1 py-0.5 text-left text-[10px] text-primary";
+  return "block w-full truncate rounded bg-brand/10 px-1 py-0.5 text-left text-[10px] text-brand";
 }
 
 export function PlanningCalendar({
@@ -154,7 +154,7 @@ export function PlanningCalendar({
                             className={
                               slot.status === "Annulé"
                                 ? "font-medium text-muted"
-                                : "font-medium text-primary"
+                                : "font-medium text-brand"
                             }
                           >
                             {slot.projectReference}
@@ -171,7 +171,7 @@ export function PlanningCalendar({
                         <button
                           type="button"
                           onClick={() => onEmptyClick?.(worker.id, day)}
-                          className="flex-1 rounded-lg border border-dashed border-border text-xs text-muted hover:border-primary hover:text-primary"
+                          className="flex-1 rounded-lg border border-dashed border-border text-xs text-muted hover:border-brand hover:text-brand"
                         >
                           +
                         </button>

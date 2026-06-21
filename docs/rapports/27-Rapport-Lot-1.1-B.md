@@ -61,6 +61,7 @@
 | TST-EVOL-002-06 | KPI occupation |
 | TST-EVOL-002-07 | Filtres + calendrier RTL |
 | TST-EVOL-002-08 | E2E planning |
+| TST-EVOL-002-09 | RG-PLA-04 périmètre chantiers |
 
 ---
 
@@ -74,6 +75,7 @@
 | REC-EVOL-002-04 | ✅ |
 | REC-EVOL-002-05 | ✅ |
 | REC-EVOL-002-06 | ✅ |
+| REC-EVOL-002-07 | ✅ |
 
 ---
 

@@ -56,7 +56,7 @@ Release **1.1.0** — lot B (après validation lot A).
 - Vue **semaine** (défaut) et vue **mois**
 - **Affectation** créneau via modale
 - **Détection conflits** (chevauchement même ouvrier) → HTTP 409
-- **Filtres** chantier et ouvrier
+- **Filtres** chantier et ouvrier — liste chantiers = **périmètre autorisé** (RG-PLA-04)
 - **KPI occupation** (% heures planifiées / référentiel 35 h/semaine)
 - Page `/planning` + entrée menu
 - Historisation création/modification créneau sur chantier
@@ -87,6 +87,7 @@ Release **1.1.0** — lot B (après validation lot A).
 3. **Étant donné** un filtre chantier CHT-001, **alors** seuls les créneaux de ce chantier apparaissent.
 4. **Étant donné** la vue mois, **quand** on bascule depuis semaine, **alors** les totaux par jour sont cohérents.
 5. **Étant donné** un créneau annulé (`CANCELLED`), **alors** il n'entre pas en conflit avec un nouveau créneau.
+6. **Étant donné** un conducteur connecté, **quand** il ouvre le filtre ou la modale d'affectation, **alors** seuls **ses** chantiers référents sont proposés (RG-PLA-04) ; tentative sur un autre chantier → **403** côté API.
 
 ### 2.5 Dépendances
 
@@ -103,7 +104,7 @@ Release **1.1.0** — lot B (après validation lot A).
 
 | Domaine | Impact | Détail |
 |---------|--------|--------|
-| Règles métier | Majeur | RG-PLA-01 conflits, RG-PLA-02 endAt > startAt |
+| Règles métier | Majeur | RG-PLA-01 conflits, RG-PLA-02 endAt > startAt, RG-PLA-04 périmètre chantiers |
 | Rôles / permissions | Modéré | Nouveau module + route `/planning` |
 | API REST | Majeur | ~9 endpoints Planning + Workers |
 | Base de données | Migration | `0004_worker_planning` |
@@ -184,10 +185,11 @@ Release **1.1.0** — lot B (après validation lot A).
 | TST-EVOL-002-06 | API | `planning-kpi.api.spec.ts` | KPI occupation |
 | TST-EVOL-002-07 | RTL | `PlanningFilters.test.tsx` | Filtres |
 | TST-EVOL-002-08 | E2E | `planning-affectation.spec.ts` | Parcours affectation |
+| TST-EVOL-002-09 | Unit FE | `planningChantiers.test.ts` | RG-PLA-04 — périmètre chantiers par rôle |
 
 ### 7.2 Exécution
 
-Tous les tests TST-EVOL-002-01 à 08 passent (CI locale — voir rapport lot B).
+Tous les tests TST-EVOL-002-01 à 09 passent (CI locale — voir rapport lot B).
 
 ---
 
@@ -203,6 +205,7 @@ Tous les tests TST-EVOL-002-01 à 08 passent (CI locale — voir rapport lot B).
 | REC-EVOL-002-04 | Vue mois + navigation | ✅ | Direction | 21/06/2026 |
 | REC-EVOL-002-05 | KPI occupation cohérent | ✅ | Direction | 21/06/2026 |
 | REC-EVOL-002-06 | Désactiver ouvrier — plus en liste affectation | ✅ | Conducteur | 21/06/2026 |
+| REC-EVOL-002-07 | Périmètre chantiers planning (RG-PLA-04) | ✅ | Conducteur | 21/06/2026 |
 
 ### 8.2 Signature recette
 

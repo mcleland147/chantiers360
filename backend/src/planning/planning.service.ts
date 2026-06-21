@@ -436,6 +436,7 @@ export class PlanningService {
     userId: string,
     role: UserRoleName,
   ) {
+    // RG-PLA-04 — écriture réservée au conducteur référent du chantier
     if (role !== 'CONDUCTEUR_TRAVAUX') {
       throw new ForbiddenException('Action réservée au conducteur de travaux.');
     }

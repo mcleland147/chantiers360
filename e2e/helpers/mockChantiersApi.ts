@@ -1,5 +1,11 @@
 import type { Page, Route } from "@playwright/test";
 
+const CONDUCTOR_ID_BY_NAME: Record<string, string> = {
+  "Marc Dupont": "u-conducteur",
+  "Sophie Martin": "u-conducteur-2",
+  "Luc Bernard": "u-conducteur-3",
+};
+
 /** Données alignées sur frontend/src/data/mockChantiers.ts pour les E2E sans backend. */
 const MOCK_CHANTIER_DETAILS = [
   {
@@ -160,7 +166,7 @@ const detailsById = new Map(
 );
 
 function toListItem(
-  c: (typeof MOCK_CHANTIER_DETAILS)[number],
+  c: (typeof MOCK_CHANTIER_DETAILS)[number] | typeof E2E_CREATED_CHANTIER,
 ) {
   return {
     id: c.id,
@@ -169,6 +175,7 @@ function toListItem(
     client: c.client,
     address: c.address,
     conductorName: c.conductorName,
+    conductorId: CONDUCTOR_ID_BY_NAME[c.conductorName] ?? "u-conducteur",
     status: c.status,
     startDate: c.startDate,
     expectedEndDate: c.expectedEndDate,

@@ -137,6 +137,17 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | REC-EVOL-002-04 | Vue mois + navigation semaine | ✅ |
 | REC-EVOL-002-05 | KPI occupation cohérent (Direction / Conducteur) | ✅ |
 | REC-EVOL-002-06 | Désactiver ouvrier — absent des listes d'affectation | ✅ |
+| REC-EVOL-002-07 | Périmètre chantiers planning (RG-PLA-04) — conducteur ne voit que ses chantiers | ✅ |
+
+### REC-EVOL-002-07 — Périmètre chantiers (RG-PLA-04)
+
+| Champ | Valeur |
+|-------|--------|
+| **Objectif** | Vérifier que l'UI et l'API n'exposent que les chantiers autorisés |
+| **Préconditions** | Connecté `conducteur@batinova.fr` (Marc Dupont — CHT-001, 003, 005…) |
+| **Étapes** | 1. Ouvrir `/planning` 2. Consulter filtre chantier 3. Ouvrir modale « Affecter un ouvrier » |
+| **Résultat attendu** | CHT-002 (Sophie Martin) absent des listes ; affectation sur CHT-001 acceptée |
+| **Statut** | ✅ Exécuté 21/06/2026 |
 
 ---
 
