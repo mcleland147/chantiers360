@@ -34,6 +34,12 @@ export function formatDateFr(date: Date): string {
   return `${day}/${month}/${year}`;
 }
 
+export function formatTimeFr(date: Date): string {
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
 export function parseIsoDate(value: string): Date {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {

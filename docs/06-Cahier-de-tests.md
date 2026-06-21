@@ -276,6 +276,22 @@ La synthèse de phase doit référencer les **4 IDs** du cahier. Exception docum
 
 **Note E2E :** les parcours Phase G et les écrans consommant l’API chantiers utilisent `e2e/helpers/mockChantiersApi.ts` (fixture Playwright) pour rester déterministes sans PostgreSQL.
 
+### 3.10 Release 1.1-B — Planning ouvriers (EVOL-002)
+
+| ID | Fonctionnalité | Type | Résultat attendu | Statut | Fichier test |
+|---|---|---|---|---|---|
+| TST-EVOL-002-01 | Détection chevauchement | Unitaire BE | Conflit détecté | ✅ Passé | `backend/src/common/rules/planning-conflicts.rules.spec.ts` |
+| TST-EVOL-002-02 | CANCELLED ignoré | Unitaire BE | Pas de conflit | ✅ Passé | idem |
+| TST-EVOL-002-03 | CRUD créneaux API | Supertest | GET/POST/PUT/DELETE | ✅ Passé | `backend/test/planning.api.spec.ts` |
+| TST-EVOL-002-04 | HTTP 409 conflit | Supertest | Message chantier + horaire | ✅ Passé | idem |
+| TST-EVOL-002-05 | CRUD ouvriers API | Supertest | GET/POST/PATCH | ✅ Passé | `backend/test/workers.api.spec.ts` |
+| TST-EVOL-002-06 | KPI occupation | Unitaire + API | % / 35 h semaine | ✅ Passé | rules spec + `planning.api.spec.ts` |
+| TST-EVOL-002-07 | Filtres + calendrier | Composant FE | Semaine + filtres | ✅ Passé | `PlanningFilters.test.tsx`, `PlanningCalendar.test.tsx` |
+| TST-EVOL-002-08 | Parcours E2E planning | E2E | Création, conflit, filtres, rôles | ✅ Passé | `e2e/tests/planning-affectation.spec.ts` |
+| TST-EVOL-002-09 | RG-PLA-04 — périmètre chantiers planning | Unitaire FE + BE + E2E | Conducteur : ses chantiers ; chef : affectés ; direction/assistante : tous ; reset filtre | ✅ Passé | `planningChantiers.test.ts`, `planning.service.spec.ts`, E2E-EVOL-002-05 |
+
+**Note E2E planning :** mock `e2e/helpers/mockPlanningApi.ts` (fixture Playwright).
+
 ---
 
 ## 4. Comptes de test

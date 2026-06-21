@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
+  CalendarDays,
   Camera,
   FolderKanban,
   LayoutDashboard,
@@ -52,6 +53,17 @@ export const mvpNavItems: NavItem[] = [
     path: "/photos",
     icon: Camera,
     roles: ["DIRECTION", "CONDUCTEUR_TRAVAUX", "CHEF_CHANTIER"],
+  },
+  {
+    label: "Planning",
+    path: "/planning",
+    icon: CalendarDays,
+    roles: [
+      "DIRECTION",
+      "ASSISTANTE_ADMINISTRATIVE",
+      "CONDUCTEUR_TRAVAUX",
+      "CHEF_CHANTIER",
+    ],
   },
   {
     label: "Vue mobile",

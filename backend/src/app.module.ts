@@ -16,6 +16,8 @@ import { HistoryModule } from './history/history.module';
 import { CommonModule } from './common/common.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StorageModule } from './storage/storage.module';
+import { WorkersModule } from './workers/workers.module';
+import { PlanningModule } from './planning/planning.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { StorageModule } from './storage/storage.module';
     DashboardModule,
     HistoryModule,
     CommonModule,
+    WorkersModule,
+    PlanningModule,
   ],
   controllers: [AppController],
   providers: [AppService],

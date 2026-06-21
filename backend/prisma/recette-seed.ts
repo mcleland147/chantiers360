@@ -374,6 +374,8 @@ export async function seedRecetteData(
   await prisma.issue.deleteMany();
   await prisma.progressUpdate.deleteMany();
   await prisma.assignment.deleteMany();
+  await prisma.workerSchedule.deleteMany();
+  await prisma.worker.deleteMany();
 
   const projectIds = new Map<string, string>();
 
@@ -504,6 +506,66 @@ export async function seedRecetteData(
         category: 'PENDANT_TRAVAUX',
         addedById: 'u-chef',
         createdAt: new Date('2025-05-14'),
+      },
+    });
+  }
+
+  const workers = [
+    { id: 'w-1', firstName: 'Ahmed', lastName: 'Benali', trade: 'Maçon' },
+    { id: 'w-2', firstName: 'Lucas', lastName: 'Girard', trade: 'Électricien' },
+    { id: 'w-3', firstName: 'Karim', lastName: 'Diallo', trade: 'Plombier' },
+    { id: 'w-4', firstName: 'Thomas', lastName: 'Roux', trade: 'Manœuvre' },
+    {
+      id: 'w-5',
+      firstName: 'Pierre',
+      lastName: 'Morel',
+      trade: 'Coffreur',
+      isActive: false,
+    },
+  ];
+
+  for (const worker of workers) {
+    await prisma.worker.upsert({
+      where: { id: worker.id },
+      update: worker,
+      create: worker,
+    });
+  }
+
+  const cht001Id = projectIds.get('CHT-001');
+  const cht003Id = projectIds.get('CHT-003');
+  const cht005Id = projectIds.get('CHT-005');
+
+  const scheduleSeeds: Array<{
+    workerId: string;
+    reference: string;
+    startAt: string;
+    endAt: string;
+    status: 'PLANNED' | 'CONFIRMED' | 'CANCELLED';
+  }> = [
+    { workerId: 'w-1', reference: 'CHT-001', startAt: '2025-06-16T06:00:00.000Z', endAt: '2025-06-16T14:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-1', reference: 'CHT-003', startAt: '2025-06-17T08:00:00.000Z', endAt: '2025-06-17T12:00:00.000Z', status: 'CANCELLED' },
+    { workerId: 'w-2', reference: 'CHT-001', startAt: '2025-06-18T07:00:00.000Z', endAt: '2025-06-18T15:00:00.000Z', status: 'CONFIRMED' },
+    { workerId: 'w-3', reference: 'CHT-005', startAt: '2025-06-19T06:00:00.000Z', endAt: '2025-06-19T14:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-4', reference: 'CHT-003', startAt: '2025-06-20T08:00:00.000Z', endAt: '2025-06-20T12:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-5', reference: 'CHT-001', startAt: '2025-06-21T08:00:00.000Z', endAt: '2025-06-21T12:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-1', reference: 'CHT-001', startAt: '2025-06-23T06:00:00.000Z', endAt: '2025-06-23T14:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-2', reference: 'CHT-003', startAt: '2025-06-24T07:00:00.000Z', endAt: '2025-06-24T15:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-3', reference: 'CHT-005', startAt: '2025-06-25T06:00:00.000Z', endAt: '2025-06-25T14:00:00.000Z', status: 'PLANNED' },
+    { workerId: 'w-4', reference: 'CHT-001', startAt: '2025-06-26T08:00:00.000Z', endAt: '2025-06-26T12:00:00.000Z', status: 'CONFIRMED' },
+  ];
+
+  for (const seed of scheduleSeeds) {
+    const projectId = projectIds.get(seed.reference);
+    if (!projectId) continue;
+    await prisma.workerSchedule.create({
+      data: {
+        workerId: seed.workerId,
+        projectId,
+        startAt: new Date(seed.startAt),
+        endAt: new Date(seed.endAt),
+        status: seed.status,
+        createdById: 'u-conducteur',
       },
     });
   }

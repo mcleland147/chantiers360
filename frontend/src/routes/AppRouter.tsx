@@ -10,6 +10,7 @@ import { DashboardDirectionPage } from "../pages/DashboardDirectionPage";
 import { LoginPage } from "../pages/LoginPage";
 import { MobileChefPage } from "../pages/MobileChefPage";
 import { PhotosPage } from "../pages/PhotosPage";
+import { PlanningPage } from "../pages/PlanningPage";
 import { ReportsPage } from "../pages/ReportsPage";
 import { ReservesPage } from "../pages/ReservesPage";
 import { GuestGuard } from "./GuestGuard";
@@ -48,6 +49,7 @@ export const appRouter = createBrowserRouter([
               { path: "chantiers/:id", element: <ChantierDetailPage /> },
               { path: "reserves", element: <ReservesPage /> },
               { path: "photos", element: <PhotosPage /> },
+              { path: "planning", element: <PlanningPage /> },
               { path: "mobile", element: <MobileChefPage /> },
               { path: "reports", element: <ReportsPage /> },
               { path: "admin", element: <AdminPage /> },
