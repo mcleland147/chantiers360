@@ -496,6 +496,10 @@ export async function seedRecetteData(
       data: {
         projectId: project.id,
         fileName: `${def.reference.toLowerCase()}-photo.jpg`,
+        originalFileName: `${def.reference.toLowerCase()}-photo.jpg`,
+        storageKey: `legacy/seed-${project.id}`,
+        mimeType: 'image/jpeg',
+        fileSizeBytes: 0,
         fileUrl: `/uploads/${def.reference.toLowerCase()}.jpg`,
         category: 'PENDANT_TRAVAUX',
         addedById: 'u-chef',

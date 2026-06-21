@@ -102,15 +102,24 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 ---
 
-## REC-009 — Ajout photo
+## REC-009 — Ajout photo (legacy MVP)
 
 | Champ | Valeur |
 |-------|--------|
-| **Objectif** | Ajouter une photo par URL / nom de fichier (MVP) |
-| **Préconditions** | Connecté avec droit ajout photo |
-| **Étapes** | 1. Onglet Photos 2. « Ajouter une photo » 3. Catégorie + URL/nom 4. Valider |
-| **Résultat attendu** | Photo visible dans la galerie |
-| **Statut** | ☐ À exécuter |
+| **Objectif** | Ajouter une photo par URL / nom de fichier (legacy — préférer REC-EVOL-001) |
+| **Statut** | ☐ Remplacé par upload réel v1.1 |
+
+---
+
+## REC-EVOL-001 — Upload réel photos (Release 1.1-A)
+
+| ID | Objectif | Statut |
+|----|----------|--------|
+| REC-EVOL-001-01 | Upload 3 JPG depuis fiche chantier | ☐ |
+| REC-EVOL-001-02 | Refus fichier > 10 Mo | ☐ |
+| REC-EVOL-001-03 | Suppression + trace historique « Suppression photo » | ☐ |
+| REC-EVOL-001-04 | Upload depuis mobile chef | ☐ |
+| REC-EVOL-001-05 | Galerie globale `/photos` à jour | ☐ |
 
 ---
 

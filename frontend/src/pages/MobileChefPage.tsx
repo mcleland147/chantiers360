@@ -11,7 +11,7 @@ import {
 } from "../hooks/useGlobalTabs";
 import {
   useChantierReservesQuery,
-  useCreatePhotoMutation,
+  useUploadPhotosMutation,
   useCreateProgressMutation,
   useCreateReserveMutation,
   useTakeReserveChargeMutation,
@@ -36,7 +36,7 @@ export function MobileChefPage() {
   const [reserveOpen, setReserveOpen] = useState(false);
 
   const progressMutation = useCreateProgressMutation(activeId);
-  const photoMutation = useCreatePhotoMutation(activeId);
+  const photoMutation = useUploadPhotosMutation(activeId);
   const reserveMutation = useCreateReserveMutation(activeId);
   const takeChargeMutation = useTakeReserveChargeMutation(activeId);
 

@@ -1,8 +1,9 @@
-import { Camera, Image, Plus } from "lucide-react";
+import { Camera, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { ChantierPhoto, PhotoCategory } from "../../types/domain";
 import { classNames } from "../../utils/classNames";
 import { EmptyState } from "../common/EmptyState";
+import { AuthenticatedPhoto } from "../photos/AuthenticatedPhoto";
 
 const CATEGORIES: PhotoCategory[] = [
   "Avant travaux",
@@ -10,25 +11,24 @@ const CATEGORIES: PhotoCategory[] = [
   "Après travaux",
 ];
 
-const categoryColors: Record<PhotoCategory, string> = {
-  "Avant travaux": "from-slate-400 to-slate-600",
-  "Pendant travaux": "from-orange-400 to-orange-600",
-  "Après travaux": "from-emerald-400 to-emerald-600",
-};
-
 interface PhotoGalleryProps {
   photos: ChantierPhoto[];
   canAdd?: boolean;
+  canDelete?: boolean;
   onAdd?: () => void;
+  onDelete?: (photo: ChantierPhoto) => void;
 }
 
 export function PhotoGallery({
   photos,
   canAdd = false,
+  canDelete = false,
   onAdd,
+  onDelete,
 }: PhotoGalleryProps) {
   const [activeCategory, setActiveCategory] =
     useState<PhotoCategory>("Pendant travaux");
+  const [preview, setPreview] = useState<ChantierPhoto | null>(null);
 
   const filtered = photos.filter((p) => p.category === activeCategory);
   const counts = CATEGORIES.reduce(
@@ -96,18 +96,41 @@ export function PhotoGallery({
               key={photo.id}
               className="overflow-hidden rounded-xl border border-border bg-white shadow-sm"
             >
-              <div
-                className={classNames(
-                  "flex aspect-video items-center justify-center bg-gradient-to-br",
-                  categoryColors[photo.category],
-                )}
+              <button
+                type="button"
+                onClick={() => setPreview(photo)}
+                className="block aspect-video w-full overflow-hidden"
               >
-                <Image size={32} className="text-white/60" />
-              </div>
+                <AuthenticatedPhoto
+                  photoId={photo.id}
+                  category={photo.category}
+                  alt={photo.fileName}
+                />
+              </button>
               <div className="p-3">
-                <p className="truncate text-xs font-medium text-slate-900">
-                  {photo.fileName}
-                </p>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="truncate text-xs font-medium text-slate-900">
+                    {photo.fileName}
+                  </p>
+                  {canDelete && onDelete && (
+                    <button
+                      type="button"
+                      aria-label="Supprimer la photo"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            `Supprimer la photo « ${photo.fileName} » ?`,
+                          )
+                        ) {
+                          onDelete(photo);
+                        }
+                      }}
+                      className="shrink-0 rounded p-1 text-muted hover:bg-red-50 hover:text-red-600"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
                 <p className="mt-1 text-[11px] text-muted">
                   {photo.authorName} · {photo.date}
                 </p>
@@ -119,6 +142,42 @@ export function PhotoGallery({
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {preview && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          data-testid="photo-preview-modal"
+        >
+          <div className="relative w-full max-w-3xl rounded-xl bg-white p-4 shadow-xl">
+            <button
+              type="button"
+              onClick={() => setPreview(null)}
+              className="absolute right-3 top-3 z-10 rounded-lg bg-white/90 px-2 py-1 text-xs font-medium text-muted hover:bg-white"
+            >
+              Fermer
+            </button>
+            <div className="aspect-video overflow-hidden rounded-lg">
+              <AuthenticatedPhoto
+                photoId={preview.id}
+                category={preview.category}
+                alt={preview.fileName}
+                fit="contain"
+              />
+            </div>
+            <div className="mt-4 space-y-1">
+              <h3 className="text-sm font-semibold text-slate-900">
+                {preview.fileName}
+              </h3>
+              <p className="text-xs text-muted">
+                {preview.category} · {preview.authorName} · {preview.date}
+              </p>
+              {preview.comment && (
+                <p className="text-sm text-slate-600">{preview.comment}</p>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

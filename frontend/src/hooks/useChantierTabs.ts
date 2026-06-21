@@ -4,17 +4,20 @@ import {
   createPhoto,
   createProgressUpdate,
   createReserve,
+  deletePhoto,
   fetchAssignableUsers,
   fetchChantierAssignments,
   fetchChantierPhotos,
   fetchChantierProgress,
   fetchChantierReserves,
   takeReserveCharge,
+  uploadPhotos,
   validateReserveLevee,
   type CreateAssignmentPayload,
   type CreatePhotoPayload,
   type CreateProgressPayload,
   type CreateReservePayload,
+  type UploadPhotosPayload,
 } from "../services/chantierTabsService";
 import { chantierKeys } from "./useChantiers";
 import { invalidateGlobalReserves } from "./useGlobalTabs";
@@ -126,6 +129,29 @@ export function useCreateReserveMutation(chantierId: string) {
     mutationFn: (payload: CreateReservePayload) =>
       createReserve(chantierId, payload),
     onSuccess: () => invalidateTabHistory(queryClient, chantierId, "reserves"),
+  });
+}
+
+export function useUploadPhotosMutation(chantierId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: UploadPhotosPayload) =>
+      uploadPhotos(chantierId, payload),
+    onSuccess: () => {
+      invalidateTabHistory(queryClient, chantierId, "photos");
+      void queryClient.invalidateQueries({ queryKey: ["photos", "global"] });
+    },
+  });
+}
+
+export function useDeletePhotoMutation(chantierId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (photoId: string) => deletePhoto(photoId),
+    onSuccess: () => {
+      invalidateTabHistory(queryClient, chantierId, "photos");
+      void queryClient.invalidateQueries({ queryKey: ["photos", "global"] });
+    },
   });
 }
 

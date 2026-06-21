@@ -31,6 +31,12 @@ export interface CreateReservePayload {
   priority: ReservePriority;
 }
 
+export interface UploadPhotosPayload {
+  files: File[];
+  category: ChantierPhoto["category"];
+  comment?: string;
+}
+
 export interface CreatePhotoPayload {
   fileName: string;
   category: ChantierPhoto["category"];
@@ -110,6 +116,28 @@ export async function createReserve(
     payload,
   );
   return data;
+}
+
+export async function uploadPhotos(
+  chantierId: string,
+  payload: UploadPhotosPayload,
+): Promise<ChantierPhoto[]> {
+  const formData = new FormData();
+  payload.files.forEach((file) => formData.append("files", file));
+  formData.append("category", payload.category);
+  if (payload.comment) {
+    formData.append("comment", payload.comment);
+  }
+  const { data } = await apiClient.post<ChantierPhoto[]>(
+    `/chantiers/${chantierId}/photos/upload`,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return data;
+}
+
+export async function deletePhoto(photoId: string): Promise<void> {
+  await apiClient.delete(`/photos/${photoId}`);
 }
 
 export async function createPhoto(

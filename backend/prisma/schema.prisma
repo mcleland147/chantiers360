@@ -78,6 +78,7 @@ model User {
   ownedProjects    Project[] @relation("ProjectConductor")
   createdIssues    Issue[]   @relation("IssueCreator")
   assignedIssues   Issue[]   @relation("IssueAssignee")
+  photosCreated    Photo[]   @relation("PhotoAuthor")
 }
 
 model Project {
@@ -133,15 +134,25 @@ model Issue {
 }
 
 model Photo {
-  id          String        @id @default(uuid())
-  projectId   String
-  fileName    String
-  fileUrl     String
-  category    PhotoCategory
-  comment     String?
-  addedById   String
-  createdAt   DateTime      @default(now())
-  project     Project       @relation(fields: [projectId], references: [id])
+  id               String        @id @default(uuid())
+  projectId        String
+  fileName         String
+  originalFileName String
+  fileUrl          String
+  storageKey       String        @unique
+  mimeType         String
+  fileSizeBytes    Int
+  category         PhotoCategory
+  comment          String?
+  addedById        String
+  deletedAt        DateTime?
+  deletedById      String?
+  createdAt        DateTime      @default(now())
+  project          Project       @relation(fields: [projectId], references: [id])
+  addedBy          User          @relation("PhotoAuthor", fields: [addedById], references: [id])
+
+  @@index([projectId, deletedAt])
+  @@index([projectId, category])
 }
 
 model ProgressUpdate {

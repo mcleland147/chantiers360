@@ -300,9 +300,33 @@ Chantiers affectés à l'utilisateur connecté (chef de chantier). **Auth requis
 
 Photothèque (catégorie MVP, nom fichier, auteur, date, commentaire).
 
-### `POST /chantiers/:id/photos`
+### `POST /chantiers/:id/photos/upload`
 
-Ajoute une photo (métadonnées — pas d'upload binaire en MVP). **Auth requise — conducteur ou chef.**
+Upload multipart de photos (Release 1.1-A). **Auth requise — conducteur ou chef.**
+
+- Champ fichiers : `files` (tableau, max **10** fichiers)
+- Champs formulaire : `category` (obligatoire), `comment` (optionnel)
+- Formats : **JPG, JPEG, PNG** — max **10 Mo** / fichier
+- Stockage : filesystem (`UPLOAD_DIR`, défaut `/data/uploads`)
+- Réponse **201** : tableau de photos créées
+
+Historise : `Ajout photo` (une entrée par fichier).
+
+### `GET /photos/:id/file`
+
+Stream du fichier image. **Auth requise — accès chantier selon rôle.**
+
+Headers : `Content-Type` (image/jpeg ou image/png), `Content-Disposition: inline`.
+
+### `DELETE /photos/:id`
+
+Suppression logique (soft delete) + suppression du fichier sur disque si présent. **Auth — conducteur ou chef.**
+
+Réponse **204**. Historise : `Suppression photo`.
+
+### `POST /chantiers/:id/photos` _(legacy MVP)_
+
+Ajoute une photo par métadonnées URL (rétrocompatibilité). Préférer `/photos/upload`.
 
 ```json
 {
@@ -326,6 +350,9 @@ Historise : `Ajout photo`.
 | RG-TABS-003 | Titre et priorité réserve obligatoires |
 | RG-TABS-004 | Levée réservée aux réserves « En cours » |
 | RG-TABS-005 | Nom fichier et catégorie photo obligatoires |
+| RG-PHO-01 | Formats JPG/JPEG/PNG uniquement |
+| RG-PHO-02 | Taille max 10 Mo / fichier |
+| RG-PHO-03 | Historisation ajout et suppression |
 | RG-TABS-006 | Collaborateur et fonction obligatoires à l'affectation |
 
 Permissions alignées frontend (`chantierPermissions.ts`) — vérifiées côté API via rôle utilisateur.
@@ -345,7 +372,9 @@ Les POST documentés ci-dessus alimentent les modales frontend :
 | Équipes | Affecter un membre | Conducteur | `POST …/assignments` |
 | Avancement | Ajouter une mise à jour | Conducteur, Chef | `POST …/progress` |
 | Réserves | Nouvelle réserve | Conducteur, Chef | `POST …/reserves` |
-| Photos | Ajouter une photo (URL MVP) | Conducteur, Chef | `POST …/photos` |
+| Photos | Upload fichier(s) | Conducteur, Chef | `POST …/photos/upload` |
+| Photos | Supprimer | Conducteur, Chef | `DELETE /photos/:id` |
+| Photos | Voir fichier | Tous (accès chantier) | `GET /photos/:id/file` |
 
 Après création, le frontend invalide le cache React Query de l'onglet et l'historique chantier.
 

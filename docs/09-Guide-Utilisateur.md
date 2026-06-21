@@ -55,7 +55,7 @@ Redirection automatique selon le rôle :
   - **Équipe** — affecter un membre (conducteur uniquement)
   - **Avancement** — ajouter commentaire + %
   - **Réserves** — créer, valider levée
-  - **Photos** — ajouter par URL / nom fichier
+  - **Photos** — upload JPG/PNG depuis l’explorateur (jusqu’à 10 fichiers, 10 Mo max)
   - **Historique** — trace des actions
 
 ### Droits clés
@@ -88,11 +88,13 @@ Redirection automatique selon le rôle :
 3. Sur la fiche :
    - Ajouter **avancement** (commentaire, %)
    - **Créer une réserve** (titre, priorité, description)
-   - **Ajouter une photo** (catégorie + URL/nom)
+   - **Ajouter une photo** — sélectionner un ou plusieurs fichiers JPG/PNG, choisir la catégorie
+   - **Supprimer une photo** — icône corbeille avec confirmation
 
 ### Limites MVP
 
-- Pas d’upload fichier depuis l’appareil photo (V2)
+- Upload depuis l’appareil photo / galerie (explorateur de fichiers)
+- Aperçu plein écran via l’application (pas d’URL externe)
 - Pas d’affectation équipe
 - Pas de validation levée réserve (réservé conducteur)
 

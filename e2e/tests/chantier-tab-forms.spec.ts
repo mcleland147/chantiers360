@@ -47,16 +47,20 @@ test.describe("Formulaires onglets — T-G-TABS-FORMS", () => {
     await expect(page.getByText("Ouverte").first()).toBeVisible();
   });
 
-  test("E2E-G-FORMS-004 — ajout photo par URL", async ({ page }) => {
+  test("E2E-G-FORMS-004 — upload photo depuis fichier", async ({ page }) => {
     await loginAs(page, "chef");
     await page.goto("/chantiers/c-3?tab=photos");
 
     await page.getByRole("button", { name: "Ajouter une photo" }).click();
-    await page.getByPlaceholder("facade-sud.jpg").fill("facade-sud-e2e.jpg");
+    await page.getByTestId("photo-file-input").setInputFiles({
+      name: "facade-sud-e2e.jpg",
+      mimeType: "image/jpeg",
+      buffer: Buffer.from("fake-jpeg-content"),
+    });
     await page.getByTestId("add-photo-modal").getByRole("combobox").selectOption("Pendant travaux");
-    await page.getByTestId("add-photo-modal").getByRole("button", { name: "Ajouter" }).click();
+    await page.getByTestId("add-photo-modal").getByRole("button", { name: "Envoyer" }).click();
 
-    await expect(page.getByText("facade-sud-e2e.jpg")).toBeVisible();
+    await expect(page.getByText("facade-e2e.jpg")).toBeVisible();
   });
 
   test("E2E-G-FORMS-005 — chef ne voit pas Affecter un membre", async ({

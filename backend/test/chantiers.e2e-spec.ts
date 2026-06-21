@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '../src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../src/auth/guards/roles.guard';
 import { ChantierTabsService } from '../src/projects/chantier-tabs.service';
 import { ProjectsService } from '../src/projects/projects.service';
+import { PhotosService } from '../src/photos/photos.service';
 import { ProjectsController } from '../src/projects/projects.controller';
 import { ProjectsRepository } from '../src/projects/repositories/projects.repository';
 import { HistoryService } from '../src/history/history.service';
@@ -69,6 +70,7 @@ describe('Chantiers API (Supertest)', () => {
       providers: [
         { provide: ProjectsService, useValue: projectsService },
         { provide: ChantierTabsService, useValue: chantierTabsService },
+        { provide: PhotosService, useValue: { uploadPhotos: jest.fn() } },
         { provide: ProjectsRepository, useValue: {} },
         { provide: HistoryService, useValue: {} },
         { provide: PrismaService, useValue: {} },

@@ -260,6 +260,20 @@ La synthèse de phase doit référencer les **4 IDs** du cahier. Exception docum
 
 **Documentation API :** `docs/API.md` (§ T-G-TABS-FORMS).
 
+### 3.9 Release 1.1-A — Upload photos (EVOL-001)
+
+| ID | Fonctionnalité | Type | Résultat attendu | Statut | Fichier test |
+|---|---|---|---|---|---|
+| TST-R11-A-01 | Validation MIME JPG/PNG | Unitaire BE | Accepte JPEG/PNG, rejette PDF | ✅ Passé | `backend/src/storage/storage.service.spec.ts` |
+| TST-R11-A-02 | Taille max 10 Mo | Unitaire BE | Rejet > 10 Mo | ✅ Passé | idem |
+| TST-R11-A-03 | POST multipart 201 | Supertest | Upload délégué PhotosService | ✅ Passé | `backend/test/photos-upload.api.spec.ts` |
+| TST-R11-A-04 | Type invalide 415 | Supertest | UnsupportedMediaType | ✅ Passé | idem |
+| TST-R11-A-05 | Taille excessive 413 | Supertest | PayloadTooLarge | ✅ Passé | idem |
+| TST-R11-A-06 | DELETE photo 204 | Supertest | Soft delete | ✅ Passé | `backend/test/photos-delete.api.spec.ts` |
+| TST-R11-A-07 | Historique suppression | Supertest | deletePhoto invoqué | ✅ Passé | idem |
+| TST-R11-A-08 | AddPhotoModal upload | Composant FE | files + category | ✅ Passé | `frontend/src/components/chantiers/AddPhotoModal.test.tsx` |
+| TST-R11-A-09 | Parcours E2E upload | E2E | Photo visible galerie | ✅ Passé | `e2e/tests/photos-upload.spec.ts` |
+
 **Note E2E :** les parcours Phase G et les écrans consommant l’API chantiers utilisent `e2e/helpers/mockChantiersApi.ts` (fixture Playwright) pour rester déterministes sans PostgreSQL.
 
 ---

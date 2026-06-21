@@ -82,22 +82,22 @@ describe("Modales onglets — T-G-TABS-FORMS", () => {
     );
   });
 
-  it("T-G-FORMS-COMP-004 — AddPhotoModal soumet URL et catégorie", async () => {
+  it("TST-R11-A-08 — AddPhotoModal soumet fichiers et catégorie", async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
     render(<AddPhotoModal isOpen onClose={vi.fn()} onSubmit={onSubmit} />);
 
-    await user.type(
-      screen.getByPlaceholderText("facade-sud.jpg"),
-      "facade-sud.jpg",
-    );
+    const file = new File(["img"], "facade-sud.jpg", { type: "image/jpeg" });
+    await user.upload(screen.getByTestId("photo-file-input"), file);
     await user.selectOptions(screen.getByRole("combobox"), "Après travaux");
-    await user.click(screen.getByRole("button", { name: "Ajouter" }));
+    await user.click(screen.getByRole("button", { name: "Envoyer" }));
 
     expect(onSubmit).toHaveBeenCalledWith(
       expect.objectContaining({
-        fileName: "facade-sud.jpg",
         category: "Après travaux",
+        files: expect.arrayContaining([
+          expect.objectContaining({ name: "facade-sud.jpg" }),
+        ]),
       }),
     );
   });

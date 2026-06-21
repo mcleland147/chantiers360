@@ -1,12 +1,19 @@
-import { render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { PhotoGallery } from "./PhotoGallery";
 import { samplePhotos } from "../../test/fixtures/chantierTabs";
+import { renderWithProviders } from "../../test/test-utils";
+
+vi.mock("../photos/AuthenticatedPhoto", () => ({
+  AuthenticatedPhoto: ({ alt }: { alt: string }) => (
+    <div data-testid="photo-thumb">{alt}</div>
+  ),
+}));
 
 describe("PhotoGallery — Phase D", () => {
   it("T-D-COMP-010 — affiche les trois catégories photo MVP", () => {
-    render(<PhotoGallery photos={samplePhotos} />);
+    renderWithProviders(<PhotoGallery photos={samplePhotos} />);
 
     expect(
       screen.getByRole("button", { name: /Avant travaux/i }),
@@ -21,22 +28,22 @@ describe("PhotoGallery — Phase D", () => {
 
   it("T-D-COMP-011 — filtre les photos par catégorie", async () => {
     const user = userEvent.setup();
-    render(<PhotoGallery photos={samplePhotos} />);
+    renderWithProviders(<PhotoGallery photos={samplePhotos} />);
 
-    expect(screen.getByText("coulage_dalle.jpg")).toBeInTheDocument();
+    expect(screen.getAllByText("coulage_dalle.jpg").length).toBeGreaterThan(0);
 
     await user.click(screen.getByRole("button", { name: /Avant travaux/i }));
-    expect(screen.getByText("terrain_initial.jpg")).toBeInTheDocument();
+    expect(screen.getAllByText("terrain_initial.jpg").length).toBeGreaterThan(0);
     expect(screen.queryByText("coulage_dalle.jpg")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /Après travaux/i }));
-    expect(screen.getByText("parking_fini.jpg")).toBeInTheDocument();
+    expect(screen.getAllByText("parking_fini.jpg").length).toBeGreaterThan(0);
   });
 
   it("T-D-COMP-012 — bouton Ajouter une photo pour Conducteur et Chef", async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
-    const { rerender } = render(
+    renderWithProviders(
       <PhotoGallery photos={samplePhotos} canAdd onAdd={onAdd} />,
     );
 
@@ -45,7 +52,8 @@ describe("PhotoGallery — Phase D", () => {
     await user.click(addButton);
     expect(onAdd).toHaveBeenCalledOnce();
 
-    rerender(<PhotoGallery photos={samplePhotos} canAdd={false} />);
+    cleanup();
+    renderWithProviders(<PhotoGallery photos={samplePhotos} canAdd={false} />);
     expect(
       screen.queryByRole("button", { name: /Ajouter une photo/i }),
     ).not.toBeInTheDocument();

@@ -10,6 +10,7 @@ import { RolesGuard } from '../src/auth/guards/roles.guard';
 import { IssuesController } from '../src/issues/issues.controller';
 import { PhotosController } from '../src/photos/photos.controller';
 import { ChantierTabsService } from '../src/projects/chantier-tabs.service';
+import { PhotosService } from '../src/photos/photos.service';
 import { ProjectsController } from '../src/projects/projects.controller';
 import { ProjectsService } from '../src/projects/projects.service';
 import { UsersController } from '../src/users/users.controller';
@@ -106,6 +107,7 @@ describe('Security API — Phase K1 (Supertest)', () => {
         RolesGuard,
         { provide: ProjectsService, useValue: projectsService },
         { provide: ChantierTabsService, useValue: chantierTabsService },
+        { provide: PhotosService, useValue: { uploadPhotos: jest.fn() } },
         { provide: DashboardService, useValue: dashboardService },
         { provide: UsersService, useValue: usersService },
         { provide: PrismaService, useValue: prisma },

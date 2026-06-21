@@ -1,15 +1,9 @@
-import { Camera, Image, X } from "lucide-react";
+import { Camera, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { ChantierPhoto, PhotoCategory } from "../../types/domain";
-import { classNames } from "../../utils/classNames";
+import type { ChantierPhoto } from "../../types/domain";
 import { EmptyState } from "../common/EmptyState";
-
-const categoryColors: Record<PhotoCategory, string> = {
-  "Avant travaux": "from-slate-400 to-slate-600",
-  "Pendant travaux": "from-orange-400 to-orange-600",
-  "Après travaux": "from-emerald-400 to-emerald-600",
-};
+import { AuthenticatedPhoto } from "./AuthenticatedPhoto";
 
 interface GlobalPhotoGridProps {
   photos: ChantierPhoto[];
@@ -42,13 +36,12 @@ export function GlobalPhotoGrid({
             onClick={() => setPreview(photo)}
             className="overflow-hidden rounded-xl border border-border bg-white text-left shadow-sm transition-shadow hover:shadow-md"
           >
-            <div
-              className={classNames(
-                "flex aspect-video items-center justify-center bg-gradient-to-br",
-                categoryColors[photo.category],
-              )}
-            >
-              <Image size={32} className="text-white/60" />
+            <div className="aspect-video overflow-hidden">
+              <AuthenticatedPhoto
+                photoId={photo.id}
+                category={photo.category}
+                alt={photo.fileName}
+              />
             </div>
             <div className="p-3">
               <p className="truncate text-xs font-medium text-slate-900">
@@ -76,18 +69,18 @@ export function GlobalPhotoGrid({
             <button
               type="button"
               onClick={() => setPreview(null)}
-              className="absolute right-3 top-3 rounded-lg p-1 text-muted hover:bg-slate-100"
+              className="absolute right-3 top-3 z-10 rounded-lg p-1 text-muted hover:bg-slate-100"
               aria-label="Fermer"
             >
               <X size={18} />
             </button>
-            <div
-              className={classNames(
-                "flex aspect-video items-center justify-center rounded-lg bg-gradient-to-br",
-                categoryColors[preview.category],
-              )}
-            >
-              <Image size={48} className="text-white/70" />
+            <div className="aspect-video overflow-hidden rounded-lg">
+              <AuthenticatedPhoto
+                photoId={preview.id}
+                category={preview.category}
+                alt={preview.fileName}
+                fit="contain"
+              />
             </div>
             <div className="mt-4 space-y-2">
               <h3 className="text-sm font-semibold text-slate-900">

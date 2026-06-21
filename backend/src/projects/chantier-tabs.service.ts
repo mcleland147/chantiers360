@@ -332,7 +332,9 @@ export class ChantierTabsService {
       return [];
     }
 
-    const where: import('@prisma/client').Prisma.PhotoWhereInput = {};
+    const where: import('@prisma/client').Prisma.PhotoWhereInput = {
+      deletedAt: null,
+    };
 
     if (projectScope.length > 0) {
       where.projectId = { in: projectScope };
@@ -557,7 +559,7 @@ export class ChantierTabsService {
   async getPhotos(projectId: string): Promise<PhotoResponse[]> {
     const project = await this.ensureProjectExists(projectId);
     const rows = await this.prisma.photo.findMany({
-      where: { projectId },
+      where: { projectId, deletedAt: null },
       orderBy: { createdAt: 'desc' },
     });
     const authorIds = [...new Set(rows.map((r) => r.addedById))];
@@ -614,16 +616,28 @@ export class ChantierTabsService {
 
     const project = await this.ensureProjectExists(projectId);
 
+    const trimmedName = dto.fileName.trim();
     const row = await this.prisma.photo.create({
       data: {
         projectId,
-        fileName: dto.fileName.trim(),
-        fileUrl: dto.fileUrl?.trim() ?? `/uploads/${dto.fileName.trim()}`,
+        fileName: trimmedName,
+        originalFileName: trimmedName,
+        storageKey: `legacy/pending-${Date.now()}`,
+        mimeType: 'image/jpeg',
+        fileSizeBytes: 0,
+        fileUrl: dto.fileUrl?.trim() ?? `/uploads/${trimmedName}`,
         category,
         comment: dto.comment?.trim(),
         addedById: userId,
       },
     });
+
+    await this.prisma.photo.update({
+      where: { id: row.id },
+      data: { storageKey: `legacy/${row.id}` },
+    });
+
+    const saved = { ...row, storageKey: `legacy/${row.id}` };
 
     const author = await this.prisma.user.findUnique({ where: { id: userId } });
 
@@ -635,18 +649,18 @@ export class ChantierTabsService {
     });
 
     return {
-      id: row.id,
-      chantierId: row.projectId,
+      id: saved.id,
+      chantierId: saved.projectId,
       chantierReference: project.reference,
       chantierName: project.name,
-      category: photoCategoryToFrench(row.category),
-      fileName: row.fileName,
-      fileUrl: row.fileUrl,
+      category: photoCategoryToFrench(saved.category),
+      fileName: saved.fileName,
+      fileUrl: saved.fileUrl,
       authorName: author
         ? `${author.firstName} ${author.lastName}`
         : 'Utilisateur',
-      date: formatDateFr(row.createdAt),
-      comment: row.comment ?? undefined,
+      date: formatDateFr(saved.createdAt),
+      comment: saved.comment ?? undefined,
     };
   }
 

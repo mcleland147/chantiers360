@@ -49,6 +49,10 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
       CORS_ORIGIN: ${CORS_ORIGIN}
       PORT: 3000
+      UPLOAD_DIR: /data/uploads
+      UPLOAD_MAX_SIZE: ${UPLOAD_MAX_SIZE:-10485760}
+    volumes:
+      - uploads_data:/data/uploads
     depends_on:
       postgres:
         condition: service_healthy
@@ -128,3 +132,4 @@ volumes:
   postgres_prod_data:
   caddy_prod_data:
   caddy_prod_config:
+  uploads_data:

@@ -74,7 +74,8 @@ vi.mock("../hooks/useChantierTabs", () => ({
   useCreateAssignmentMutation: () => ({ mutate: vi.fn(), isPending: false, isError: false }),
   useCreateProgressMutation: () => ({ mutate: vi.fn(), isPending: false, isError: false }),
   useCreateReserveMutation: () => ({ mutate: vi.fn(), isPending: false, isError: false }),
-  useCreatePhotoMutation: () => ({ mutate: vi.fn(), isPending: false, isError: false }),
+  useUploadPhotosMutation: () => ({ mutate: vi.fn(), isPending: false, isError: false }),
+  useDeletePhotoMutation: () => ({ mutate: vi.fn(), isPending: false, isError: false }),
   chantierTabKeys: {
     assignments: (id: string) => ["chantiers", id, "assignments"],
     progress: (id: string) => ["chantiers", id, "progress"],

@@ -425,6 +425,24 @@ async function handleChantiersRoute(route: Route): Promise<void> {
     }
   }
 
+  const uploadMatch = pathname.match(/^\/api\/chantiers\/([^/]+)\/photos\/upload$/);
+  if (method === "POST" && uploadMatch) {
+    const id = uploadMatch[1];
+    const row = {
+      id: `ph-upload-${Date.now()}`,
+      chantierId: id,
+      category: "Pendant travaux",
+      fileName: "facade-e2e.jpg",
+      fileUrl: `/api/photos/ph-upload-${Date.now()}/file`,
+      authorName: "Marc Dupont",
+      date: "20/06/2026",
+    };
+    const list = [row, ...(photosByChantier.get(id) ?? [])];
+    photosByChantier.set(id, list);
+    await route.fulfill({ status: 201, json: [row] });
+    return;
+  }
+
   const photosMatch = pathname.match(/^\/api\/chantiers\/([^/]+)\/photos$/);
   if (photosMatch) {
     const id = photosMatch[1];

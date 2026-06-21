@@ -1,0 +1,102 @@
+# Changelog — Chantiers360
+
+Toutes les évolutions notables de Chantiers360 sont documentées dans ce fichier.
+
+Le format est inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/)  
+et le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
+
+**Processus évolutions RUN :** `docs/23-Processus-Gestion-Evolutions.md`  
+**Fiches évolutions :** `evolutions/EVOL-NNN-*.md`
+
+---
+
+## [Unreleased]
+
+_Entrees en cours de developpement — voir branches `evol/EVOL-*`._
+
+---
+
+## [1.1.0] - Prévue
+
+**Date cible :** T3 2026  
+**Statut :** Lot 1.1-A livré — gate recette A en attente · lots B/C non démarrés  
+**Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md`
+
+### Added — lot 1.1-A (EVOL-001) ✅
+
+- Upload reel JPG/JPEG/PNG (10 Mo, 10 fichiers) — `POST /chantiers/:id/photos/upload`
+- Stream authentifie — `GET /photos/:id/file`
+- Suppression soft delete — `DELETE /photos/:id`
+- Volume Docker `uploads_data`, variables `UPLOAD_DIR` / `UPLOAD_MAX_SIZE`
+- Script `npm run ops:backup:uploads`
+
+### Added — lots 1.1-B/C (prévu)
+
+- **EVOL-002** — Planning des ouvriers — lot 1.1-B
+- **EVOL-003** — Budget & ressources chantier — lot 1.1-C
+- **Conception R1.1-FINAL** — ADR-001, Worker rates, ExpenseStatus (conception)
+
+### Changed — lot 1.1-A
+
+- `AddPhotoModal` — upload natif (remplace saisie URL MVP)
+- Galeries chantier et globale — aperçu API + suppression
+
+### Changed — lot 1.1-C (prévu)
+
+- **Breaking (lot 1.1-C) :** `budgetSpent` base sur somme des depenses **VALIDATED** (remplace calcul % avancement MVP)
+
+### Fixed
+
+- _Aucun correctif prevu dans cette release_
+
+---
+
+## [1.0.0] — 2026-06-21
+
+### Added
+- MVP Chantiers360 — gestion chantiers, réserves, photos, dashboards Conducteur / Direction
+- Authentification JWT, guards rôles, historisation
+- Stack production Docker (Caddy, Nginx, NestJS, PostgreSQL)
+- CI GitHub Actions (tests, build, smoke Docker)
+- Scripts exploitation K4 : backup, restore, healthcheck
+- Runbook incident et point d’arrêt go-live (L1→L5)
+
+### Security
+- JWT obligatoire sur routes métier (Phase K1)
+- CORS restreint, Swagger désactivé en production
+- PostgreSQL non exposé sur réseau public (compose prod)
+
+---
+
+## Historique des versions (référence)
+
+| Version | Date | Jalons principaux | Tag Git |
+|---------|------|-------------------|---------|
+| 1.0.0 | 21/06/2026 | MVP + K1–K4 livrés · RUN cadre méthodo | _à taguer au go-live_ |
+| 1.1.0 | _prévu_ | EVOL-001/002/003 Release 1.1 | _—_ |
+| 1.2.0 | _backlog_ | Notifications, commentaires, reporting | _—_ |
+| 2.0.0 | _vision_ | Portail client, mobile, multi-tenant | _—_ |
+
+---
+
+## Convention d’écriture des entrées
+
+```markdown
+### Added | Changed | Deprecated | Removed | Fixed | Security
+- EVOL-NNN — Description courte utilisateur ([#123](PR)) — _fiche evolutions/..._
+```
+
+| Section | Usage |
+|---------|--------|
+| **Added** | Nouvelle fonctionnalité |
+| **Changed** | Évolution comportement existant |
+| **Deprecated** | Fonctionnalité maintenue mais à retirer |
+| **Removed** | Fonctionnalité supprimée |
+| **Fixed** | Correction de bug |
+| **Security** | Correctif ou durcissement sécurité |
+
+---
+
+[Unreleased]: https://github.com/mcleland147/chantiers360/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/mcleland147/chantiers360/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/mcleland147/chantiers360/releases/tag/v1.0.0

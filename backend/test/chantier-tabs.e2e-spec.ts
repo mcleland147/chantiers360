@@ -5,6 +5,7 @@ import { App } from 'supertest/types';
 import { JwtAuthGuard } from '../src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../src/auth/guards/roles.guard';
 import { ChantierTabsService } from '../src/projects/chantier-tabs.service';
+import { PhotosService } from '../src/photos/photos.service';
 import { ProjectsController } from '../src/projects/projects.controller';
 import { ProjectsService } from '../src/projects/projects.service';
 
@@ -87,6 +88,7 @@ describe('Chantier tabs API (Supertest)', () => {
       providers: [
         { provide: ProjectsService, useValue: projectsService },
         { provide: ChantierTabsService, useValue: chantierTabsService },
+        { provide: PhotosService, useValue: { uploadPhotos: jest.fn() } },
       ],
     })
       .overrideGuard(JwtAuthGuard)

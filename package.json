@@ -15,6 +15,7 @@
     "prod:seed": "docker compose -f docker-compose.prod.yml --env-file .env.prod --profile seed run --rm seed",
     "prod:verify": "bash scripts/verify-prod-stack.sh",
     "ops:backup": "bash scripts/backup-db.sh",
+    "ops:backup:uploads": "bash scripts/backup-uploads.sh",
     "ops:restore": "bash scripts/restore-db.sh",
     "ops:health": "bash scripts/check-health.sh",
     "ci:env": "bash scripts/ci-prepare-env.sh",

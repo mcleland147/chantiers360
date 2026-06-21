@@ -25,7 +25,8 @@ import {
   useChantierProgressQuery,
   useChantierReservesQuery,
   useCreateAssignmentMutation,
-  useCreatePhotoMutation,
+  useDeletePhotoMutation,
+  useUploadPhotosMutation,
   useCreateProgressMutation,
   useCreateReserveMutation,
   useTakeReserveChargeMutation,
@@ -98,7 +99,8 @@ export function ChantierDetailPage() {
   const createAssignmentMutation = useCreateAssignmentMutation(id ?? "");
   const createProgressMutation = useCreateProgressMutation(id ?? "");
   const createReserveMutation = useCreateReserveMutation(id ?? "");
-  const createPhotoMutation = useCreatePhotoMutation(id ?? "");
+  const uploadPhotosMutation = useUploadPhotosMutation(id ?? "");
+  const deletePhotoMutation = useDeletePhotoMutation(id ?? "");
 
   const role = user?.role ?? "CONDUCTEUR_TRAVAUX";
 
@@ -203,7 +205,9 @@ export function ChantierDetailPage() {
               <PhotoGallery
                 photos={photos}
                 canAdd={canAddPhoto(role)}
+                canDelete={canAddPhoto(role)}
                 onAdd={() => setPhotoModalOpen(true)}
+                onDelete={(photo) => deletePhotoMutation.mutate(photo.id)}
               />
             )}
             {activeTab === "historique" && (
@@ -284,15 +288,15 @@ export function ChantierDetailPage() {
 
       <AddPhotoModal
         isOpen={photoModalOpen}
-        isSubmitting={createPhotoMutation.isPending}
+        isSubmitting={uploadPhotosMutation.isPending}
         error={
-          createPhotoMutation.isError
-            ? extractApiErrorMessage(createPhotoMutation.error)
+          uploadPhotosMutation.isError
+            ? extractApiErrorMessage(uploadPhotosMutation.error)
             : null
         }
         onClose={() => setPhotoModalOpen(false)}
         onSubmit={(payload) =>
-          createPhotoMutation.mutate(payload, {
+          uploadPhotosMutation.mutate(payload, {
             onSuccess: () => setPhotoModalOpen(false),
           })
         }

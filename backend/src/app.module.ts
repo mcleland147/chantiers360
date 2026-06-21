@@ -15,11 +15,13 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { HistoryModule } from './history/history.module';
 import { CommonModule } from './common/common.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
+    StorageModule,
     AuthModule,
     UsersModule,
     RolesModule,
