@@ -1,0 +1,40 @@
+# Chantiers360 — reverse proxy (Caddy)
+#
+# Local REC : APP_DOMAIN=localhost + tls internal (certificat local)
+# VPS OVH   : APP_DOMAIN=app.votredomaine.fr, supprimer "tls internal",
+#             renseigner ACME_EMAIL pour Let's Encrypt automatique
+
+{
+	{$CADDY_GLOBAL_OPTIONS:}
+}
+
+{$APP_DOMAIN:localhost} {
+	{$TLS_BLOCK:tls internal}
+
+	encode gzip zstd
+
+	# API NestJS — préfixe /api
+	handle /api/* {
+		reverse_proxy backend:3000 {
+			header_up Host {host}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+
+	# Frontend React (Nginx static)
+	handle {
+		reverse_proxy frontend:80 {
+			header_up Host {host}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+}
+
+# Redirection HTTP → HTTPS
+http://{$APP_DOMAIN:localhost} {
+	redir https://{host}{uri} permanent
+}

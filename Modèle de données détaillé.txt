@@ -1,0 +1,272 @@
+Modèle de données détaillé – Chantiers360
+Version MVP
+1. Vue d’ensemble
+L’application repose sur les entités principales suivantes :
+	•	Utilisateur
+	•	Rôle
+	•	Chantier
+	•	Affectation
+	•	Réserve
+	•	Photo
+	•	Mise à jour d’avancement
+	•	Alerte
+	•	Historique
+
+2. Entités métier
+2.1 Utilisateur
+Représente un utilisateur de l’application.
+Attributs
+	•	id
+	•	prénom
+	•	nom
+	•	email
+	•	mot_de_passe_hashé
+	•	rôle_id
+	•	actif
+	•	date_création
+	•	date_modification
+Rôles possibles
+	•	Direction
+	•	Assistante administrative
+	•	Conducteur de travaux
+	•	Chef de chantier
+
+2.2 Rôle
+Permet de gérer les droits applicatifs.
+Attributs
+	•	id
+	•	nom
+	•	description
+Relations
+Un rôle peut être associé à plusieurs utilisateurs.
+
+2.3 Chantier
+Représente un chantier suivi dans l’application.
+Attributs
+	•	id
+	•	référence
+	•	nom
+	•	client
+	•	adresse
+	•	budget
+	•	date_début
+	•	date_fin_prévue
+	•	date_réception
+	•	statut
+	•	conducteur_id
+	•	créé_par
+	•	date_création
+	•	date_modification
+Statuts autorisés
+	•	Préparation
+	•	Planification
+	•	Démarrage
+	•	Réalisation
+	•	Réception
+	•	Clôture
+Relations
+	•	Un chantier est piloté par un conducteur de travaux.
+	•	Un chantier peut avoir plusieurs affectations.
+	•	Un chantier peut avoir plusieurs réserves.
+	•	Un chantier peut avoir plusieurs photos.
+	•	Un chantier peut avoir plusieurs mises à jour d’avancement.
+	•	Un chantier peut avoir plusieurs alertes.
+	•	Un chantier peut avoir plusieurs entrées d’historique.
+
+2.4 Affectation
+Représente l’affectation d’un utilisateur à un chantier.
+Attributs
+	•	id
+	•	chantier_id
+	•	utilisateur_id
+	•	fonction
+	•	date_affectation
+	•	actif
+Relations
+	•	Une affectation concerne un chantier.
+	•	Une affectation concerne un utilisateur.
+
+2.5 Réserve
+Représente une anomalie ou un point à lever sur un chantier.
+Attributs
+	•	id
+	•	chantier_id
+	•	titre
+	•	description
+	•	priorité
+	•	statut
+	•	créée_par
+	•	clôturée_par
+	•	date_création
+	•	date_clôture
+Priorités
+	•	Faible
+	•	Moyenne
+	•	Haute
+	•	Critique
+Statuts
+	•	Ouverte
+	•	En cours
+	•	Levée
+Relations
+	•	Une réserve appartient à un chantier.
+	•	Une réserve est créée par un utilisateur.
+	•	Une réserve peut être clôturée par un conducteur.
+
+2.6 Photo
+Représente une photo associée à un chantier.
+Attributs
+	•	id
+	•	chantier_id
+	•	nom_fichier
+	•	url_fichier
+	•	catégorie
+	•	commentaire
+	•	ajoutée_par
+	•	date_ajout
+Catégories
+	•	Avant travaux
+	•	Pendant travaux
+	•	Après travaux
+Relations
+	•	Une photo appartient à un chantier.
+	•	Une photo est ajoutée par un utilisateur.
+
+2.7 Mise à jour d’avancement
+Représente une note d’avancement terrain.
+Attributs
+	•	id
+	•	chantier_id
+	•	auteur_id
+	•	commentaire
+	•	pourcentage_avancement
+	•	date_mise_à_jour
+Relations
+	•	Une mise à jour appartient à un chantier.
+	•	Une mise à jour est créée par un utilisateur.
+
+2.8 Alerte
+Représente une alerte générée automatiquement ou manuellement.
+Attributs
+	•	id
+	•	chantier_id
+	•	type
+	•	message
+	•	statut
+	•	date_création
+	•	date_traitement
+Types
+	•	Retard chantier
+	•	Réserve critique
+Statuts
+	•	Active
+	•	Traitée
+Relations
+	•	Une alerte appartient à un chantier.
+
+2.9 Historique
+Permet de tracer les actions importantes.
+Attributs
+	•	id
+	•	chantier_id
+	•	utilisateur_id
+	•	action
+	•	ancienne_valeur
+	•	nouvelle_valeur
+	•	motif
+	•	date_action
+Actions historisées
+	•	Création chantier
+	•	Modification chantier
+	•	Changement de statut
+	•	Retour arrière
+	•	Création réserve
+	•	Clôture réserve
+	•	Ajout photo
+	•	Mise à jour avancement
+
+3. Relations principales
+Utilisateur / Rôle
+Un utilisateur possède un rôle.
+Relation :
+Rôle 1,N Utilisateur
+
+Chantier / Conducteur
+Un chantier est piloté par un conducteur de travaux.
+Relation :
+Utilisateur 1,N Chantier
+
+Chantier / Affectation
+Un chantier peut avoir plusieurs utilisateurs affectés.
+Relation :
+Chantier 1,N Affectation Utilisateur 1,N Affectation
+
+Chantier / Réserve
+Un chantier peut avoir plusieurs réserves.
+Relation :
+Chantier 1,N Réserve
+
+Chantier / Photo
+Un chantier peut avoir plusieurs photos.
+Relation :
+Chantier 1,N Photo
+
+Chantier / Avancement
+Un chantier peut avoir plusieurs mises à jour d’avancement.
+Relation :
+Chantier 1,N Mise à jour d’avancement
+
+Chantier / Alerte
+Un chantier peut avoir plusieurs alertes.
+Relation :
+Chantier 1,N Alerte
+
+Chantier / Historique
+Un chantier peut avoir plusieurs entrées d’historique.
+Relation :
+Chantier 1,N Historique
+
+4. Règles de gestion liées aux données
+RG-DATA-001 Un chantier doit obligatoirement avoir une référence, un client, une adresse, une date de début, une date de fin prévue et un conducteur.
+RG-DATA-002 Un chantier est créé avec le statut initial “Préparation”.
+RG-DATA-003 Un chantier ne peut pas passer en “Démarrage” sans affectation active.
+RG-DATA-004 Un chantier ne peut pas être clôturé s’il existe au moins une réserve dont le statut est différent de “Levée”.
+RG-DATA-005 Une réserve doit obligatoirement être rattachée à un chantier.
+RG-DATA-006 Une photo doit obligatoirement être rattachée à un chantier.
+RG-DATA-007 Tout changement de statut chantier doit créer une entrée dans l’historique.
+RG-DATA-008 Tout retour arrière de statut doit contenir un motif obligatoire.
+
+5. Schéma relationnel simplifié
+Utilisateur
+	•	id PK
+	•	rôle_id FK
+Rôle
+	•	id PK
+Chantier
+	•	id PK
+	•	conducteur_id FK Utilisateur
+	•	créé_par FK Utilisateur
+Affectation
+	•	id PK
+	•	chantier_id FK Chantier
+	•	utilisateur_id FK Utilisateur
+Réserve
+	•	id PK
+	•	chantier_id FK Chantier
+	•	créée_par FK Utilisateur
+	•	clôturée_par FK Utilisateur
+Photo
+	•	id PK
+	•	chantier_id FK Chantier
+	•	ajoutée_par FK Utilisateur
+Avancement
+	•	id PK
+	•	chantier_id FK Chantier
+	•	auteur_id FK Utilisateur
+Alerte
+	•	id PK
+	•	chantier_id FK Chantier
+Historique
+	•	id PK
+	•	chantier_id FK Chantier
+	•	utilisateur_id FK Utilisateur

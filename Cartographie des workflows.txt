@@ -1,0 +1,340 @@
+Cartographie des workflows
+
+	•	Identification des processus métiers
+
+Processus 1 - Gestion d’un chantier
+Devis accepté
+↓
+Création du chantier
+↓
+Planification
+↓
+Affectation des équipes
+↓
+Démarrage
+↓
+Suivi avancement
+↓
+Réception
+↓
+Levée des réserves
+↓
+Clôture
+
+
+Processus 2 - Gestion des réserves
+Création réserve
+↓
+Affectation
+↓
+Traitement
+↓
+Contrôle
+↓
+Levée
+↓
+Clôture
+
+
+Processus 3 - Gestion des photos
+Prise photo
+↓
+Association chantier
+↓
+Catégorisation
+↓
+Consultation
+
+Processus 4 - Gestion des alertes
+Date fin dépassée
+↓
+Détection
+↓
+Notification
+↓
+Analyse
+↓
+Mise à jour
+
+
+	•	Matrice RACI
+
+Processus 1 – Gestion d’un chantier
+
+Acteur
+Rôle dans le processus
+Assistante administrative
+Création du chantier
+Conducteur de travaux
+Validation du démarrage, pilotage, affectation des ressources, réception, clôture
+Chef de chantier
+Mise à jour de l’avancement terrain, remontée d’informations
+Direction
+Consultation et suivi global
+
+
+Processus 2 – Gestion des réserves
+
+Acteur
+Rôle dans le processus
+Conducteur de travaux
+Création, affectation, suivi et clôture
+Chef de chantier
+Création et traitement
+Direction
+Consultation
+
+
+
+
+
+
+
+
+Processus 3 – Gestion des photos
+
+Acteur
+Rôle dans le processus
+Chef de chantier
+Prise et dépôt des photos
+Conducteur de travaux
+Consultation et contrôle
+Direction
+Consultation
+Assistante administrative
+Consultation éventuelle
+
+
+Processus 4 – Gestion des alertes
+
+Acteur
+Rôle dans le processus
+Système
+Détection automatique
+Conducteur de travaux
+Analyse et traitement
+Direction
+Suivi et pilotage
+Chef de chantier
+Mise à jour des informations permettant la levée de l’alerte
+
+
+
+	•	Identification des objets métiers : 
+Chantier
+	•	Référence
+	•	Adresse
+	•	Client
+	•	Budget
+	•	Statut
+Réserve
+	•	Description
+	•	Priorité
+	•	Statut
+	•	Responsable
+Photo
+	•	Image
+	•	Date
+	•	Catégorie
+Utilisateur
+	•	Nom
+	•	Fonction
+	•	Rôle
+
+Construction du workflow
+
+Étape 1 – Création du chantier
+
+Déclencheur
+
+Le devis est accepté par le client.
+
+Acteur
+
+Assistante administrative
+
+Actions
+
+Création du dossier chantier :
+
+	•	Référence
+	•	Client
+	•	Adresse
+	•	Budget
+	•	Dates prévisionnelles
+	•	Conducteur de travaux
+
+Résultat
+
+Le chantier est créé avec le statut :
+
+Préparation
+
+
+
+
+
+
+Étape 2 – Préparation
+Acteur principal
+Conducteur de travaux
+Actions
+	•	Vérification des informations
+	•	Préparation du chantier
+	•	Collecte des éléments nécessaires
+Validation
+Conducteur de travaux
+Règle métier
+RG-001
+Le chantier doit être complet avant de passer en planification.
+
+Étape 3 – Planification
+Acteur principal
+Conducteur de travaux
+Actions
+	•	Affectation des équipes
+	•	Planification des interventions
+	•	Organisation du démarrage
+Validation
+Conducteur de travaux
+Règles métier
+RG-002
+Impossible de démarrer un chantier sans équipe affectée.
+Étape 4 – Démarrage
+Acteur principal
+Conducteur de travaux
+Actions
+	•	lancement officiel du chantier
+Validation
+Conducteur de travaux
+Résultat
+Le chantier passe en :
+Réalisation
+
+Étape 5 – Réalisation
+Acteurs
+Chef de chantier
+Conducteur de travaux
+Actions
+Chef de chantier
+	•	mise à jour de l’avancement
+	•	ajout de photos
+	•	création de réserves
+	•	remontée d’informations terrain
+Conducteur
+	•	suivi global
+	•	arbitrage
+	•	pilotage
+
+
+
+Événements possibles
+Retard détecté
+Date > Date prévisionnelle
+ET
+Statut ≠ Clôturé
+↓
+Création d’une alerte
+↓
+Notification du conducteur
+
+Réserve détectée
+↓
+Création d’une réserve
+↓
+Traitement
+↓
+Levée
+
+Étape 6 – Réception
+Acteur principal
+Conducteur de travaux
+Actions
+	•	contrôle final
+	•	validation des travaux réalisés
+Validation
+Conducteur de travaux
+Règles métier
+RG-003
+Le chantier doit être en statut :
+Réalisation
+Pour pouvoir être réceptionné.
+
+Étape 7 – Contrôle des réserves
+Décision métier
+Existe-t-il encore des réserves ouvertes ?
+Oui
+Réception
+    ↓
+Réserve ouverte
+    ↓
+Retour en Réalisation
+Motif obligatoire.
+Historisation obligatoire.
+
+Non
+Réception
+    ↓
+Validation clôture
+
+
+
+Étape 8 – Clôture
+Acteur principal
+Conducteur de travaux
+Actions
+	•	validation finale
+	•	clôture administrative
+Règles métier
+RG-004
+Toutes les réserves doivent être levées.
+
+RG-005
+Une date de réception doit être renseignée.
+
+Résultat
+Le chantier passe au statut :
+Clôturé
+
+Gestion des retours arrière
+Transition
+Autorisée
+Validation
+Planification → Préparation
+Oui
+Conducteur
+Démarrage → Planification
+Oui
+Conducteur
+Réalisation → Démarrage
+Non
+-
+Réception → Réalisation
+Oui
+Conducteur
+Clôture → Réception
+Exception
+Conducteur + justification
+
+
+Workflow des réserves
+En parallèle du chantier, chaque réserve suit son propre cycle.
+Ouverte
+    ↓
+En cours
+    ↓
+Levée
+Acteurs
+Création
+	•	Conducteur
+	•	Chef de chantier
+Traitement
+	•	Chef de chantier
+Validation de levée
+	•	Conducteur
+
+
+
+
+
+

@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRoleName {
+  DIRECTION
+  ASSISTANTE_ADMINISTRATIVE
+  CONDUCTEUR_TRAVAUX
+  CHEF_CHANTIER
+}
+
+enum ProjectStatus {
+  PREPARATION
+  PLANIFICATION
+  DEMARRAGE
+  REALISATION
+  RECEPTION
+  CLOTURE
+}
+
+enum IssueStatus {
+  OUVERTE
+  EN_COURS
+  LEVEE
+}
+
+enum IssuePriority {
+  FAIBLE
+  MOYENNE
+  HAUTE
+  CRITIQUE
+}
+
+enum PhotoCategory {
+  AVANT_TRAVAUX
+  PENDANT_TRAVAUX
+  APRES_TRAVAUX
+}
+
+enum AlertType {
+  RETARD_CHANTIER
+  RESERVE_CRITIQUE
+}
+
+enum AlertStatus {
+  ACTIVE
+  TRAITEE
+}
+
+model Role {
+  id          String @id @default(uuid())
+  name        UserRoleName @unique
+  description String?
+  users       User[]
+}
+
+model User {
+  id            String    @id @default(uuid())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  passwordHash  String
+  isActive      Boolean   @default(true)
+  roleId        String
+  role          Role      @relation(fields: [roleId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  assignments      Assignment[]
+  ownedProjects    Project[] @relation("ProjectConductor")
+  createdIssues    Issue[]   @relation("IssueCreator")
+  assignedIssues   Issue[]   @relation("IssueAssignee")
+}
+
+model Project {
+  id              String        @id @default(uuid())
+  reference       String        @unique
+  name            String
+  client          String
+  address         String
+  budget          Decimal?
+  startDate       DateTime
+  expectedEndDate DateTime
+  receptionDate   DateTime?
+  status          ProjectStatus @default(PREPARATION)
+  conductorId     String
+  conductor       User          @relation("ProjectConductor", fields: [conductorId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  assignments     Assignment[]
+  issues          Issue[]
+  photos          Photo[]
+  progress        ProgressUpdate[]
+  alerts          Alert[]
+  history         HistoryEvent[]
+}
+
+model Assignment {
+  id             String   @id @default(uuid())
+  projectId      String
+  userId         String
+  functionLabel  String
+  assignmentDate DateTime @default(now())
+  isActive       Boolean  @default(true)
+  project        Project  @relation(fields: [projectId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model Issue {
+  id            String        @id @default(uuid())
+  projectId     String
+  title         String
+  description   String
+  priority      IssuePriority
+  status        IssueStatus   @default(OUVERTE)
+  createdById   String
+  assignedToId  String?
+  closedById    String?
+  createdAt     DateTime      @default(now())
+  takenAt       DateTime?
+  closedAt      DateTime?
+  project       Project       @relation(fields: [projectId], references: [id])
+  createdBy     User          @relation("IssueCreator", fields: [createdById], references: [id])
+  assignedTo    User?         @relation("IssueAssignee", fields: [assignedToId], references: [id])
+}
+
+model Photo {
+  id          String        @id @default(uuid())
+  projectId   String
+  fileName    String
+  fileUrl     String
+  category    PhotoCategory
+  comment     String?
+  addedById   String
+  createdAt   DateTime      @default(now())
+  project     Project       @relation(fields: [projectId], references: [id])
+}
+
+model ProgressUpdate {
+  id            String   @id @default(uuid())
+  projectId     String
+  authorId      String
+  comment       String
+  progressRatio Int?
+  createdAt     DateTime @default(now())
+  project       Project  @relation(fields: [projectId], references: [id])
+}
+
+model Alert {
+  id          String      @id @default(uuid())
+  projectId   String
+  type        AlertType
+  message     String
+  status      AlertStatus @default(ACTIVE)
+  createdAt   DateTime    @default(now())
+  processedAt DateTime?
+  project     Project     @relation(fields: [projectId], references: [id])
+}
+
+model HistoryEvent {
+  id         String   @id @default(uuid())
+  projectId  String
+  userId     String
+  action     String
+  oldValue   String?
+  newValue   String?
+  reason     String?
+  createdAt  DateTime @default(now())
+  project    Project  @relation(fields: [projectId], references: [id])
+}

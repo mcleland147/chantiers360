@@ -1,0 +1,56 @@
+---
+description: Definition of Done Chantiers360 — tests, cahier, build obligatoires
+alwaysApply: true
+---
+
+# Chantiers360 — Definition of Done
+
+Aucune fonctionnalité n'est **terminée** sans les 5 points suivants :
+
+1. **Tests automatisés** — créer ou adapter les tests (Vitest/RTL frontend, Jest/Supertest backend, Playwright E2E si parcours critique).
+2. **Cahier de tests** — mettre à jour [`docs/06-Cahier-de-tests.md`](docs/06-Cahier-de-tests.md) (ID, type, étapes, résultat attendu, statut, lien fichier test).
+3. **Exécution** — lancer les tests concernés et corriger les échecs.
+4. **Build** — `npm run build --prefix frontend` (et backend si touché).
+5. **Synthèse** — indiquer clairement ce qui a été testé et les résultats.
+
+## Minimum par phase (anti-tests cosmétiques)
+
+Chaque phase doit livrer **au moins 4 tests significatifs** — pas de couverture superficielle :
+
+| # | Type | Objectif | Outil typique |
+|---|------|----------|---------------|
+| 1 | **Règle métier** | Comportement RG ou logique domaine (ex. retard, levée réserve, workflow statut) | Vitest / Jest sur `utils/`, `rules/`, services |
+| 2 | **Composant** | Rendu + interaction utile (pas seulement « le texte s'affiche ») | Vitest + RTL |
+| 3 | **Rôle / accès** | Guard, permission, nav masquée selon rôle | Vitest sur `routeAccess`, `chantierPermissions`, `guards` |
+| 4 | **E2E parcours principal** | Scénario utilisateur bout-en-bout de la phase | Playwright |
+
+Dans la synthèse de phase, citer explicitement les **4 IDs de test** (cahier) correspondants. Si un type n'a pas de sens (ex. phase purement infra), le justifier dans le cahier.
+
+## Avant chaque nouvelle phase
+
+Vérifier les impacts sur :
+
+- **Règles métier** (RG-001 à RG-013, terminologie Chantier/Réserve/Réalisation)
+- **Rôles MVP** (Direction, Assistante, Conducteur, Chef — pas Administrateur)
+- **Navigation** (`config/navigation.ts`, `config/routeAccess.ts`, guards)
+- **Tests existants** (non-régression)
+- **Cahier de tests** (`docs/06-Cahier-de-tests.md`)
+
+## Emplacements tests
+
+| Niveau | Outil | Emplacement |
+|--------|-------|-------------|
+| Frontend unitaire/intégration | Vitest + RTL | `frontend/src/**/*.test.ts(x)` |
+| Backend unitaire | Jest | `backend/src/**/*.spec.ts` |
+| API | Supertest | `backend/test/*.e2e-spec.ts` |
+| E2E | Playwright | `e2e/tests/*.spec.ts` |
+
+## Commandes
+
+```bash
+npm run test --prefix frontend
+npm run test --prefix backend
+npm run test:api --prefix backend
+npm run test:e2e --prefix e2e
+npm run test:all   # racine
+```

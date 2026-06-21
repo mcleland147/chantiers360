@@ -1,0 +1,130 @@
+Compte rendu – Validation du cadrage fonctionnel
+Décision
+Après revue des ateliers de cadrage, de la cartographie des processus, des workflows et des règles de gestion, le métier valide les orientations proposées pour la réalisation du MVP Chantiers360.
+
+Validation des processus
+Gestion des chantiers
+✅ Validé
+Le cycle de vie suivant est retenu :
+Préparation
+↓
+Planification
+↓
+Démarrage
+↓
+Réalisation
+↓
+Réception
+↓
+Clôture
+
+Les retours arrière identifiés sont validés.
+
+
+
+
+
+Gestion des réserves
+✅ Validé
+Workflow retenu :
+Ouverte
+↓
+En cours
+↓
+Levée
+La clôture reste sous la responsabilité du conducteur de travaux.
+
+
+Gestion des photos
+✅ Validé
+Les photos devront être associées à un chantier et classées selon les catégories :
+	•	Avant travaux
+	•	Pendant travaux
+	•	Après travaux
+
+Gestion des alertes
+✅ Validé
+Une alerte devra être générée lorsque :
+	•	la date de fin prévisionnelle est dépassée ;
+	•	le chantier n’est pas clôturé.
+
+
+
+
+Validation des rôles
+Rôle
+Validation
+Direction
+✅
+Assistante administrative
+✅
+Conducteur de travaux
+✅
+Chef de chantier
+✅
+
+
+Ouvriers
+⚠️ Hors MVP
+Le métier confirme ne pas intégrer les ouvriers dans la première version.
+Une évolution future pourra être étudiée afin de permettre :
+	•	la remontée de photos ;
+	•	le signalement d’incidents ;
+	•	la déclaration de blocages.
+
+Sous-traitants
+⚠️ Hors MVP
+Non retenus dans la première version.
+
+Validation du périmètre MVP
+Gestion des chantiers
+✅ Création
+✅ Modification
+✅ Consultation
+✅ Gestion des statuts
+
+Gestion des équipes
+✅ Affectation des équipes
+✅ Consultation des affectations
+
+Gestion des réserves
+✅ Création
+✅ Suivi
+✅ Clôture
+
+Gestion des photos
+✅ Ajout
+✅ Consultation
+✅ Catégorisation
+
+Alertes
+✅ Détection des retards
+✅ Notification du conducteur
+
+Tableau de bord
+✅ Vue conducteur
+✅ Vue direction
+Version simplifiée pour le MVP.
+
+Hors périmètre MVP
+Les fonctionnalités suivantes sont identifiées mais reportées à une version ultérieure :
+	•	Accès ouvriers
+	•	Accès sous-traitants
+	•	Géolocalisation
+	•	Mode hors ligne
+	•	Signature électronique
+	•	Portail client
+	•	Gestion documentaire avancée
+	•	Planning détaillé des équipes
+
+Validation des règles de gestion
+Le métier valide les règles RG-001 à RG-007 définies lors des ateliers.
+
+Décision finale
+✅ Workflow métier validé
+✅ Rôles et responsabilités validés
+✅ Périmètre MVP validé
+✅ Règles de gestion validées
+✅ Autorisation donnée à l’équipe projet d’engager la phase de conception fonctionnelle détaillée
+
+

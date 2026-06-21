@@ -1,0 +1,289 @@
+Spécifications Fonctionnelles Générales
+Projet Chantiers360
+Version 1.0 – MVP
+1. Présentation
+1.1 Contexte
+BatiNova Travaux souhaite mettre en place une application web permettant de centraliser le suivi opérationnel des chantiers.
+L’application devra remplacer les suivis actuellement réalisés à travers Excel, WhatsApp et les échanges par e-mail.
+
+1.2 Objectifs
+Permettre :
+	•	le suivi des chantiers ;
+	•	le suivi des équipes ;
+	•	le suivi de l’avancement ;
+	•	la gestion des réserves ;
+	•	la gestion des photos terrain ;
+	•	la détection des retards ;
+	•	le pilotage de l’activité.
+
+2. Profils utilisateurs
+Direction
+Droits :
+	•	consultation ;
+	•	reporting ;
+	•	tableaux de bord.
+
+Assistante administrative
+Droits :
+	•	création des chantiers ;
+	•	modification des informations administratives.
+
+Conducteur de travaux
+Droits :
+	•	gestion complète des chantiers ;
+	•	affectation des équipes ;
+	•	gestion des réserves ;
+	•	validation des statuts ;
+	•	clôture des chantiers.
+
+Chef de chantier
+Droits :
+	•	consultation des chantiers ;
+	•	mise à jour de l’avancement ;
+	•	ajout de photos ;
+	•	création de réserves.
+
+3. Écran Dashboard Conducteur
+Objectif
+Permettre au conducteur de travaux de piloter l’ensemble de ses chantiers.
+Composants
+KPI
+Afficher :
+	•	Nombre de chantiers actifs
+	•	Nombre de chantiers en retard
+	•	Nombre de réserves ouvertes
+Liste des chantiers récents
+Colonnes :
+	•	Référence
+	•	Chantier
+	•	Statut
+	•	Date fin prévue
+	•	Nombre de réserves
+Alertes
+Afficher :
+	•	Retards
+	•	Réserves critiques
+Actions
+	•	Consulter un chantier
+	•	Filtrer
+	•	Rechercher
+Règles de gestion
+RG-001
+Un chantier est considéré en retard lorsque :
+Date actuelle > Date de fin prévue
+ET
+Statut ≠ Clôturé
+
+4. Écran Liste des chantiers
+Objectif
+Permettre la consultation et la recherche de chantiers.
+Données affichées
+	•	Référence
+	•	Nom du chantier
+	•	Client
+	•	Conducteur
+	•	Statut
+	•	Date de début
+	•	Date de fin prévue
+Filtres
+	•	Statut
+	•	Conducteur
+	•	Date
+	•	Client
+Actions
+	•	Créer un chantier
+	•	Modifier un chantier
+	•	Consulter un chantier
+
+5. Écran Création / Modification de chantier
+Objectif
+Permettre la gestion du cycle de vie d’un chantier.
+Informations générales
+Identification
+	•	Référence chantier
+	•	Nom du chantier
+	•	Client
+	•	Adresse
+Pilotage
+	•	Conducteur de travaux
+	•	Budget
+	•	Date de début
+	•	Date de fin prévue
+Statut
+Valeurs autorisées :
+	•	Préparation
+	•	Planification
+	•	Démarrage
+	•	Réalisation
+	•	Réception
+	•	Clôture
+Actions
+	•	Enregistrer
+	•	Modifier
+	•	Changer le statut
+Règles de gestion
+RG-002
+Le statut initial est “Préparation”.
+RG-003
+Tout changement de statut doit être historisé.
+RG-004
+Tout retour arrière nécessite un motif.
+
+6. Écran Détail chantier
+Objectif
+Centraliser l’ensemble des informations du chantier.
+Structure
+Onglet Informations
+	•	Données générales
+	•	Budget
+	•	Dates
+	•	Statut
+Onglet Équipes
+	•	Conducteur
+	•	Chefs de chantier
+	•	Affectations
+Onglet Avancement
+	•	Historique des mises à jour
+	•	Commentaires
+Onglet Réserves
+	•	Liste des réserves
+Onglet Photos
+	•	Galerie photos
+Onglet Historique
+	•	Journal des actions
+Actions
+	•	Modifier le chantier
+	•	Ajouter une photo
+	•	Créer une réserve
+	•	Mettre à jour l’avancement
+
+7. Gestion des équipes
+Objectif
+Permettre l’affectation des ressources aux chantiers.
+Données
+	•	Collaborateur
+	•	Fonction
+	•	Date d’affectation
+Actions
+	•	Affecter
+	•	Retirer
+	•	Consulter
+Règles de gestion
+RG-005
+Un chantier doit disposer d’au moins une affectation avant son démarrage.
+
+8. Gestion de l’avancement
+Objectif
+Permettre le suivi de la progression des travaux.
+Données
+	•	Date
+	•	Auteur
+	•	Commentaire
+Actions
+	•	Ajouter une mise à jour
+	•	Consulter l’historique
+Règles de gestion
+RG-006
+Toute mise à jour doit être historisée.
+
+9. Gestion des réserves
+Objectif
+Permettre le suivi des anomalies jusqu’à leur levée.
+Données
+	•	Référence
+	•	Description
+	•	Priorité
+	•	Date création
+	•	Statut
+Statuts
+	•	Ouverte
+	•	En cours
+	•	Levée
+Actions
+	•	Créer
+	•	Modifier
+	•	Changer de statut
+	•	Clôturer
+Règles de gestion
+RG-007
+Une réserve clôturée ne peut plus être modifiée.
+RG-008
+Seul le conducteur de travaux peut clôturer une réserve.
+
+10. Gestion des photos
+Objectif
+Permettre la documentation visuelle du chantier.
+Catégories
+	•	Avant travaux
+	•	Pendant travaux
+	•	Après travaux
+Données
+	•	Photo
+	•	Auteur
+	•	Date
+	•	Catégorie
+Actions
+	•	Ajouter
+	•	Supprimer
+	•	Consulter
+
+11. Gestion des alertes
+Objectif
+Détecter automatiquement les retards.
+Conditions
+Date actuelle > Date de fin prévue
+ET
+Statut ≠ Clôturé
+Actions système
+	•	Création d’une alerte
+	•	Notification du conducteur
+
+12. Dashboard Direction
+Objectif
+Permettre à la direction de disposer d’une vision consolidée.
+KPI
+	•	Nombre de chantiers
+	•	Nombre de chantiers en retard
+	•	Réserves ouvertes
+	•	Réserves critiques
+Indicateurs
+	•	Répartition par statut
+	•	Répartition par conducteur
+	•	Tendances mensuelles
+
+13. Mobile Chef de chantier
+Objectif
+Permettre des actions rapides sur le terrain.
+Actions disponibles
+	•	Consulter ses chantiers
+	•	Ajouter une photo
+	•	Créer une réserve
+	•	Mettre à jour l’avancement
+Contraintes UX
+	•	Maximum 3 clics
+	•	Utilisable sur smartphone
+	•	Temps cible inférieur à 30 secondes par action
+
+14. Règles de gestion globales
+RG-009
+Le workflow chantier doit respecter l’ordre suivant :
+Préparation → Planification → Démarrage → Réalisation → Réception → Clôture
+RG-010
+Un chantier ne peut pas être clôturé si une réserve est encore ouverte.
+RG-011
+Une date de réception doit être renseignée avant la clôture.
+RG-012
+Toute action importante doit être historisée.
+RG-013
+Toute modification doit être associée à un utilisateur authentifié.
+
+15. Critères de réussite du MVP
+Le MVP sera considéré comme validé lorsque les utilisateurs seront capables de :
+	•	créer un chantier ;
+	•	suivre son avancement ;
+	•	gérer les réserves ;
+	•	gérer les photos ;
+	•	détecter les retards ;
+	•	consulter les indicateurs de pilotage ;
+sans recourir à des fichiers Excel externes.
+

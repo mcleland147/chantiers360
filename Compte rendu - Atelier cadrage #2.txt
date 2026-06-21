@@ -1,0 +1,261 @@
+Compte rendu – Atelier de cadrage métier n°2
+Projet Chantiers360 – Analyse des processus métier et des usages
+Date
+XX/XX/2026
+Participants
+Métier
+	•	Direction BatiNova Travaux
+	•	Conducteurs de travaux
+	•	Chefs de chantier
+	•	Assistante administrative
+Équipe projet
+	•	Chef de projet / Consultant Produit
+
+1. Objectif de l’atelier
+L’objectif de cet atelier était d’approfondir la compréhension du fonctionnement opérationnel de l’entreprise afin de :
+	•	identifier les irritants métier ;
+	•	comprendre le cycle de vie complet d’un chantier ;
+	•	définir les rôles et responsabilités des utilisateurs ;
+	•	analyser les usages terrain et les besoins de mobilité ;
+	•	préparer la définition du périmètre fonctionnel détaillé du MVP.
+
+2. Synthèse des irritants métier
+Les échanges ont permis d’identifier plusieurs problématiques récurrentes impactant le pilotage opérationnel des chantiers.
+Manque de visibilité opérationnelle
+Les informations sont actuellement dispersées entre différents outils :
+	•	fichiers Excel ;
+	•	échanges WhatsApp ;
+	•	e-mails ;
+	•	notes personnelles.
+Chaque conducteur de travaux dispose de son propre mode de suivi, ce qui rend difficile l’obtention d’une vision consolidée de l’activité.
+Impacts
+	•	difficulté à connaître l’état réel des chantiers ;
+	•	reporting chronophage ;
+	•	faible visibilité pour la direction.
+
+Charge administrative importante
+Les conducteurs de travaux consacrent plusieurs heures chaque semaine à :
+	•	collecter les informations terrain ;
+	•	consolider les données ;
+	•	mettre à jour leurs fichiers ;
+	•	produire des reportings.
+Impacts
+	•	perte de temps ;
+	•	risque d’erreurs ;
+	•	informations rapidement obsolètes.
+
+Limites des outils actuels
+L’utilisation de fichiers Excel partagés génère :
+	•	des doublons ;
+	•	des versions concurrentes ;
+	•	des incohérences de données ;
+	•	des difficultés de traçabilité.
+
+Risques opérationnels identifiés
+Les principaux risques remontés sont :
+	•	oubli de réserves ;
+	•	retards non détectés ;
+	•	perte de photos chantier ;
+	•	informations contradictoires ;
+	•	absence d’historique fiable.
+
+Erreurs fréquemment rencontrées
+Les utilisateurs signalent notamment :
+	•	statuts de chantier incorrects ;
+	•	clôture prématurée de certains chantiers ;
+	•	photos associées au mauvais chantier ;
+	•	remontée tardive des retards.
+
+3. Cycle de vie métier d’un chantier
+Les échanges ont permis d’identifier le cycle de vie actuel d’un chantier.
+Création du chantier
+Déclencheur
+Acceptation d’un devis client.
+Responsable
+Assistante administrative.
+Informations renseignées
+	•	référence chantier ;
+	•	client ;
+	•	adresse ;
+	•	dates prévisionnelles ;
+	•	conducteur de travaux ;
+	•	budget.
+
+Validation du démarrage
+Le conducteur de travaux valide la prise en charge du chantier et organise la planification opérationnelle.
+
+Réalisation
+Le chantier entre en phase de production.
+Les informations d’avancement sont actuellement remontées :
+	•	par téléphone ;
+	•	via WhatsApp ;
+	•	lors des visites terrain.
+Aucun processus standardisé n’est actuellement en place.
+
+Réception
+Le conducteur de travaux valide la conformité des travaux réalisés.
+Les éventuelles réserves sont identifiées et enregistrées.
+
+Clôture
+La clôture du chantier intervient uniquement lorsque :
+	•	la réception est validée ;
+	•	l’ensemble des réserves est levé.
+
+Cycle de vie cible identifié
+Les étapes suivantes devront être intégrées dans l’application :
+	•	Préparation
+	•	Planification
+	•	Démarrage
+	•	Réalisation
+	•	Réception
+	•	Clôture
+
+4. Analyse des rôles et responsabilités
+Les profils utilisateurs suivants ont été identifiés.
+Direction
+Responsabilités
+	•	consultation des indicateurs ;
+	•	suivi global des chantiers ;
+	•	pilotage de l’activité.
+Droits envisagés
+	•	consultation uniquement.
+
+Assistante administrative
+Responsabilités
+	•	création des chantiers ;
+	•	mise à jour des informations administratives.
+Droits envisagés
+	•	création ;
+	•	modification limitée.
+
+Conducteur de travaux
+Responsabilités
+	•	pilotage des chantiers ;
+	•	affectation des ressources ;
+	•	suivi de l’avancement ;
+	•	gestion des réserves ;
+	•	clôture des chantiers.
+Droits envisagés
+	•	création de réserves ;
+	•	modification des chantiers ;
+	•	clôture des réserves ;
+	•	validation des étapes du workflow.
+
+Chef de chantier
+Responsabilités
+	•	suivi opérationnel terrain ;
+	•	remontée d’informations ;
+	•	prise de photos ;
+	•	création de réserves.
+Droits envisagés
+	•	consultation ;
+	•	mise à jour de l’avancement ;
+	•	création de réserves ;
+	•	ajout de photos.
+
+Ouvriers
+Les ouvriers ne sont pas intégrés au périmètre utilisateur du MVP.
+Toutefois, les échanges ont mis en évidence qu’ils participent déjà à la remontée d’informations terrain via des canaux informels.
+Opportunité identifiée
+Une future version de la solution pourrait permettre :
+	•	le dépôt de photos ;
+	•	la déclaration d’incidents ;
+	•	la remontée de blocages ;
+	•	le suivi simplifié de tâches.
+
+Sous-traitants
+Les sous-traitants sont identifiés comme hors périmètre MVP.
+Leur intégration pourra être étudiée dans une phase ultérieure.
+
+5. Analyse des usages et de la mobilité
+Profils terrain
+Les chefs de chantier utiliseront principalement l’application depuis leur smartphone.
+Les usages prioritaires identifiés sont :
+	•	consultation des chantiers ;
+	•	mise à jour de l’avancement ;
+	•	prise et dépôt de photos ;
+	•	création de réserves.
+L’objectif exprimé est de réaliser ces actions en moins de 30 secondes.
+
+Profils pilotage
+Les conducteurs de travaux utiliseront principalement l’application depuis un ordinateur.
+Les usages prioritaires sont :
+	•	pilotage multi-chantiers ;
+	•	gestion des réserves ;
+	•	consultation des indicateurs ;
+	•	reporting.
+
+Connectivité
+Certaines zones de chantier présentent une couverture réseau limitée.
+Le fonctionnement hors ligne n’est pas retenu dans le MVP mais constitue une piste d’évolution.
+
+Orientation UX identifiée
+Les échanges conduisent à privilégier une approche :
+Mobile First
+Pour :
+	•	les chefs de chantier.
+Desktop First
+Pour :
+	•	les conducteurs ;
+	•	l’administratif ;
+	•	la direction.
+Une conception responsive devra être retenue afin de couvrir les deux usages.
+
+6. Périmètre MVP consolidé
+Les fonctionnalités suivantes sont retenues pour le MVP.
+Gestion des chantiers
+	•	création ;
+	•	modification ;
+	•	consultation ;
+	•	suivi des statuts.
+Gestion des équipes
+	•	affectation des ressources ;
+	•	visualisation des équipes.
+Gestion des réserves
+	•	création ;
+	•	suivi ;
+	•	clôture.
+Gestion des photos
+	•	dépôt ;
+	•	consultation ;
+	•	catégorisation.
+Gestion de l’avancement
+	•	mise à jour de statut ;
+	•	suivi de progression.
+Alertes
+	•	détection automatique des retards ;
+	•	remontée des alertes.
+Tableau de bord
+	•	indicateurs de suivi ;
+	•	vision globale des chantiers.
+
+7. Opportunités et pistes d’évolution identifiées
+Les sujets suivants ne sont pas retenus dans le MVP mais présentent un intérêt métier.
+Mobilité avancée
+	•	fonctionnement hors ligne ;
+	•	application mobile dédiée.
+Fonctionnalités terrain
+	•	accès simplifié pour les ouvriers ;
+	•	déclaration d’incidents ;
+	•	remontée de blocages.
+Gestion documentaire
+	•	comptes rendus ;
+	•	documents contractuels ;
+	•	plans.
+Géolocalisation
+	•	géolocalisation des photos ;
+	•	géolocalisation des interventions.
+Collaboration externe
+	•	accès client ;
+	•	accès sous-traitants.
+
+8. Prochaines étapes
+Les informations recueillies permettent désormais d’engager la phase de conception fonctionnelle.
+Les prochains travaux porteront sur :
+	•	La cartographie détaillée des processus.
+	•	La rédaction des User Stories.
+	•	La définition du backlog MVP.
+	•	La modélisation des données.
+	•	La conception des parcours utilisateurs.
+	•	La réalisation des premières maquettes fonctionnelles.
+

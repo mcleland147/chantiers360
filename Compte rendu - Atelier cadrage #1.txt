@@ -1,0 +1,142 @@
+Compte rendu – Atelier de cadrage métier n°1
+Projet
+Chantiers360 – Application de suivi opérationnel des chantiers
+Date
+XX/XX/2026
+Participants
+Métier
+	•	Direction BatiNova Travaux
+	•	Conducteurs de travaux
+	•	Représentants des chefs de chantier
+Équipe projet
+	•	Chef de projet / Consultant Produit
+
+1. Contexte
+BatiNova Travaux est une PME spécialisée dans les travaux de rénovation et le second œuvre.
+Le suivi des activités est actuellement réalisé à travers plusieurs outils hétérogènes (Excel, WhatsApp, e-mails), générant un manque de visibilité opérationnelle, des difficultés de coordination et des risques d’erreurs dans le suivi des chantiers.
+L’entreprise souhaite mettre en place une application métier centralisée permettant d’améliorer le pilotage de ses opérations.
+
+2. Objectifs du projet
+Mettre à disposition une application web permettant :
+	•	le suivi des chantiers ;
+	•	le suivi des équipes affectées ;
+	•	la gestion des interventions ;
+	•	le suivi photographique des travaux ;
+	•	la gestion des réserves ;
+	•	le suivi de l’avancement ;
+	•	la remontée des alertes et retards ;
+	•	la production de tableaux de bord de pilotage.
+
+3. Population concernée
+L’application devra être utilisée par :
+Profil
+Nombre estimé
+Conducteurs de travaux
+5
+Chefs de chantier
+12
+Ouvriers
+25
+Assistantes administratives
+3
+Soit environ 45 utilisateurs.
+
+4. Besoins métier identifiés
+Gestion des chantiers
+Chaque chantier devra comporter les informations suivantes :
+	•	Référence chantier
+	•	Client
+	•	Adresse
+	•	Conducteur de travaux
+	•	Date de début
+	•	Date de fin prévisionnelle
+	•	Budget
+	•	Statut
+Statuts attendus
+	•	Préparation
+	•	En cours
+	•	En attente
+	•	Réception
+	•	Clôturé
+
+Gestion des équipes
+Les équipes pourront être affectées à plusieurs chantiers simultanément.
+La solution devra permettre de gérer :
+	•	les collaborateurs internes ;
+	•	les sous-traitants.
+
+Gestion des photos
+La solution devra permettre l’association de photos à un chantier.
+Types de photos identifiés :
+	•	Avant travaux
+	•	Pendant travaux
+	•	Après travaux
+La géolocalisation des photos est identifiée comme un besoin futur mais n’est pas requise dans le MVP.
+
+Gestion des réserves
+Une réserve pourra être créée :
+	•	par un conducteur de travaux ;
+	•	par le client.
+Statuts identifiés :
+	•	Ouverte
+	•	En cours
+	•	Levée
+Seul le conducteur de travaux pourra clôturer une réserve.
+
+Gestion des alertes
+Une alerte devra être générée lorsqu’un chantier dépasse sa date de fin prévisionnelle sans être clôturé.
+Règle métier identifiée :
+Date du jour > Date de fin prévisionnelle ET statut ≠ Clôturé.
+
+5. Principaux irritants remontés
+Les échanges ont permis d’identifier les problématiques suivantes :
+Manque de visibilité opérationnelle
+Les équipes ne disposent pas d’une vision consolidée de l’état réel des chantiers.
+Dispersion de l’information
+Les informations sont réparties entre plusieurs outils :
+	•	Excel
+	•	WhatsApp
+	•	E-mails
+	•	Téléphones des équipes terrain
+Suivi des réserves complexe
+Les réserves sont actuellement suivies manuellement dans des fichiers Excel.
+Absence de pilotage global
+La direction ne dispose pas d’indicateurs consolidés permettant de suivre efficacement l’activité.
+Gestion tardive des retards
+Les dépassements de planning sont souvent détectés trop tardivement.
+
+6. Premières hypothèses de périmètre MVP
+Les fonctionnalités suivantes sont identifiées comme prioritaires :
+MVP
+	•	Gestion des chantiers
+	•	Gestion des équipes
+	•	Gestion des réserves
+	•	Gestion des photos
+	•	Gestion des statuts
+	•	Alertes de retard
+	•	Tableau de bord synthétique
+Hors MVP
+	•	Géolocalisation des photos
+	•	Application mobile dédiée
+	•	Signature électronique
+	•	Gestion documentaire avancée
+	•	Portail client
+
+7. Points à approfondir
+Les sujets suivants nécessitent un atelier complémentaire :
+	•	Analyse détaillée des irritants
+	•	Cycle de vie complet d’un chantier
+	•	Rôles et responsabilités
+	•	Gestion des habilitations
+	•	Usages terrain et mobilité
+	•	Parcours utilisateurs
+	•	Contraintes techniques et sécurité
+
+8. Prochaines étapes
+Organisation d’un second atelier de cadrage orienté :
+	•	Analyse des irritants métier ;
+	•	Cartographie du cycle de vie d’un chantier ;
+	•	Identification des rôles et responsabilités ;
+	•	Analyse des usages terrain et besoins de mobilité.
+Les conclusions de cet atelier permettront de définir le périmètre fonctionnel détaillé du MVP et d’engager les travaux de conception fonctionnelle.
+

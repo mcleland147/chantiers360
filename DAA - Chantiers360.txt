@@ -1,0 +1,288 @@
+Document d’architecture applicative – Chantiers360
+Version MVP
+1. Objectif
+Ce document décrit l’architecture cible de l’application Chantiers360 pour le MVP.
+L’objectif est de disposer d’une application web interne permettant de gérer les chantiers, les réserves, les photos, les affectations, les alertes et les tableaux de bord.
+
+2. Architecture cible
+2.1 Vue d’ensemble
+Architecture proposée :
+	•	Frontend : React
+	•	Backend : Node.js / Express ou NestJS
+	•	Base de données : PostgreSQL
+	•	Stockage fichiers : stockage local en MVP ou bucket objet type S3/MinIO en cible
+	•	Authentification : JWT
+	•	Déploiement : Docker
+	•	CI/CD : GitHub Actions
+	•	Hébergement : VPS, OVH, Azure ou équivalent
+
+3. Composants applicatifs
+3.1 Frontend
+Le frontend permet aux utilisateurs d’accéder à l’application depuis ordinateur ou smartphone.
+Technologie recommandée
+React avec Vite ou Next.js.
+Responsabilités
+	•	Affichage des écrans
+	•	Gestion de la navigation
+	•	Appels API
+	•	Gestion des formulaires
+	•	Affichage des tableaux de bord
+	•	Responsive design
+Écrans principaux
+	•	Connexion
+	•	Dashboard conducteur
+	•	Liste des chantiers
+	•	Détail chantier
+	•	Gestion des réserves
+	•	Gestion des photos
+	•	Dashboard direction
+	•	Vue mobile chef de chantier
+
+3.2 Backend
+Le backend expose les API nécessaires au fonctionnement de l’application.
+Technologie recommandée
+Node.js avec NestJS ou Express.
+Responsabilités
+	•	Authentification
+	•	Gestion des utilisateurs
+	•	Gestion des chantiers
+	•	Gestion des réserves
+	•	Gestion des photos
+	•	Gestion des affectations
+	•	Gestion des alertes
+	•	Historisation des actions
+	•	Application des règles métier
+
+3.3 Base de données
+Technologie recommandée
+PostgreSQL.
+Responsabilités
+	•	Stockage des chantiers
+	•	Stockage des utilisateurs
+	•	Stockage des réserves
+	•	Stockage des affectations
+	•	Stockage des alertes
+	•	Stockage de l’historique
+	•	Référentiel des rôles
+
+3.4 Stockage des fichiers
+Les photos doivent être stockées séparément de la base de données.
+MVP
+Stockage local serveur possible.
+Cible recommandée
+Stockage objet :
+	•	S3
+	•	MinIO
+	•	Azure Blob Storage
+	•	OVH Object Storage
+La base de données stocke uniquement l’URL ou le chemin du fichier.
+
+4. Architecture logique
+Utilisateur
+   ↓
+Frontend React
+   ↓
+API Backend Node.js
+   ↓
+Base PostgreSQL
+   ↓
+Stockage photos
+
+5. Modules backend
+Module Authentification
+Fonctions :
+	•	Connexion
+	•	Déconnexion
+	•	Génération token JWT
+	•	Vérification des droits
+
+Module Utilisateurs
+Fonctions :
+	•	Liste des utilisateurs
+	•	Gestion des rôles
+	•	Activation / désactivation
+
+Module Chantiers
+Fonctions :
+	•	Création chantier
+	•	Consultation chantier
+	•	Modification chantier
+	•	Changement de statut
+	•	Clôture chantier
+	•	Historisation
+
+Module Affectations
+Fonctions :
+	•	Affecter un utilisateur
+	•	Retirer une affectation
+	•	Consulter les affectations
+
+Module Réserves
+Fonctions :
+	•	Créer une réserve
+	•	Modifier une réserve
+	•	Changer son statut
+	•	Clôturer une réserve
+
+Module Photos
+Fonctions :
+	•	Upload photo
+	•	Catégorisation
+	•	Consultation
+	•	Suppression
+
+Module Alertes
+Fonctions :
+	•	Détection automatique des retards
+	•	Création d’alerte
+	•	Traitement d’alerte
+
+Module Reporting
+Fonctions :
+	•	KPI chantiers actifs
+	•	KPI retards
+	•	KPI réserves ouvertes
+	•	Répartition par statut
+	•	Indicateurs direction
+
+6. API principales
+Authentification
+POST /api/auth/login POST /api/auth/logout GET /api/auth/me
+
+Chantiers
+GET /api/chantiers GET /api/chantiers/:id POST /api/chantiers PUT /api/chantiers/:id PATCH /api/chantiers/:id/statut DELETE /api/chantiers/:id
+
+Affectations
+GET /api/chantiers/:id/affectations POST /api/chantiers/:id/affectations DELETE /api/affectations/:id
+
+Réserves
+GET /api/chantiers/:id/reserves POST /api/chantiers/:id/reserves PUT /api/reserves/:id PATCH /api/reserves/:id/statut PATCH /api/reserves/:id/cloture
+
+Photos
+GET /api/chantiers/:id/photos POST /api/chantiers/:id/photos DELETE /api/photos/:id
+
+Avancement
+GET /api/chantiers/:id/avancements POST /api/chantiers/:id/avancements
+
+Alertes
+GET /api/alertes PATCH /api/alertes/:id/traiter
+
+Reporting
+GET /api/reporting/dashboard-conducteur GET /api/reporting/dashboard-direction
+
+7. Gestion des droits
+Direction
+	•	Consultation globale
+	•	Accès reporting
+	•	Pas de modification
+Assistante administrative
+	•	Création chantier
+	•	Modification informations administratives
+Conducteur de travaux
+	•	Gestion complète des chantiers affectés
+	•	Changement de statut
+	•	Clôture des réserves
+	•	Clôture des chantiers
+Chef de chantier
+	•	Consultation des chantiers affectés
+	•	Ajout photos
+	•	Création réserves
+	•	Mise à jour avancement
+
+8. Sécurité
+Authentification
+Authentification par email et mot de passe.
+Le mot de passe doit être stocké sous forme hashée.
+Autorisation
+Contrôle des droits par rôle.
+Données
+Les actions sensibles doivent être historisées.
+Fichiers
+Les fichiers uploadés doivent être contrôlés :
+	•	type autorisé
+	•	taille maximale
+	•	nommage sécurisé
+
+9. Gestion des alertes
+Une tâche planifiée vérifie régulièrement les chantiers.
+Condition de retard :
+Date actuelle > date fin prévue ET Statut différent de “Clôture”
+Si la condition est vraie, une alerte active est créée ou maintenue.
+
+10. Déploiement
+Environnement local
+Docker Compose avec :
+	•	frontend
+	•	backend
+	•	PostgreSQL
+	•	stockage fichiers local
+Environnement cible
+Serveur VPS ou cloud.
+Services :
+	•	Reverse proxy
+	•	Frontend
+	•	Backend API
+	•	PostgreSQL
+	•	Stockage photos
+
+11. CI/CD
+Pipeline recommandé :
+	•	Push GitHub
+	•	Installation dépendances
+	•	Lint
+	•	Tests
+	•	Build frontend
+	•	Build backend
+	•	Build images Docker
+	•	Déploiement
+
+12. Supervision MVP
+Pour le MVP :
+	•	logs backend
+	•	logs erreurs frontend
+	•	suivi disponibilité application
+	•	sauvegarde base de données
+En cible :
+	•	monitoring applicatif
+	•	alerting
+	•	supervision infrastructure
+	•	suivi stockage fichiers
+
+13. Sauvegardes
+Sauvegarde quotidienne recommandée :
+	•	base PostgreSQL
+	•	répertoire de stockage photos
+Rétention recommandée :
+	•	7 jours minimum en MVP
+	•	30 jours en cible
+
+14. Architecture cible simplifiée
+Navigateur utilisateur
+        ↓
+Frontend React
+        ↓
+Backend API Node.js
+        ↓
+PostgreSQL
+
+Backend API
+        ↓
+Stockage photos
+
+Backend API
+        ↓
+Tâche planifiée alertes
+
+15. Choix recommandés pour développement avec Cursor
+Stack recommandée :
+	•	React
+	•	TypeScript
+	•	Tailwind CSS
+	•	Node.js
+	•	Express ou NestJS
+	•	PostgreSQL
+	•	Prisma ORM
+	•	JWT
+	•	Docker Compose
+Cette stack est adaptée pour générer rapidement une application métier structurée, maintenable et facilement déployable.
+

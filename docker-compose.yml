@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: chantiers360-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-chantiers360}
+      POSTGRES_USER: ${POSTGRES_USER:-chantiers360}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chantiers360}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      target: production
+    container_name: chantiers360-backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-chantiers360}:${POSTGRES_PASSWORD:-chantiers360}@postgres:5432/${POSTGRES_DB:-chantiers360}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-replace-with-strong-secret}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
+      PORT: 3000
+    depends_on:
+      - postgres
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: chantiers360-frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:${BACKEND_PORT:-3000}/api
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+
+volumes:
+  postgres_data:

@@ -1,0 +1,24 @@
+{
+  "name": "chantiers360",
+  "private": true,
+  "scripts": {
+    "test": "npm run test --prefix frontend && npm run test --prefix backend",
+    "test:frontend": "npm run test --prefix frontend",
+    "test:backend": "npm run test --prefix backend",
+    "test:e2e": "npm run test:e2e --prefix e2e",
+    "test:all": "npm run test && npm run test:e2e",
+    "build": "npm run build --prefix frontend && npm run build --prefix backend",
+    "dev:db": "docker compose up -d postgres",
+    "dev:api": "npm run prisma:deploy --prefix backend && npm run prisma:seed --prefix backend && npm run start:dev --prefix backend",
+    "prod:up": "docker compose -f docker-compose.prod.yml --env-file .env.prod up --build -d",
+    "prod:down": "docker compose -f docker-compose.prod.yml --env-file .env.prod down",
+    "prod:seed": "docker compose -f docker-compose.prod.yml --env-file .env.prod --profile seed run --rm seed",
+    "prod:verify": "bash scripts/verify-prod-stack.sh",
+    "ci:env": "bash scripts/ci-prepare-env.sh",
+    "ci:lint": "npm run lint --prefix frontend && npm run lint:ci --prefix backend",
+    "ci:test": "npm run test --prefix frontend && npm run test --prefix backend && npm run test:api --prefix backend",
+    "ci:build": "npm run build --prefix frontend && npm run prisma:generate --prefix backend && npm run build --prefix backend",
+    "ci:audit": "npm audit --audit-level=high --prefix frontend; npm audit --audit-level=high --prefix backend",
+    "ci:docker": "bash scripts/ci-prepare-env.sh && docker compose -f docker-compose.prod.yml --env-file .env.ci config && docker compose -f docker-compose.prod.yml --env-file .env.ci build && bash scripts/ci-docker-smoke.sh"
+  }
+}

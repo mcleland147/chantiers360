@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Issue" ADD COLUMN "assignedToId" TEXT;
+ALTER TABLE "Issue" ADD COLUMN "takenAt" TIMESTAMP(3);
+
+-- AddForeignKey
+ALTER TABLE "Issue" ADD CONSTRAINT "Issue_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Issue" ADD CONSTRAINT "Issue_assignedToId_fkey" FOREIGN KEY ("assignedToId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

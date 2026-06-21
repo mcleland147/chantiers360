@@ -1,0 +1,119 @@
+# Stack production / REC — Chantiers360
+# Usage : docker compose -f docker-compose.prod.yml --env-file .env.prod up --build -d
+#
+# Seul Caddy expose les ports 80/443. Postgres, backend et frontend restent sur le réseau Docker.
+
+name: chantiers360-prod
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: chantiers360-prod-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      target: production
+    container_name: chantiers360-prod-backend
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+      - web
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+    container_name: chantiers360-prod-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - web
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: chantiers360-prod-caddy
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-localhost}
+      TLS_BLOCK: ${TLS_BLOCK:-tls internal}
+      CADDY_GLOBAL_OPTIONS: ${CADDY_GLOBAL_OPTIONS:-}
+    ports:
+      - "${CADDY_HTTP_PORT:-80}:80"
+      - "${CADDY_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_prod_data:/data
+      - caddy_prod_config:/config
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - web
+    healthcheck:
+      test: ["CMD", "caddy", "validate", "--config", "/etc/caddy/Caddyfile"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # Seed REC locale (profil optionnel) :
+  # docker compose -f docker-compose.prod.yml --env-file .env.prod --profile seed run --rm seed
+  seed:
+    profiles: [seed]
+    build:
+      context: ./backend
+      target: development
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+    command: npx ts-node prisma/seed.ts
+    restart: "no"
+
+networks:
+  internal:
+    internal: true
+  web:
+    driver: bridge
+
+volumes:
+  postgres_prod_data:
+  caddy_prod_data:
+  caddy_prod_config:
