@@ -113,13 +113,15 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 ## REC-EVOL-001 — Upload réel photos (Release 1.1-A)
 
+**Gate A :** ✅ validé le 21/06/2026
+
 | ID | Objectif | Statut |
 |----|----------|--------|
-| REC-EVOL-001-01 | Upload 3 JPG depuis fiche chantier | ☐ |
-| REC-EVOL-001-02 | Refus fichier > 10 Mo | ☐ |
-| REC-EVOL-001-03 | Suppression + trace historique « Suppression photo » | ☐ |
-| REC-EVOL-001-04 | Upload depuis mobile chef | ☐ |
-| REC-EVOL-001-05 | Galerie globale `/photos` à jour | ☐ |
+| REC-EVOL-001-01 | Upload 3 JPG depuis fiche chantier | ✅ |
+| REC-EVOL-001-02 | Refus fichier > 10 Mo | ✅ |
+| REC-EVOL-001-03 | Suppression + trace historique « Suppression photo » | ✅ |
+| REC-EVOL-001-04 | Upload depuis mobile chef | ✅ |
+| REC-EVOL-001-05 | Galerie globale `/photos` à jour | ✅ |
 
 ---
 

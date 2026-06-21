@@ -2,7 +2,7 @@
 
 **Date :** 21/06/2026  
 **Release :** 1.1.0 · **Lot :** 1.1-A uniquement  
-**Statut :** Livré technique — **gate A recette MOA en attente**
+**Statut :** **Gate A validé** — Recette OK · GO lot 1.1-B
 
 ---
 
@@ -25,17 +25,35 @@
 
 ---
 
-## 2. CI
+## 2. Gate A — critères
 
-| Job | Résultat |
-|-----|----------|
-| `npm run ci:test` | ✅ OK |
-| `npm run ci:build` | ✅ OK |
-| `npm run ci:docker` | À valider post-merge (volume uploads ajouté) |
+| Critère | Résultat | Date |
+|---------|----------|------|
+| `npm run ci:test` | ✅ OK | 21/06/2026 |
+| `npm run ci:build` | ✅ OK | 21/06/2026 |
+| `npm run ci:docker` (après `down -v`) | ✅ OK | 21/06/2026 |
+| REC-EVOL-001-01 à 05 | ✅ OK | 21/06/2026 |
+| EVOL-001 signée — statut Recette OK | ✅ OK | 21/06/2026 |
+
+**Verdict gate A :** ✅ **GO lot 1.1-B** (EVOL-002 Planning)
 
 ---
 
-## 3. Fichiers principaux
+## 3. CI — détail
+
+| Job | Résultat |
+|-----|----------|
+| Frontend Vitest | 78 tests ✅ |
+| Backend Jest unit | 42 tests ✅ |
+| Backend API Supertest | 37 tests ✅ |
+| Build FE + BE + Prisma | ✅ |
+| Docker prod smoke (`https://localhost/api/health`) | ✅ |
+
+Commande docker smoke : `docker compose -f docker-compose.prod.yml --env-file .env.ci down -v` puis `npm run ci:docker`.
+
+---
+
+## 4. Fichiers principaux
 
 | Zone | Fichiers |
 |------|----------|
@@ -44,15 +62,15 @@
 | API | `ProjectsController` upload, `PhotosController` file/delete |
 | Frontend | `AddPhotoModal.tsx`, `AuthenticatedPhoto.tsx`, galeries |
 | Ops | `docker-compose*.yml`, `scripts/backup-uploads.sh` |
+| Branche | `cursor/evol-001-upload-photos-lot-1.1-a` · commit `fcd016d` |
 
 ---
 
-## 4. Gate A — prochaines étapes
+## 5. Prochaines étapes
 
-1. Recette MOA : REC-EVOL-001-01 à 05 (`docs/07-Cahier-Recette-Metier.md`)
-2. Signature §5 fiche EVOL-001 si non faite
-3. Tag intermédiaire optionnel : `v1.1.0-rc.A`
-4. **GO lot 1.1-B** (EVOL-002) uniquement après validation gate A
+1. Tag optionnel : `v1.1.0-rc.A`
+2. **Lot 1.1-B** — EVOL-002 Planning ouvriers (autorisé)
+3. Tag `v1.1.0` uniquement après lot C
 
 ---
 

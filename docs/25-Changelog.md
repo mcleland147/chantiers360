@@ -19,8 +19,8 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 ## [1.1.0] - Prévue
 
 **Date cible :** T3 2026  
-**Statut :** Lot 1.1-A livré — gate recette A en attente · lots B/C non démarrés  
-**Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md`
+**Statut :** Lot 1.1-A **Recette OK** (gate A validé) · lots B/C non démarrés  
+**Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md` — **Gate A ✅**
 
 ### Added — lot 1.1-A (EVOL-001) ✅
 

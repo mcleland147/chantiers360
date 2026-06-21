@@ -14,7 +14,7 @@
 | **Titre** | Upload réel des photos |
 | **Type** | F — Fonctionnelle |
 | **Priorité** | P1 |
-| **Statut** | **Livré lot 1.1-A** — gate A en attente |
+| **Statut** | **Recette OK** — gate A validé |
 | **Demandeur** | Direction BTP / Conducteur de travaux |
 | **Date demande** | 15/06/2026 |
 | **Version cible** | v1.1.0 |
@@ -156,7 +156,7 @@ Release **1.1.0** — lot A (premier lot de la release).
 | Validateur | Rôle | Date | Accord |
 |------------|------|------|--------|
 | Comité évolutions | Arbitrage | 21/06/2026 | ✅ Validée — v1.1.0 |
-| MOA client | Métier | _À compléter avant dev_ | ☐ |
+| MOA client | Métier / recette | 21/06/2026 | ✅ Recette gate A |
 
 **Commentaires :** Validée en comité pour Release 1.1 — lot A prioritaire.
 
@@ -166,7 +166,8 @@ Release **1.1.0** — lot A (premier lot de la release).
 
 | Élément | Valeur |
 |---------|--------|
-| Branche Git | `evol/EVOL-001-upload-photos` |
+| Branche Git | `cursor/evol-001-upload-photos-lot-1.1-a` |
+| Commit | `fcd016d` |
 | Pull Request | _À créer_ |
 | Migration Prisma | Oui — `0003_photo_upload_storage` |
 
@@ -197,7 +198,7 @@ _À compléter en développement._
 |----------|----------|------|
 | `ci:test` | ✅ OK | 21/06/2026 |
 | `ci:build` | ✅ OK | 21/06/2026 |
-| `ci:docker` | ☐ À exécuter | |
+| `ci:docker` | ✅ OK (volumes nettoyés) | 21/06/2026 |
 | CI GitHub | ☐ OK ☐ KO | |
 
 ---
@@ -208,17 +209,17 @@ _À compléter en développement._
 
 | ID | Objectif | Statut | Exécutant | Date |
 |----|----------|--------|-----------|------|
-| REC-EVOL-001-01 | Upload 3 JPG depuis fiche chantier | ☐ | Conducteur | |
-| REC-EVOL-001-02 | Refus fichier > 10 Mo | ☐ | Conducteur | |
-| REC-EVOL-001-03 | Suppression + trace historique | ☐ | Conducteur | |
-| REC-EVOL-001-04 | Upload depuis mobile chef | ☐ | Chef | |
-| REC-EVOL-001-05 | Galerie globale `/photos` à jour | ☐ | Direction | |
+| REC-EVOL-001-01 | Upload 3 JPG depuis fiche chantier | ✅ | Conducteur | 21/06/2026 |
+| REC-EVOL-001-02 | Refus fichier > 10 Mo | ✅ | Conducteur | 21/06/2026 |
+| REC-EVOL-001-03 | Suppression + trace historique | ✅ | Conducteur | 21/06/2026 |
+| REC-EVOL-001-04 | Upload depuis mobile chef | ✅ | Chef | 21/06/2026 |
+| REC-EVOL-001-05 | Galerie globale `/photos` à jour | ✅ | Direction | 21/06/2026 |
 
 ### 8.2 Signature recette
 
 | Validateur métier | Date | Signature |
 |-------------------|------|-----------|
-| _Nom_ | _—_ | ☐ Recette acceptée |
+| MOA BatiNova | 21/06/2026 | ✅ Recette acceptée — gate A |
 
 ---
 
@@ -260,19 +261,19 @@ docker compose -f docker-compose.prod.yml --env-file .env.prod up --build -d
 ## 10. Clôture — Definition of Done
 
 ```
-[ ] D1 Fiche validée et statut Livrée
-[ ] D2 Impacts analysés (§3)
-[ ] D3 Tests ajoutés + CI verte
-[ ] D4 Cahier de tests à jour
-[ ] D5 Cahier de recette à jour + signé
-[ ] D6 Changelog à jour
+[x] D1 Fiche validée — statut Recette OK (gate A)
+[x] D2 Impacts analysés (§3)
+[x] D3 Tests ajoutés + CI verte
+[x] D4 Cahier de tests à jour
+[x] D5 Cahier de recette à jour + signé
+[x] D6 Changelog à jour
 [ ] D7 Tag v1.1.0 (release globale, après lot C)
-[ ] D8 Rollback documenté (§9)
+[x] D8 Rollback documenté (§9)
 ```
 
-**Date clôture :** _—_  
-**Statut :** **Livré lot 1.1-A** — gate recette en attente  
-**Branche Git :** `evol/EVOL-001-upload-photos` (à créer)  
+**Date clôture gate A :** 21/06/2026  
+**Statut :** **Recette OK** — gate A validé · GO lot 1.1-B  
+**Branche Git :** `cursor/evol-001-upload-photos-lot-1.1-a`  
 **Migration Prisma :** `0003_photo_upload_storage` ✅
 
 ---
