@@ -433,6 +433,16 @@ Référence : `evolutions/EVOL-003-budget-ressources.md`
 | RG-BUD-04 | Budget restant = enveloppe − consommé |
 | RG-BUD-05 | Agrégats **VALIDATED only** — DRAFT et CANCELLED exclus |
 
+**Périmètre accès budget (API + UI) — aligné RG-PLA-04 :**
+
+| Rôle | Lecture budget | Écriture ressources/dépenses | UI si accès refusé (HTTP 403) |
+|------|----------------|------------------------------|-------------------------------|
+| Conducteur | Ses chantiers (`conductorId`) | Ses chantiers uniquement | *Accès réservé au conducteur référent de ce chantier.* |
+| Chef | Chantiers affectés (`Assignment` actif) | Interdit | *Accès réservé aux équipes affectées à ce chantier.* |
+| Direction, Assistante | Tous les chantiers | Assistante : tous ; Conducteur : voir ligne conducteur | Message API ou *Accès restreint* |
+
+**Erreurs API :** `403 Forbidden` — `{ "message": "Accès chantier refusé." }` (lecture) ou message équivalent écriture.
+
 **Breaking change — `budgetSpent` (chantiers + dashboard direction) :**
 
 | Avant (MVP) | Après (1.1-C) |

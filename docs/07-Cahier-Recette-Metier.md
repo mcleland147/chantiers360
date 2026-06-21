@@ -160,6 +160,17 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | REC-EVOL-003-03 | Conducteur saisit dépense → dashboard direction mis à jour | ☐ |
 | REC-EVOL-003-04 | Chef lecture seule onglet Budget | ☐ |
 | REC-EVOL-003-05 | Dashboard direction — KPI chantiers > 80 % / > 100 % | ☐ |
+| REC-EVOL-003-06 | Conducteur non référent — message accès explicite | ☐ |
+
+### REC-EVOL-003-06 — Message accès budget (conducteur)
+
+| Champ | Valeur |
+|-------|--------|
+| **Objectif** | Vérifier le message métier lors d'un accès budget refusé |
+| **Préconditions** | Connecté `conducteur@batinova.fr` (Marc Dupont) |
+| **Étapes** | 1. Ouvrir un chantier d'un **autre** conducteur (ex. CHT-020) 2. Onglet **Budget** |
+| **Résultat attendu** | Titre *Accès restreint* + texte *Accès réservé au conducteur référent de ce chantier.* — **sans** bandeau « placeholder » |
+| **Statut** | ☐ À exécuter |
 
 **Breaking change à valider avec MOA :** `budgetSpent` = dépenses VALIDATED (plus % avancement).
 
