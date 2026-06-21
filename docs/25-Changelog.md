@@ -12,17 +12,18 @@ et le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Unreleased]
 
-_Entrees en cours de developpement — voir branches `evol/EVOL-*`._
+_Entrees en cours de developpement._
 
 ---
 
-## [1.1.0] - Prévue
+## [1.1.0] - 2026-06-21
 
-**Date cible :** T3 2026  
-**Statut :** Lot 1.1-A **Recette OK** (gate A validé) · lot 1.1-B **Recette OK** (gate B validé) · lot 1.1-C **Gate C prêt PR**  
+**Date de release :** 21/06/2026  
+**Statut :** Release 1.1 livrée — lots A/B/C **Recette OK** (gates A, B, C validés)  
 **Rapport lot A :** `docs/rapports/26-Rapport-Lot-1.1-A.md` — **Gate A ✅**  
 **Rapport lot B :** `docs/rapports/27-Rapport-Lot-1.1-B.md` — **Gate B ✅**  
-**Rapport lot C :** `docs/rapports/28-Rapport-Lot-1.1-C.md` — **Gate C ✅**
+**Rapport lot C :** `docs/rapports/28-Rapport-Lot-1.1-C.md` — **Gate C ✅**  
+**Recette automatisée :** `docs/rapports/recette-auto/recette-auto-2026-06-21.md` — **36/36 ✅**
 
 ### Added — lot 1.1-A (EVOL-001) ✅
 
@@ -56,10 +57,14 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 - Migrations `0005_budget_resources_expenses`, `0006_alert_budget_types`
 - Endpoints `/chantiers/:id/resources`, `/expenses`, `/budget/summary`
 
+### Added — recette MOA assistée
+
+- Framework recette automatisée — `npm run test:recette` (stack réelle, 36 scénarios)
+- Matrice d'automatisation, cahier MOA manuel, processus RUN (`docs/23`, `docs/31`–`34`)
+
 ### Added — lots 1.1-B/C (prévu)
 
 - ~~**EVOL-003** — Budget & ressources chantier — lot 1.1-C~~ → livré lot 1.1-C ✅
-- **Conception R1.1-FINAL** — ADR-001, Worker rates, ExpenseStatus (conception)
 
 ### Changed — lot 1.1-A
 
@@ -74,7 +79,9 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 
 ### Fixed
 
-- _Aucun correctif prevu dans cette release_
+- Messages métier accès budget refusé (403) — conducteur non référent
+- RG-PLA-04 — périmètre planning chantiers conducteur
+- Boutons planning — affichage « Enregistrer » (classes brand)
 
 ---
 
@@ -100,7 +107,7 @@ _Entrees en cours de developpement — voir branches `evol/EVOL-*`._
 | Version | Date | Jalons principaux | Tag Git |
 |---------|------|-------------------|---------|
 | 1.0.0 | 21/06/2026 | MVP + K1–K4 livrés · RUN cadre méthodo | _à taguer au go-live_ |
-| 1.1.0 | _prévu_ | EVOL-001/002/003 Release 1.1 | _—_ |
+| 1.1.0 | 21/06/2026 | EVOL-001/002/003 Release 1.1 · recette MOA assistée | `v1.1.0` |
 | 1.2.0 | _backlog_ | Notifications, commentaires, reporting | _—_ |
 | 2.0.0 | _vision_ | Portail client, mobile, multi-tenant | _—_ |
 
