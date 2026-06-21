@@ -78,6 +78,15 @@ Redirection automatique selon le rôle :
 - **KPI occupation** : % heures planifiées / référentiel 35 h/semaine
 - **Gérer les ouvriers** : création et désactivation (ouvrier inactif absent des listes d'affectation)
 
+### Budget chantier (Release 1.1-C)
+
+- Onglet **Budget** sur la fiche chantier
+- **Synthèse** : enveloppe, consommé (dépenses validées), restant, % consommation
+- **Alertes** : badge orange à 80 %, rouge à 100 %
+- **Ressources prévues** et **dépenses** — saisie par conducteur ou assistante
+- **Chef de chantier** : consultation seule
+- **Important :** le budget consommé affiché au dashboard direction provient désormais des **dépenses validées**, plus du % d'avancement
+
 ---
 
 ## 3. Chef de chantier

@@ -151,6 +151,20 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 ---
 
+## REC-EVOL-003 — Budget & ressources (Release 1.1-C)
+
+| ID | Scénario | Statut |
+|----|----------|--------|
+| REC-EVOL-003-01 | Synthèse CHT-001 — 85 %+ consommation, alerte BUDGET_80 | ☐ |
+| REC-EVOL-003-02 | Dépense DRAFT/CANCELLED n'impacte pas consommé | ☐ |
+| REC-EVOL-003-03 | Conducteur saisit dépense → dashboard direction mis à jour | ☐ |
+| REC-EVOL-003-04 | Chef lecture seule onglet Budget | ☐ |
+| REC-EVOL-003-05 | Dashboard direction — KPI chantiers > 80 % / > 100 % | ☐ |
+
+**Breaking change à valider avec MOA :** `budgetSpent` = dépenses VALIDATED (plus % avancement).
+
+---
+
 ## REC-010 — Consultation historique
 
 | Champ | Valeur |

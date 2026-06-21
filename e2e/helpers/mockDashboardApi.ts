@@ -157,7 +157,11 @@ const DIRECTION_DATA = {
   budget: {
     totalBudget: 32_650_000,
     totalSpent: 18_420_000,
+    totalRemaining: 14_230_000,
+    consumptionPercent: 56.4,
     chantierCount: 8,
+    chantiersOver80: 2,
+    chantiersOver100: 0,
   },
 };
 

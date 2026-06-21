@@ -18,6 +18,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { StorageModule } from './storage/storage.module';
 import { WorkersModule } from './workers/workers.module';
 import { PlanningModule } from './planning/planning.module';
+import { BudgetModule } from './budget/budget.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PlanningModule } from './planning/planning.module';
     CommonModule,
     WorkersModule,
     PlanningModule,
+    BudgetModule,
   ],
   controllers: [AppController],
   providers: [AppService],

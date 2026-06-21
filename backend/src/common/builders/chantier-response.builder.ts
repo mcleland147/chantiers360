@@ -47,16 +47,13 @@ export interface AlertResponse {
   createdAt: string;
 }
 
-export function computeBudgetSpent(
-  budget: number | undefined,
-  progressPercent: number | undefined,
-): number {
-  if (!budget || budget <= 0) return 0;
-  return Math.round((budget * (progressPercent ?? 0)) / 100);
+export function computeBudgetSpent(validatedExpenseTotal: number): number {
+  return Math.round(validatedExpenseTotal * 100) / 100;
 }
 
 export function buildChantierResponse(
   project: ProjectWithRelations,
+  validatedExpenseTotal = 0,
 ): ChantierResponse {
   const budget = project.budget ? Number(project.budget) : undefined;
   const progressPercent = project.progress[0]?.progressRatio ?? undefined;
@@ -76,7 +73,7 @@ export function buildChantierResponse(
       ? formatDateFr(project.receptionDate)
       : undefined,
     budget,
-    budgetSpent: computeBudgetSpent(budget, progressPercent),
+    budgetSpent: computeBudgetSpent(validatedExpenseTotal),
     openReservesCount: project._count.issues,
     progressPercent,
     description: '',

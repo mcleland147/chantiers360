@@ -3,6 +3,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { BudgetService } from '../budget/budget.service';
 import { ProjectsRepository } from '../projects/repositories/projects.repository';
 import {
   buildAlertsFromData,
@@ -24,6 +25,7 @@ export class DashboardService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly projectsRepository: ProjectsRepository,
+    private readonly budgetService: BudgetService,
   ) {}
 
   async getConducteurDashboard(
@@ -32,7 +34,11 @@ export class DashboardService {
     const projects = (await this.projectsRepository.findAll()).filter(
       (p) => p.conductorId === conductorId,
     );
-    const chantiers = mapProjectsToChantiers(projects);
+    const totals =
+      await this.budgetService.getValidatedExpenseTotalsByProjectIds(
+        projects.map((p) => p.id),
+      );
+    const chantiers = mapProjectsToChantiers(projects, totals);
     const projectIds = projects.map((p) => p.id);
 
     const issues = await this.prisma.issue.findMany({
@@ -63,7 +69,11 @@ export class DashboardService {
 
   async getDirectionDashboard(): Promise<DirectionDashboardResponse> {
     const projects = await this.projectsRepository.findAll();
-    const chantiers = mapProjectsToChantiers(projects);
+    const totals =
+      await this.budgetService.getValidatedExpenseTotalsByProjectIds(
+        projects.map((p) => p.id),
+      );
+    const chantiers = mapProjectsToChantiers(projects, totals);
 
     const issues = await this.prisma.issue.findMany({
       include: { project: true },

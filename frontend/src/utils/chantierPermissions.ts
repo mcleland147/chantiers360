@@ -29,3 +29,18 @@ export function canEditChantier(role: UserRole): boolean {
     role === "CONDUCTEUR_TRAVAUX" || role === "ASSISTANTE_ADMINISTRATIVE"
   );
 }
+
+export function canManageBudget(role: UserRole): boolean {
+  return (
+    role === "CONDUCTEUR_TRAVAUX" || role === "ASSISTANTE_ADMINISTRATIVE"
+  );
+}
+
+export function canViewBudget(role: UserRole): boolean {
+  return (
+    role === "DIRECTION" ||
+    role === "ASSISTANTE_ADMINISTRATIVE" ||
+    role === "CONDUCTEUR_TRAVAUX" ||
+    role === "CHEF_CHANTIER"
+  );
+}
