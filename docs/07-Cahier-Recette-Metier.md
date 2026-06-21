@@ -4,6 +4,10 @@ Environnement : seed recette (`npm run prisma:seed --prefix backend`), frontend 
 
 Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
+**Recette MOA assistée :** voir `docs/32-Framework-Recette-Automatisee.md` · matrice `docs/31-Matrice-Automatisation-Recette.md` · manuel MOA `docs/33-Cahier-Recette-MOA-Manuelle.md` · commande `npm run test:recette`.
+
+Colonnes ajoutées : **Automatisé** (Oui / Non / Partiel) · **Test associé** · **À valider MOA** · **Commentaire**.
+
 ---
 
 ## REC-001 — Création chantier
@@ -14,6 +18,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté en conducteur (`conducteur@batinova.fr`) |
 | **Étapes** | 1. Aller sur `/chantiers/nouveau` 2. Remplir référence CHT-XXX, nom, client, adresse, dates 3. Soumettre |
 | **Résultat attendu** | Chantier créé, redirection fiche, statut « Préparation », entrée historique |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-001 |
+| **À valider MOA** | Non |
+| **Commentaire** | Contrôle factuel création + statut initial |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -26,6 +34,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté conducteur, chantier CHT-001 accessible |
 | **Étapes** | 1. Ouvrir fiche CHT-001 2. Modifier le client 3. Enregistrer |
 | **Résultat attendu** | Données mises à jour, historique tracé |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-002 (API) |
+| **À valider MOA** | Non |
+| **Commentaire** | PATCH client via API réelle |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -38,6 +50,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté conducteur, chantier en Préparation ou étape suivante |
 | **Étapes** | 1. Ouvrir fiche 2. Changer statut vers étape suivante 3. Confirmer |
 | **Résultat attendu** | Nouveau statut affiché, historique mis à jour |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-003 (API) |
+| **À valider MOA** | Non |
+| **Commentaire** | Avancement CHT-005 → Réalisation |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -50,6 +66,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Chantier en statut > Préparation |
 | **Étapes** | 1. Tenter retour statut sans motif 2. Saisir motif 3. Confirmer |
 | **Résultat attendu** | Refus sans motif ; succès avec motif enregistré dans l'historique |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-004 (API) |
+| **À valider MOA** | Non |
+| **Commentaire** | RG-DATA-004 vérifié par API |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -62,6 +82,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté conducteur, fiche chantier ouverte |
 | **Étapes** | 1. Onglet Équipe 2. « Affecter un membre » 3. Sélectionner utilisateur + fonction 4. Valider |
 | **Résultat attendu** | Membre listé, historique « Affectation équipe » |
+| **Automatisé** | Partiel |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-005 |
+| **À valider MOA** | Oui — MOA-MVP-05 |
+| **Commentaire** | Auto : ouverture modale ; MOA : parcours complet |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -74,6 +98,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté conducteur ou chef (selon droits), onglet Avancement |
 | **Étapes** | 1. « Ajouter une mise à jour » 2. Commentaire + % 3. Valider |
 | **Résultat attendu** | Entrée visible dans la timeline avancement |
+| **Automatisé** | Partiel |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-006 |
+| **À valider MOA** | Oui — MOA-MVP-06 |
+| **Commentaire** | Auto : modale ; MOA : saisie et timeline |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -86,6 +114,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté avec droit création réserve |
 | **Étapes** | 1. Onglet Réserves 2. « Créer une réserve » 3. Titre, priorité, description 4. Valider |
 | **Résultat attendu** | Réserve listée statut Ouverte |
+| **Automatisé** | Partiel |
+| **Test associé** | `e2e/tests/recette/mvp-reserves.spec.ts` @REC-007 |
+| **À valider MOA** | Oui — MOA-MVP-07 |
+| **Commentaire** | Auto : modale ; MOA : création complète |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -98,6 +130,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Réserve En cours sur CHT-003, connecté conducteur |
 | **Étapes** | 1. Onglet Réserves CHT-003 2. « Valider levée » sur réserve critique 3. Confirmer |
 | **Résultat attendu** | Statut « Levée », historique tracé |
+| **Automatisé** | Partiel |
+| **Test associé** | `e2e/tests/recette/mvp-reserves.spec.ts` @REC-008 |
+| **À valider MOA** | Oui — MOA-MVP-08 |
+| **Commentaire** | Auto : levée si bouton visible |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -107,6 +143,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | Champ | Valeur |
 |-------|--------|
 | **Objectif** | Ajouter une photo par URL / nom de fichier (legacy — préférer REC-EVOL-001) |
+| **Automatisé** | — |
+| **Test associé** | — |
+| **À valider MOA** | Non |
+| **Commentaire** | Remplacé par EVOL-001 |
 | **Statut** | ☐ Remplacé par upload réel v1.1 |
 
 ---
@@ -115,13 +155,13 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 **Gate A :** ✅ validé le 21/06/2026
 
-| ID | Objectif | Statut |
-|----|----------|--------|
-| REC-EVOL-001-01 | Upload 3 JPG depuis fiche chantier | ✅ |
-| REC-EVOL-001-02 | Refus fichier > 10 Mo | ✅ |
-| REC-EVOL-001-03 | Suppression + trace historique « Suppression photo » | ✅ |
-| REC-EVOL-001-04 | Upload depuis mobile chef | ✅ |
-| REC-EVOL-001-05 | Galerie globale `/photos` à jour | ✅ |
+| ID | Objectif | Automatisé | Test associé | À valider MOA | Statut |
+|----|----------|------------|--------------|---------------|--------|
+| REC-EVOL-001-01 | Upload JPG depuis fiche chantier | Oui | `evol-001-photos.spec.ts` | Non | ✅ |
+| REC-EVOL-001-02 | Refus fichier > 10 Mo | Oui | `evol-001-photos.spec.ts` (API) | Non | ✅ |
+| REC-EVOL-001-03 | Suppression + trace historique | Oui | `evol-001-photos.spec.ts` | Non | ✅ |
+| REC-EVOL-001-04 | Upload depuis mobile chef | Partiel | `evol-001-photos.spec.ts` | Oui — MOA-PHO-04 | ✅ |
+| REC-EVOL-001-05 | Galerie globale `/photos` | Oui | `evol-001-photos.spec.ts` | Non | ✅ |
 
 ---
 
@@ -129,15 +169,15 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 **Gate B :** ✅ validé le 21/06/2026
 
-| ID | Objectif | Statut |
-|----|----------|--------|
-| REC-EVOL-002-01 | Créer créneau ouvrier sur chantier conducteur | ✅ |
-| REC-EVOL-002-02 | Conflit affiché et bloquant (409) | ✅ |
-| REC-EVOL-002-03 | Filtres chantier + ouvrier | ✅ |
-| REC-EVOL-002-04 | Vue mois + navigation semaine | ✅ |
-| REC-EVOL-002-05 | KPI occupation cohérent (Direction / Conducteur) | ✅ |
-| REC-EVOL-002-06 | Désactiver ouvrier — absent des listes d'affectation | ✅ |
-| REC-EVOL-002-07 | Périmètre chantiers planning (RG-PLA-04) — conducteur ne voit que ses chantiers | ✅ |
+| ID | Objectif | Automatisé | Test associé | À valider MOA | Statut |
+|----|----------|------------|--------------|---------------|--------|
+| REC-EVOL-002-01 | Créer créneau ouvrier | Oui | `evol-002-planning.spec.ts` | Non | ✅ |
+| REC-EVOL-002-02 | Conflit affiché et bloquant (409) | Oui | `evol-002-planning.spec.ts` | Non | ✅ |
+| REC-EVOL-002-03 | Filtres chantier + ouvrier | Oui | `evol-002-planning.spec.ts` | Non | ✅ |
+| REC-EVOL-002-04 | Vue mois + navigation semaine | Partiel | `evol-002-planning.spec.ts` | Oui — MOA-PLA-04 | ✅ |
+| REC-EVOL-002-05 | KPI occupation cohérent | Partiel | `evol-002-planning.spec.ts` | Oui — MOA-PLA-05 | ✅ |
+| REC-EVOL-002-06 | Désactiver ouvrier — absent listes | Oui | `evol-002-planning.spec.ts` | Non | ✅ |
+| REC-EVOL-002-07 | Périmètre RG-PLA-04 | Oui | `evol-002-planning.spec.ts` | Non | ✅ |
 
 ### REC-EVOL-002-07 — Périmètre chantiers (RG-PLA-04)
 
@@ -153,14 +193,14 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 
 ## REC-EVOL-003 — Budget & ressources (Release 1.1-C)
 
-| ID | Scénario | Statut |
-|----|----------|--------|
-| REC-EVOL-003-01 | Synthèse CHT-001 — 85 %+ consommation, alerte BUDGET_80 | ☐ |
-| REC-EVOL-003-02 | Dépense DRAFT/CANCELLED n'impacte pas consommé | ☐ |
-| REC-EVOL-003-03 | Conducteur saisit dépense → dashboard direction mis à jour | ☐ |
-| REC-EVOL-003-04 | Chef lecture seule onglet Budget | ☐ |
-| REC-EVOL-003-05 | Dashboard direction — KPI chantiers > 80 % / > 100 % | ☐ |
-| REC-EVOL-003-06 | Conducteur non référent — message accès explicite | ☐ |
+| ID | Scénario | Automatisé | Test associé | À valider MOA | Statut |
+|----|----------|------------|--------------|---------------|--------|
+| REC-EVOL-003-01 | Synthèse CHT-001 — 85 %+ consommation, alerte BUDGET_80 | Oui | `evol-003-budget.spec.ts` | Non | ☐ |
+| REC-EVOL-003-02 | Dépense DRAFT/CANCELLED n'impacte pas consommé | Oui | `evol-003-budget.spec.ts` (API) | Non | ☐ |
+| REC-EVOL-003-03 | budgetSpent = dépenses VALIDATED | Oui | `evol-003-budget.spec.ts` (API) | Oui — MOA-BUD-01 | ☐ |
+| REC-EVOL-003-04 | Chef lecture seule onglet Budget | Oui | `evol-003-budget.spec.ts` | Non | ☐ |
+| REC-EVOL-003-05 | Dashboard direction — KPI > 80 % / > 100 % | Oui | `evol-003-budget.spec.ts` | Non | ☐ |
+| REC-EVOL-003-06 | Conducteur non référent — message accès explicite | Oui | `evol-003-budget.spec.ts` | Non | ☐ |
 
 ### REC-EVOL-003-06 — Message accès budget (conducteur)
 
@@ -184,6 +224,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Chantier avec historique seedé (CHT-001) |
 | **Étapes** | 1. Ouvrir fiche 2. Onglet Historique |
 | **Résultat attendu** | Entrées datées avec auteur et action |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-010 |
+| **À valider MOA** | Non |
+| **Commentaire** | Présence entrée « Création chantier » |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -196,6 +240,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté `conducteur@batinova.fr` |
 | **Étapes** | 1. Accéder `/dashboard` 2. Vérifier KPI actifs/retard/réserves 3. Alertes et listes récentes |
 | **Résultat attendu** | Données cohérentes avec portefeuille Marc Dupont (CHT-001, 003, 005, 006, 011, 013, 016, 019) |
+| **Automatisé** | Partiel |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-011 |
+| **À valider MOA** | Oui — MOA-MVP-11 |
+| **Commentaire** | Auto : KPI visibles ; MOA : cohérence chiffres |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -208,6 +256,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Connecté `direction@batinova.fr` |
 | **Étapes** | 1. Accéder `/dashboard/direction` 2. KPI, graphiques, chantiers à risque 3. Drill-down CHT-003 |
 | **Résultat attendu** | 20 chantiers seedés, répartition statuts/conducteurs, pas de boutons modification |
+| **Automatisé** | Partiel |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-012 |
+| **À valider MOA** | Oui — MOA-MVP-12 |
+| **Commentaire** | Auto : graphique budget ; MOA : drill-down |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -220,7 +272,11 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Chantier CHT-003 avec réserves critiques ouvertes |
 | **Étapes** | 1. Tenter passage statut Clôture ou Réception sans levée des réserves |
 | **Résultat attendu** | Refus ou avertissement métier (selon implémentation workflow) |
-| **Statut** | ☐ À exécuter — *règle documentée, enforcement partiel MVP* |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-chantiers.spec.ts` @REC-013 (API) |
+| **À valider MOA** | Non |
+| **Commentaire** | RG-REC-013 via API clôture CHT-003 |
+| **Statut** | ☐ À exécuter |
 
 ---
 
@@ -232,6 +288,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | Comptes seedés tous rôles |
 | **Étapes** | 1. Conducteur → `/dashboard/direction` refusé 2. Direction → dashboard direction OK 3. Assistante → `/chantiers` 4. Chef → `/mobile` |
 | **Résultat attendu** | Redirections conformes SPEC-UI §4.3 |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-auth.spec.ts` @REC-014 |
+| **À valider MOA** | Non |
+| **Commentaire** | Matrice rôles MVP |
 | **Statut** | ☐ À exécuter |
 
 ---
@@ -244,6 +304,10 @@ Comptes : voir § Comptes seedés dans `docs/API.md` (mot de passe `demo123`).
 | **Préconditions** | API et Postgres démarrés |
 | **Étapes** | 1. Login email/mot de passe 2. Vérifier redirection par rôle 3. Appel API authentifié (`GET /auth/me`) |
 | **Résultat attendu** | JWT valide, session localStorage, accès routes protégées |
+| **Automatisé** | Oui |
+| **Test associé** | `e2e/tests/recette/mvp-auth.spec.ts` @REC-015 |
+| **À valider MOA** | Non |
+| **Commentaire** | Login UI + GET /auth/me |
 | **Statut** | ☐ À exécuter |
 
 ---
